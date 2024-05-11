@@ -9,10 +9,8 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -277,7 +275,7 @@ public class DoctorPageController implements Initializable {
             result = prepare.executeQuery();
 
             if (result.next()) {
-                tempID = result.getInt("MAX(id)");
+                tempID = result.getInt(1);
             }
 
             if (tempID == 0) {
@@ -314,7 +312,7 @@ public class DoctorPageController implements Initializable {
 
             try {
 
-                Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("FXMLDocument.fxml")));
                 Stage stage = new Stage();
 
                 stage.setTitle("Hospital Management System");
