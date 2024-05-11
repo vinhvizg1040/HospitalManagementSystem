@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import de.jensd.fx.glyphs.fontawesome.View?>
 <?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -63,7 +63,7 @@
                <left>
                   <AnchorPane prefHeight="560.0" prefWidth="214.0" styleClass="bg-color-2" stylesheets="@../design/PatientMainFormDesign.css" BorderPane.alignment="CENTER">
                      <children>
-                        <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="83.0" layoutY="65.0" size="5em" />
+                        <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="83.0" layoutY="65.0" size="5em" />
                         <Label layoutX="23.0" layoutY="85.0" text="Patient ID:" textFill="WHITE" />
                         <Label fx:id="nav_adminID" layoutX="83.0" layoutY="84.0" prefHeight="17.0" prefWidth="117.0" text="1" textFill="WHITE">
                            <font>
@@ -71,27 +71,27 @@
                            </font>
                         </Label>
                         <Line endX="88.0" layoutX="113.0" layoutY="152.0" startX="-100.0" stroke="WHITE" />
-                        <FontAwesomeIcon fill="#c76565" glyphName="HOSPITAL_ALT" layoutX="60.0" layoutY="522.0" size="10em" AnchorPane.bottomAnchor="20.857139587402344" AnchorPane.leftAnchor="60.0" />
+                        <FontAwesomeIconView fill="#c76565" glyphName="HOSPITAL_ALT" layoutX="60.0" layoutY="522.0" size="10em" AnchorPane.bottomAnchor="20.857139587402344" AnchorPane.leftAnchor="60.0" />
                         <Label layoutX="13.0" layoutY="162.0" text="Feature" textFill="WHITE" />
                         <Button fx:id="dashboard_btn" layoutX="7.0" layoutY="187.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn-1" stylesheets="@../design/MainFormDesign.css" text="Home">
                            <graphic>
-                              <FontAwesomeIcon glyphName="HOME" size="1.5em" />
+                              <FontAwesomeIconView glyphName="HOME" size="1.5em" />
                            </graphic>
                         </Button>
                         <Button fx:id="doctors_btn" layoutX="7.0" layoutY="237.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn-1" stylesheets="@../design/MainFormDesign.css" text="Doctors">
                            <graphic>
-                              <FontAwesomeIcon glyphName="USER_MD" size="1.5em" />
+                              <FontAwesomeIconView glyphName="USER_MD" size="1.5em" />
                            </graphic>
                         </Button>
                         <Button fx:id="appointments_btn" layoutX="7.0" layoutY="287.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn-1" stylesheets="@../design/MainFormDesign.css" text="Appointments">
                            <graphic>
-                              <FontAwesomeIcon glyphName="CALENDAR" size="1.5em" />
+                              <FontAwesomeIconView glyphName="CALENDAR" size="1.5em" />
                            </graphic>
                         </Button>
                         <Label layoutX="13.0" layoutY="339.0" text="Profile" textFill="WHITE" />
                         <Button fx:id="profile_btn" layoutX="7.0" layoutY="364.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn-1" stylesheets="@../design/MainFormDesign.css" text="Profile Setting">
                            <graphic>
-                              <FontAwesomeIcon glyphName="COGS" size="1.5em" />
+                              <FontAwesomeIconView glyphName="COGS" size="1.5em" />
                            </graphic>
                         </Button>
                      </children>
@@ -142,7 +142,7 @@
                                                 <Font size="15.0" />
                                              </font>
                                           </Label>
-                                          <FontAwesomeIcon fill="WHITE" glyphName="USER_MD" layoutX="165.0" layoutY="188.0" size="2em" />
+                                          <FontAwesomeIconView fill="WHITE" glyphName="USER_MD" layoutX="165.0" layoutY="188.0" size="2em" />
                                           <Label layoutX="30.0" layoutY="223.0" text="Doctor Name:" textFill="WHITE">
                                              <font>
                                                 <Font size="13.0" />
@@ -440,7 +440,7 @@
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <FontAwesomeIcon glyphName="EDIT" layoutX="124.0" layoutY="37.0" size="2em" />
+                                    <FontAwesomeIconView glyphName="EDIT" layoutX="124.0" layoutY="37.0" size="2em" />
                                     <Label layoutX="115.0" layoutY="98.0" text="Patient ID:">
                                        <font>
                                           <Font size="15.0" />
@@ -465,7 +465,7 @@
                                        </font>
                                     </Label>
                                     <ComboBox fx:id="profile_status" layoutX="189.0" layoutY="210.0" prefWidth="150.0" promptText="Choose..." styleClass="textfield-1" stylesheets="@../design/PageDesign.css" AnchorPane.leftAnchor="189.0" AnchorPane.rightAnchor="226.0" AnchorPane.topAnchor="210.0" />
-                                    <FontAwesomeIcon glyphName="COGS" layoutX="293.0" layoutY="478.0" opacity="0.23" size="20em" AnchorPane.bottomAnchor="14.714279174804688" AnchorPane.rightAnchor="14.857147216796875" />
+                                    <FontAwesomeIconView glyphName="COGS" layoutX="293.0" layoutY="478.0" opacity="0.23" size="20em" AnchorPane.bottomAnchor="14.714279174804688" AnchorPane.rightAnchor="14.857147216796875" />
                                     <Button fx:id="profile_updateBtn" layoutX="214.0" layoutY="432.0" mnemonicParsing="false" onAction="#profileUpdateBtn" prefHeight="40.0" prefWidth="156.0" styleClass="btn-3" stylesheets="@../design/PatientMainFormDesign.css" text="Update" AnchorPane.leftAnchor="214.0" AnchorPane.rightAnchor="195.0" AnchorPane.topAnchor="432.0" />
                                     <Label layoutX="115.0" layoutY="249.0" text="Password:">
                                        <font>

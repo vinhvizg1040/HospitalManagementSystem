@@ -1,32 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hospitalmanagementsystem;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-/**
- *
- * @author WINDOWS 10
- */
 public class Database {
 
     public static Connection connectDB() {
 
+        Connection connect = null;
         try {
+            // Load JDBC driver
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
-            Class.forName("com.mysql.jdbc.Driver");
+            // Kết nối đến cơ sở dữ liệu
+            connect = DriverManager.getConnection("jdbc:sqlserver://localhost\\HOANG:1433;databaseName=hospital;trustServerCertificate=true",
+                    "sa",
+                    "1"
+            );
+            System.out.println(">>>>>>>>>>>>> ket noi database thanh cong");
 
-            Connection connect
-                    = DriverManager.getConnection("jdbc:mysql://localhost/hospital", "root", "123"); // root IS OUR DEFAULT USERNAME AND EMPTY OR NULL OR BLANK TO OUR PASSWORD
-            return connect;
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+            System.out.println(">>>>>>>>>>>>> ket noi database thất bại");
 
+            e.printStackTrace();
+
+        }
+//        return null;
+        return connect;
+    }
 }

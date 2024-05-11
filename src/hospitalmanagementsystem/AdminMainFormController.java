@@ -1,10 +1,4 @@
 package hospitalmanagementsystem;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- p---------------------- in the editor.P?+''''''''''''''p
-package hospitalmanagementsystem;*/
 import hospitalmanagementsystem.Data;
 import hospitalmanagementsystem.Database;
 import java.io.File;
@@ -13,16 +7,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,13 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -54,10 +38,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-/**
- *
- * @author WINDOWS 10
- */
+
 public class AdminMainFormController implements Initializable {
 
     // GIVE NAME OF ALL COMPONENTS
@@ -102,7 +83,8 @@ public class AdminMainFormController implements Initializable {
 
     @FXML
     private AnchorPane dashboard_form;
-
+    @FXML
+    private ComboBox<String> patients_gender;
     @FXML
     private Label dashboard_AD;
 
@@ -281,6 +263,47 @@ public class AdminMainFormController implements Initializable {
     private AnchorPane payment_form;
 
     @FXML
+    private TextField patients_patientID;
+
+    @FXML
+    private TextField patients_patientName;
+
+    @FXML
+    private TextField patients_mobileNumber;
+
+    @FXML
+    private TextField patients_password;
+
+    @FXML
+    private TextArea patients_address;
+
+    @FXML
+    private Button patients_confirmBtn;
+
+    @FXML
+    private Label patients_PA_patientID;
+
+    @FXML
+    private Label patients_PA_password;
+
+    @FXML
+    private Label patients_PA_dateCreated;
+
+    @FXML
+    private Label patients_PI_patientName;
+
+    @FXML
+    private Label patients_PI_gender;
+
+    @FXML
+    private Label patients_PI_mobileNumber;
+
+    @FXML
+    private Label patients_PI_address;
+
+    @FXML
+    private Button patients_PI_addBtn;
+    @FXML
     private TableView<PatientsData> payment_tableView;
 
     @FXML
@@ -322,6 +345,12 @@ public class AdminMainFormController implements Initializable {
     @FXML
     private Button logout_btn;
 
+    @FXML
+    private Button addNewPatient_btn;
+
+    @FXML
+    private AnchorPane patients_addForm;
+
 //    DATABASE TOOLS
     private Connection connect;
     private PreparedStatement prepare;
@@ -345,8 +374,9 @@ public class AdminMainFormController implements Initializable {
             result = prepare.executeQuery();
 
             if (result.next()) {
-                tempAD = result.getInt("COUNT(id)");
+                tempAD = result.getInt(1);
             }
+
             dashboard_AD.setText(String.valueOf(tempAD));
 
         } catch (Exception e) {
@@ -368,8 +398,9 @@ public class AdminMainFormController implements Initializable {
             result = prepare.executeQuery();
 
             if (result.next()) {
-                tempTP = result.getInt("COUNT(id)");
+                tempTP = result.getInt(1);
             }
+
             dashboard_TP.setText(String.valueOf(tempTP));
 
         } catch (Exception e) {
@@ -391,8 +422,9 @@ public class AdminMainFormController implements Initializable {
             result = prepare.executeQuery();
 
             if (result.next()) {
-                tempAP = result.getInt("COUNT(id)");
+                tempAP = result.getInt(1);
             }
+
             dashboard_AP.setText(String.valueOf(tempAP));
 
         } catch (Exception e) {
@@ -414,9 +446,10 @@ public class AdminMainFormController implements Initializable {
             result = prepare.executeQuery();
 
             if (result.next()) {
-                tempTA = result.getInt("COUNT(id)");
+                tempTA = result.getInt(1);
             }
-            dashboard_AP.setText(String.valueOf(tempTA));
+
+            dashboard_tA.setText(String.valueOf(tempTA));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -470,7 +503,12 @@ public class AdminMainFormController implements Initializable {
     public void dashboardPatientDataChart() {
         dashboad_chart_PD.getData().clear();
 
-        String selectData = "SELECT date, COUNT(id) FROM patient WHERE date_delete IS NULL GROUP BY TIMESTAMP(datE) ASC LIMIT 8";
+        String selectData = "SELECT TOP 8 CONVERT(date, date) AS converted_date, COUNT(id) " +
+                "FROM patient " +
+                "WHERE date_delete IS NULL " +
+                "GROUP BY CONVERT(date, date) " +
+                "ORDER BY CONVERT(date, date) ASC";
+
 
         connect = Database.connectDB();
         XYChart.Series chart = new XYChart.Series<>();
@@ -494,7 +532,12 @@ public class AdminMainFormController implements Initializable {
     public void dashboardDoctorDataChart() {
         dashboad_chart_DD.getData().clear();
 
-        String selectData = "SELECT date, COUNT(id) FROM doctor WHERE delete_date IS NULL GROUP BY TIMESTAMP(date) ASC LIMIT 6";
+        String selectData = "SELECT TOP 6 [date], COUNT(id) " +
+                "FROM doctor " +
+                "WHERE delete_date IS NULL " +
+                "GROUP BY [date] " +
+                "ORDER BY [date] ASC";
+
 
         connect = Database.connectDB();
         XYChart.Series chart = new XYChart.Series<>();
@@ -799,7 +842,7 @@ public class AdminMainFormController implements Initializable {
                                 return;
                             }
 
-                            String deleteData = "UPDATE patient SET date_delete = ? WHERE patient_id = '"
+                            String deleteData = "DELETE FROM patient WHERE patient_id = '"
                                     + pData.getPatientID() + "'";
 
                             try {
@@ -808,10 +851,10 @@ public class AdminMainFormController implements Initializable {
                                     Date date = new Date();
                                     java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
-                                    prepare.setString(1, String.valueOf(sqlDate));
+//                                    prepare.setString(1, String.valueOf(sqlDate));
                                     prepare.executeUpdate();
 
-                                    doctorGetData();
+                                    patientGetData();
                                     alert.successMessage("Deleted Successfully!");
 
                                 }
@@ -1072,6 +1115,155 @@ public class AdminMainFormController implements Initializable {
         payment_date.setText(String.valueOf(pData.getDate()));
 
     }
+    public void patientConfirmBtn() throws SQLException {
+        // CHECK IF SOME OR ALL FIELDS ARE EMPTY
+        if (patients_patientName.getText().isEmpty()
+                || patients_gender.getSelectionModel().getSelectedItem() == null
+                || patients_mobileNumber.getText().isEmpty()
+                || patients_password.getText().isEmpty()
+                || patients_address.getText().isEmpty()) {
+            alert.errorMessage("Please fill all blank fields");
+        } else {
+            Database.connectDB();
+            try {
+                // Xác định năm hiện tại
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+
+                // Tìm số thứ tự của bản ghi patient cuối cùng trong cơ sở dữ liệu
+                String lastPatientIDQuery = "SELECT MAX(CAST(RIGHT(patient_id, 5) AS INT)) AS last_patient_id FROM patient";
+                statement = connect.createStatement();
+                result = statement.executeQuery(lastPatientIDQuery);
+                int lastPatientID = 0;
+                if (result.next()) {
+                    lastPatientID = result.getInt("last_patient_id");
+                }
+
+                // Tạo patient_id mới
+                String newPatientID = String.format("%d%05d", year, lastPatientID + 1);
+
+                // Kiểm tra xem patient_id mới đã tồn tại chưa
+                String checkPatientID = "SELECT * FROM patient WHERE patient_id = ?";
+                prepare = connect.prepareStatement(checkPatientID);
+                prepare.setString(1, newPatientID);
+                result = prepare.executeQuery();
+                if (result.next()) {
+                    alert.errorMessage(newPatientID + " is already exist");
+                } else {
+                    Date date = new Date();
+                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+                    // TO DISPLAY THE DATA FROM PERSONAL ACCOUNT
+                patients_PA_patientID.setText(newPatientID);
+                    patients_PA_password.setText(patients_password.getText());
+                    patients_PA_dateCreated.setText(String.valueOf(sqlDate));
+
+                    // TO DISPLAY THE DATA FROM PERSONAL INFORMATION
+                    patients_PI_patientName.setText(patients_patientName.getText());
+                    patients_PI_gender.setText(patients_gender.getSelectionModel().getSelectedItem());
+                    patients_PI_mobileNumber.setText(patients_mobileNumber.getText());
+                    patients_PI_address.setText(patients_address.getText());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void patientClearFields() {
+//        patients_patientID.clear();
+        patients_patientName.clear();
+        patients_gender.getSelectionModel().clearSelection();
+        patients_mobileNumber.clear();
+        patients_password.clear();
+        patients_address.clear();
+
+//        patients_PA_patientID.setText("");
+        patients_PA_password.setText("");
+        patients_PA_dateCreated.setText("");
+
+        patients_PI_patientName.setText("");
+        patients_PI_gender.setText("");
+        patients_PI_mobileNumber.setText("");
+        patients_PI_address.setText("");
+    }
+    private void patientGenderList() {
+
+        List<String> listG = new ArrayList<>();
+
+        for (String data : Data.gender) {
+            listG.add(data);
+        }
+        ObservableList listData = FXCollections.observableList(listG);
+
+        patients_gender.setItems(listData);
+
+    }
+
+    public void patientAddBtn() {
+        if ( patients_PA_password.getText().isEmpty()
+                || patients_PA_dateCreated.getText().isEmpty()
+                || patients_PI_patientName.getText().isEmpty()
+                || patients_PI_gender.getText().isEmpty()
+                || patients_PI_mobileNumber.getText().isEmpty()
+                || patients_PI_address.getText().isEmpty()) {
+            alert.errorMessage("Something went wrong");
+        } else {
+            Database.connectDB();
+            try {
+                // Xác định năm hiện tại
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+
+                // Tìm số thứ tự của bản ghi patient cuối cùng trong cơ sở dữ liệu
+                String lastPatientIDQuery = "SELECT MAX(CAST(RIGHT(patient_id, 5) AS INT)) AS last_patient_id FROM patient";
+                statement = connect.createStatement();
+                result = statement.executeQuery(lastPatientIDQuery);
+                int lastPatientID = 0;
+                if (result.next()) {
+                    lastPatientID = result.getInt("last_patient_id");
+                }
+
+                // Tạo patient_id mới
+                String newPatientID = String.format("%d%05d", year, lastPatientID + 1);
+
+                // Kiểm tra xem patient_id mới đã tồn tại chưa
+                String checkPatientID = "SELECT * FROM patient WHERE patient_id = ?";
+                prepare = connect.prepareStatement(checkPatientID);
+                prepare.setString(1, newPatientID);
+                result = prepare.executeQuery();
+                if (result.next()) {
+                    alert.errorMessage(newPatientID + " is already exist");
+                } else {
+                    // Thêm bản ghi patient vào cơ sở dữ liệu
+                    String insertData = "INSERT INTO patient (patient_id, password, full_name, mobile_number,gender, "
+                            + "address, date, "
+                            + "status) "
+                            + "VALUES(?,?,?,?,?,?,?,?)";
+                    Date date = new Date();
+                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                    prepare = connect.prepareStatement(insertData);
+                    prepare.setString(1, newPatientID);
+                    prepare.setString(2, patients_PA_password.getText());
+                    prepare.setString(3, patients_PI_patientName.getText());
+                    prepare.setString(4, patients_PI_mobileNumber.getText());
+                    prepare.setString(5, patients_PI_gender.getText());
+
+                    prepare.setString(6, patients_PI_address.getText());
+                    prepare.setString(7, "" + sqlDate);
+                    prepare.setString(8, "Active");
+                    prepare.executeUpdate();
+
+                    alert.successMessage("Added successfully!");
+
+                    // Xóa tất cả các trường và một số nhãn
+                    patientClearFields();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void paymentCheckOutBtn() {
 
@@ -1127,7 +1319,7 @@ public class AdminMainFormController implements Initializable {
                     path = path.replace("\\", "\\\\");
                     Path transfer = Paths.get(path);
 
-                    Path copy = Paths.get("C:\\Users\\WINDOWS 10\\Documents\\NetBeansProjects\\HospitalManagementSystem\\src\\Admin_Directory\\"
+                    Path copy = Paths.get("D:\\Aptech\\HK2\\Project\\code\\HospitalManagementSystem\\src\\Admin_Directory\\"
                             + Data.admin_id + ".jpg");
 
                     Files.copy(transfer, copy, StandardCopyOption.REPLACE_EXISTING);
@@ -1238,6 +1430,8 @@ public class AdminMainFormController implements Initializable {
             appointments_form.setVisible(false);
             payment_form.setVisible(false);
             profile_form.setVisible(false);
+            patients_addForm.setVisible(false);
+
 
             dashboardAD();
             dashboardTP();
@@ -1253,6 +1447,8 @@ public class AdminMainFormController implements Initializable {
             appointments_form.setVisible(false);
             payment_form.setVisible(false);
             profile_form.setVisible(false);
+            patients_addForm.setVisible(false);
+
 
             // TO DISPLAY IMMEDIATELY THE DATA OF DOCTORS IN TABLEVIEW
             doctorDisplayData();
@@ -1266,6 +1462,8 @@ public class AdminMainFormController implements Initializable {
             appointments_form.setVisible(false);
             payment_form.setVisible(false);
             profile_form.setVisible(false);
+            patients_addForm.setVisible(false);
+
 
             // TO DISPLAY IMMEDIATELY THE DATA OF PATIENTS IN TABLEVIEW
             patientDisplayData();
@@ -1278,6 +1476,8 @@ public class AdminMainFormController implements Initializable {
             appointments_form.setVisible(true);
             payment_form.setVisible(false);
             profile_form.setVisible(false);
+            patients_addForm.setVisible(false);
+
 
             // TO DISPLAY IMMEDIATELY THE DATA OF APPOINTMENTS IN TABLEVIEW
             appointmentDisplayData();
@@ -1288,8 +1488,11 @@ public class AdminMainFormController implements Initializable {
             doctors_form.setVisible(false);
             patients_form.setVisible(false);
             appointments_form.setVisible(false);
-            payment_form.setVisible(true);
+
             profile_form.setVisible(false);
+            patients_addForm.setVisible(false);
+            payment_form.setVisible(true);
+
 
             paymentDisplayData();
 
@@ -1300,13 +1503,31 @@ public class AdminMainFormController implements Initializable {
             patients_form.setVisible(false);
             appointments_form.setVisible(false);
             payment_form.setVisible(false);
+            patients_addForm.setVisible(false);
+
             profile_form.setVisible(true);
+
 
             profileStatusList();
             profileDisplayInfo();
             profileDisplayImages();
 
             current_form.setText("Profile Form");
+        }
+        else if (event.getSource() == addNewPatient_btn) {
+            dashboard_form.setVisible(false);
+            doctors_form.setVisible(false);
+            patients_form.setVisible(false);
+            appointments_form.setVisible(false);
+            payment_form.setVisible(false);
+            profile_form.setVisible(false);
+            patients_addForm.setVisible(true);
+
+            profileStatusList();
+            profileDisplayInfo();
+            profileDisplayImages();
+
+            current_form.setText("Add New Patient Form");
         }
 
     }
@@ -1408,7 +1629,7 @@ public class AdminMainFormController implements Initializable {
 
         // TO DISPLAY IMMEDIATELY THE DATA OF PAYMENT IN TABLEVIEW
         paymentDisplayData();
-
+        patientGenderList();
         profileStatusList();
         profileDisplayInfo();
         profileDisplayImages();

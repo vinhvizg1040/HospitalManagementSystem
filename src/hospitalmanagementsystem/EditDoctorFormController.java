@@ -164,6 +164,7 @@ public class EditDoctorFormController implements Initializable {
                     if (alert.confirmationMessage("Are you sure you want to Update Doctor ID: " + editDoctor_doctorID.getText() + "?")) {
                         prepare = connect.prepareStatement(updateData);
                         prepare.executeUpdate();
+                        alert.successMessage("Update Successfully!");
                     } else {
                         alert.errorMessage("Cancelled.");
                     }
@@ -178,7 +179,7 @@ public class EditDoctorFormController implements Initializable {
                         path = path.replace("\\", "\\\\");
                         Path transfer = Paths.get(path);
 
-                        Path copy = Paths.get("C:\\Users\\WINDOWS 10\\Documents\\NetBeansProjects\\HospitalManagementSystem\\src\\Doctor_Directory\\"
+                        Path copy = Paths.get("D:\\Aptech\\HK2\\Project\\code\\HospitalManagementSystem\\src\\Doctor_Directory\\"
                                 + editDoctor_doctorID.getText() + ".jpg");
 
                         Files.copy(transfer, copy, StandardCopyOption.REPLACE_EXISTING);

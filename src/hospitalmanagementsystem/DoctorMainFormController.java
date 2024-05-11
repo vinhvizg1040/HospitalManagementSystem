@@ -985,7 +985,7 @@ public class DoctorMainFormController implements Initializable {
                     Path transfer = Paths.get(path);
 
                     // LINK YOUR DIRECTORY FOLDER
-                    Path copy = Paths.get("C:\\Users\\WINDOWS 10\\Documents\\NetBeansProjects\\HospitalManagementSystem\\src\\Directory\\"
+                    Path copy = Paths.get("D:\\Aptech\\HK2\\Project\\code\\HospitalManagementSystem\\src\\Directory\\"
                             + Data.doctor_id + ".jpg");
 
                     try {
