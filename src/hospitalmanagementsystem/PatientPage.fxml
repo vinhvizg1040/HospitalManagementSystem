@@ -24,8 +24,8 @@
                         <Font name="Tahoma" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="128.0" layoutY="125.0" text="Patient Portal" />
-                  <TextField fx:id="login_patientID" layoutX="39.0" layoutY="177.0" onAction="#loginAccount" prefHeight="30.0" prefWidth="250.0" promptText="Patient ID" stylesheets="@../design/PageDesign.css">
+                  <Label layoutX="128.0" layoutY="125.0" text="Master Admin Portal" />
+                  <TextField fx:id="login_patientID" layoutX="39.0" layoutY="177.0" onAction="#loginAccount" prefHeight="30.0" prefWidth="250.0" promptText=" ID" stylesheets="@../design/PageDesign.css">
                      <styleClass>
                         <String fx:value="textfield-3" />
                         <String fx:value="white-bg" />

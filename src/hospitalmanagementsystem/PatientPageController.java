@@ -172,7 +172,7 @@ public class PatientPageController implements Initializable {
     @FXML
     void switchPage(ActionEvent event) {
 
-        if (login_user.getSelectionModel().getSelectedItem() == "Admin Portal") {
+        if (login_user.getSelectionModel().getSelectedItem() == "Staff Portal") {
 
             try {
 

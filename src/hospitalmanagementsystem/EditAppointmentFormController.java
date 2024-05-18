@@ -87,6 +87,7 @@ public class EditAppointmentFormController implements Initializable{
         editApp_doctor.getSelectionModel().select(Data.temp_appDoctor);
         editApp_specialized.getSelectionModel().select(Data.temp_appSpecialized);
         editApp_status.getSelectionModel().select(Data.temp_appStatus);
+
     }
     
     public void doctorList(){

@@ -28,7 +28,7 @@
                         <Font name="Tahoma" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="130.0" layoutY="125.0" text="Admin Portal" />
+                  <Label layoutX="130.0" layoutY="125.0" text="Staff Portal" />
                   <TextField fx:id="login_username" layoutX="39.0" layoutY="177.0" onAction="#loginAccount" prefHeight="30.0" prefWidth="250.0" promptText="Username" stylesheets="@../design/PageDesign.css">
                      <styleClass>
                         <String fx:value="textfield-1" />
@@ -76,7 +76,7 @@
                         <Font name="Tahoma" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="130.0" layoutY="125.0" text="Admin Portal" />
+                  <Label layoutX="130.0" layoutY="125.0" text="Staff Portal" />
                   <TextField fx:id="register_email" layoutX="39.0" layoutY="190.0" prefHeight="30.0" prefWidth="250.0" promptText="Email Address" stylesheets="@../design/PageDesign.css">
                      <styleClass>
                         <String fx:value="textfield-1" />

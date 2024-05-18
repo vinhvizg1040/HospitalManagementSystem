@@ -25,12 +25,14 @@ public class DoctorData {
     private String image;
     private Date date;
     private Date dateModify;
+    private Date dateCreated;
     private Date dateDelete;
     private String status;
 
+
     public DoctorData(Integer id, String doctorID, String password, String fullName,
             String email, String gender, Long mobileNumber, String specialized, String address,
-            String image, Date date, Date dateModify, Date dateDelete, String status) {
+            String image, Date date, Date dateCreated, Date dateModify, Date dateDelete, String status) {
         this.id = id;
         this.doctorID = doctorID;
         this.password = password;
@@ -42,6 +44,8 @@ public class DoctorData {
         this.address = address;
         this.image = image;
         this.date = date;
+        this.dateCreated = dateCreated;
+
         this.dateModify = dateModify;
         this.dateDelete = dateDelete;
         this.status = status;
@@ -105,6 +109,9 @@ public class DoctorData {
 
     public Date getDate() {
         return date;
+    }
+    public Date getDateCreated() {
+        return dateCreated;
     }
 
     public Date getDateModify() {

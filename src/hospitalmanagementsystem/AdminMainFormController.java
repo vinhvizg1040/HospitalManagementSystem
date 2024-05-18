@@ -1,6 +1,4 @@
 package hospitalmanagementsystem;
-import hospitalmanagementsystem.Data;
-import hospitalmanagementsystem.Database;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
@@ -10,10 +8,13 @@ import java.nio.file.StandardCopyOption;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Date;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -120,6 +121,82 @@ public class AdminMainFormController implements Initializable {
 
     @FXML
     private AnchorPane doctors_form;
+    @FXML
+    private DatePicker doctor_DOB;
+    @FXML
+    private TextField password_ShowPassword;
+
+    @FXML
+    private PasswordField password_password;
+
+    @FXML
+    private CheckBox passwordcf_checkBox;
+
+    @FXML
+    private PasswordField passwordcf_password;
+
+    @FXML
+    private TextField passwordcf_showPassword;
+    @FXML
+    private Label doctor_PA_dateCreated;
+
+    @FXML
+    private Label doctor_PA_doctorID;
+    @FXML
+    private Label doctor_PA_password;
+
+    @FXML
+    private Label doctor_PI_DOB;
+
+    @FXML
+    private Button doctor_PI_addBtn;
+
+    @FXML
+    private Label doctor_PI_address;
+
+    @FXML
+    private Label doctor_PI_doctorName;
+
+    @FXML
+    private Label doctor_PI_email;
+
+    @FXML
+    private Label doctor_PI_gender;
+
+    @FXML
+    private Label doctor_PI_mobileNumber;
+
+    @FXML
+    private Label doctor_PI_specialized;
+
+    @FXML
+    private TextArea doctor_address;
+    @FXML
+    private Button addNewDoctor_btn;
+    @FXML
+    private Button doctor_confirmBtn;
+
+    @FXML
+    private TextField doctor_email;
+
+
+
+    @FXML
+    private ComboBox<?> doctor_gender;
+
+    @FXML
+    private TextField doctor_mobileNumber;
+
+    @FXML
+    private TextField doctor_name;
+
+    @FXML
+    private ComboBox<?> doctor_specialized;
+
+    @FXML
+    private AnchorPane doctors_addForm;
+
+
 
     @FXML
     private TableView<DoctorData> doctors_tableView;
@@ -270,12 +347,22 @@ public class AdminMainFormController implements Initializable {
 
     @FXML
     private TextField patients_mobileNumber;
+    @FXML
+    private TextField patients_bloodGroup;
+    @FXML
+    private TextField patients_ccid;
+    @FXML
+    private DatePicker patients_DOB;
+    @FXML
+    private TextField patients_EmercencyNumber;
 
     @FXML
     private TextField patients_password;
 
     @FXML
     private TextArea patients_address;
+    @FXML
+    private TextField patients_insurance;
 
     @FXML
     private Button patients_confirmBtn;
@@ -300,6 +387,22 @@ public class AdminMainFormController implements Initializable {
 
     @FXML
     private Label patients_PI_address;
+    @FXML
+    private Label patients_PI_description;
+    @FXML
+    private Label patients_PI_CCID;
+
+    @FXML
+    private Label patients_PI_DOB;
+    @FXML
+    private Label patients_PI_bloodGroup;
+
+    @FXML
+    private Label patients_PI_emergencyNumber;
+
+    @FXML
+    private Label patients_PI_insuranceNumber;
+
 
     @FXML
     private Button patients_PI_addBtn;
@@ -338,6 +441,9 @@ public class AdminMainFormController implements Initializable {
 
     @FXML
     private Label payment_doctor;
+
+    @FXML
+    private TextArea patients_description;
 
     @FXML
     private Label payment_date;
@@ -486,6 +592,132 @@ public class AdminMainFormController implements Initializable {
         return listData;
     }
 
+ public void doctorConfirmBtn(){
+
+     if (doctor_name.getText().isEmpty()
+             || doctor_gender.getSelectionModel().getSelectedItem() == null
+             || doctor_mobileNumber.getText().isEmpty()
+             || password_password.getText().isEmpty()
+             || passwordcf_password.getText().isEmpty()
+             || doctor_email.getText().isEmpty()
+             || doctor_DOB.getValue() == null
+              || doctor_specialized.getSelectionModel().getSelectedItem() == null
+                 ) {
+         alert.errorMessage("Please fill all blank fields");
+     } else {
+//            patients_mobileNumber.textProperty().addListener((observable, oldValue, newValue) -> {
+         if (!doctor_mobileNumber.getText().matches("-?([0-9][0-9]*)?") || doctor_mobileNumber.getText().length() > 10) {
+             // Show an error message or handle invalid input
+             alert.errorMessage("Phone Number input error, just number and <10 character");
+
+         } else if (passwordcf_password.getText().length() < 8 ||password_password.getText().length() < 8 ) { // CHECK IF THE CHARACTERS OF THE PASSWORD IS LESS THAN TO 8
+             alert.errorMessage("Invalid Password, at least 8 characters needed");
+         }else {
+             LocalDate dob = doctor_DOB.getValue();
+             LocalDate currentDate = LocalDate.now();
+             if (dob == null) {
+                 alert.errorMessage("Date of Birth cannot be null");
+             } else if (Period.between(dob, currentDate).getYears() < 24) {
+                 alert.errorMessage("Age must be greater than 24 years");
+             } else  {
+String password = password_password.getText();
+String passwordcf = passwordcf_password.getText();
+String passwordShowcf = passwordcf_showPassword.getText();
+String passwordShow = password_ShowPassword.getText();
+                 if (!(password.equals(passwordcf))||!(passwordShow.equals(passwordShowcf))){
+                     System.out.println(password);
+                     System.out.println(passwordcf);
+                     alert.errorMessage("Confirm Password is not correct");
+                 } else {
+                     Database.connectDB();
+                     try {
+
+
+                         // Tìm số thứ tự của bản ghi doctor cuối cùng trong cơ sở dữ liệu
+//                         String lastDoctorIDQuery = "SELECT MAX(CAST(RIGHT(doctor_id, 5) AS INT)) AS last_doctor_id FROM doctor";
+                         String lastDoctorIDQuery = "SELECT MAX(CAST(SUBSTRING(doctor_id, 5, LEN(doctor_id)) AS INT)) AS last_doctor_id FROM doctor";
+
+
+                         statement = connect.createStatement();
+                         result = statement.executeQuery(lastDoctorIDQuery);
+                         int lastDoctorID = 0;
+                         if (result.next()) {
+                             lastDoctorID = result.getInt("last_doctor_id");
+                         }
+
+                         // Tạo doctor mới
+                         String newDoctorID = String.format("DID-%d", lastDoctorID + 1);
+                         System.out.println(newDoctorID);
+
+                         // Kiểm tra xem patient_id mới đã tồn tại chưa
+                         String checkdoctorID = "SELECT * FROM doctor WHERE doctor_id = ?";
+                         prepare = connect.prepareStatement(checkdoctorID);
+                         prepare.setString(1, newDoctorID);
+                         result = prepare.executeQuery();
+                         if (result.next()) {
+                             alert.errorMessage(newDoctorID + " is already exist");
+                         } else {
+                             Date date = new Date();
+                             java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+                             // TO DISPLAY THE DATA FROM PERSONAL ACCOUNT
+                             doctor_PA_doctorID.setText(newDoctorID);
+                             doctor_PA_password.setText(password_password.getText());
+                             doctor_PA_dateCreated.setText(sqlDate.toLocalDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+
+
+                             // TO DISPLAY THE DATA FROM PERSONAL INFORMATION
+                             doctor_PI_doctorName.setText(doctor_name.getText());
+                             doctor_PI_gender.setText((String) doctor_gender.getSelectionModel().getSelectedItem());
+                             doctor_PI_mobileNumber.setText(doctor_mobileNumber.getText());
+                             doctor_PI_address.setText(doctor_address.getText());
+                             doctor_PI_DOB.setText(doctor_DOB.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+
+                             doctor_PI_email.setText(doctor_email.getText());
+                             doctor_PI_specialized.setText((String) doctor_specialized.getSelectionModel().getSelectedItem());
+                             patients_PI_CCID.setText(patients_ccid.getText());
+                             patients_PI_insuranceNumber.setText(patients_insurance.getText());
+                             patients_PI_description.setText(patients_description.getText());
+                         }
+                     } catch (Exception e) {
+                         e.printStackTrace();
+                     }
+                 }
+
+             }
+
+         }
+//            }
+//        );
+
+
+     }
+ }
+    private String[] specialization = {"Allergist", "Dermatologist", "Ophthalmologist", "Gynecologist", "Cardiologist"};
+
+    public void doctorSpecializedList() {
+
+        List<String> listS = new ArrayList<>();
+
+        for (String data : specialization) {
+            listS.add(data);
+        }
+
+        ObservableList listData = FXCollections.observableArrayList(listS);
+        doctor_specialized.setItems(listData);
+    }
+    private void doctorGenderList() {
+
+        List<String> listG = new ArrayList<>();
+
+        for (String data : Data.gender) {
+            listG.add(data);
+        }
+        ObservableList listData = FXCollections.observableList(listG);
+
+        doctor_gender.setItems(listData);
+
+    }
     public ObservableList<DoctorData> dashboardGetDoctorListData;
 
     public void dashboardGetDoctorDisplayData() {
@@ -578,7 +810,7 @@ public class AdminMainFormController implements Initializable {
                         result.getString("email"), result.getString("gender"),
                         result.getLong("mobile_number"), result.getString("specialized"),
                         result.getString("address"), result.getString("image"),
-                        result.getDate("date"), result.getDate("modify_date"),
+                        result.getDate("date"), result.getDate("date_created"), result.getDate("modify_date"),
                         result.getDate("delete_date"), result.getString("status"));
 
                 listData.add(dData);
@@ -600,7 +832,7 @@ public class AdminMainFormController implements Initializable {
         doctors_col_contactNumber.setCellValueFactory(new PropertyValueFactory<>("mobileNumber"));
         doctors_col_email.setCellValueFactory(new PropertyValueFactory<>("email"));
         doctors_col_specialization.setCellValueFactory(new PropertyValueFactory<>("specialized"));
-        doctors_col_address.setCellValueFactory(new PropertyValueFactory<>("address"));
+//        doctors_col_address.setCellValueFactory(new PropertyValueFactory<>("address"));
         doctors_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         doctors_tableView.setItems(doctorListData);
@@ -657,6 +889,12 @@ public class AdminMainFormController implements Initializable {
                                 Data.temp_doctorAddress = pData.getAddress();
                                 Data.temp_doctorStatus = pData.getStatus();
                                 Data.temp_doctorImagePath = pData.getImage();
+                                Data.temp_date_created = String.valueOf(pData.getDateCreated());
+                                Data.temp_date_modified = String.valueOf(pData.getDateModify());
+                                Data.temp_date_deleted = String.valueOf(pData.getDateDelete());
+                                Data.temp_date = String.valueOf(pData.getDate());
+
+
 
                                 // NOW LETS CREATE FXML FOR EDIT PATIENT FORM
                                 Parent root = FXMLLoader.load(getClass().getResource("EditDoctorForm.fxml"));
@@ -745,7 +983,9 @@ public class AdminMainFormController implements Initializable {
                         result.getString("treatment"), result.getString("doctor"),
                         result.getString("specialized"), result.getDate("date"),
                         result.getDate("date_modify"), result.getDate("date_delete"),
-                        result.getString("status"));
+                        result.getString("status"),result.getLong("patients_EmergencyNumber"),
+                        result.getString("patients_ccid"),result.getString("patients_bloodGroup"),result.getString("patients_insurance"), result.getDate("date_created")
+                        );
 
                 listData.add(pData);
             }
@@ -766,9 +1006,43 @@ public class AdminMainFormController implements Initializable {
         patients_col_gender.setCellValueFactory(new PropertyValueFactory<>("gender"));
         patients_col_contactNumber.setCellValueFactory(new PropertyValueFactory<>("mobileNumber"));
         patients_col_description.setCellValueFactory(new PropertyValueFactory<>("description"));
-        patients_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
-        patients_col_dateModify.setCellValueFactory(new PropertyValueFactory<>("dateModify"));
-        patients_col_dateDelete.setCellValueFactory(new PropertyValueFactory<>("dateDelete"));
+        patients_col_date.setCellValueFactory(cellData -> {
+            SimpleStringProperty property = new SimpleStringProperty();
+            Date date = cellData.getValue().getDate();
+            if (date != null) {
+                LocalDate localDate = ((java.sql.Date) date).toLocalDate();
+                property.setValue(localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            } else {
+                property.setValue("");
+            }
+            return property;
+        });
+
+        patients_col_dateModify.setCellValueFactory(cellData -> {
+            SimpleStringProperty property = new SimpleStringProperty();
+            Date dateModify = cellData.getValue().getDateModify();
+            if (dateModify != null) {
+                LocalDate localDateModify = ((java.sql.Date) dateModify).toLocalDate();
+                property.setValue(localDateModify.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            } else {
+                property.setValue("");
+            }
+            return property;
+        });
+
+        patients_col_dateDelete.setCellValueFactory(cellData -> {
+            SimpleStringProperty property = new SimpleStringProperty();
+            Date dateDelete = cellData.getValue().getDateDelete();
+            if (dateDelete != null) {
+                LocalDate localDateDelete = ((java.sql.Date) dateDelete).toLocalDate();
+                property.setValue(localDateDelete.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            } else {
+                property.setValue("");
+            }
+            return property;
+        });
+
+
         patients_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         patients_tableView.setItems(patientListData);
@@ -820,7 +1094,16 @@ public class AdminMainFormController implements Initializable {
                                 Data.temp_gender = pData.getGender();
                                 Data.temp_number = pData.getMobileNumber();
                                 Data.temp_status = pData.getStatus();
-
+                                Data.temp_date = String.valueOf(pData.getDate());
+                                Data.temp_emergancyNumber = String.valueOf(pData.getPatientsEmergencyNumber());
+                                Data.temp_ccid = pData.getPatientsCCID();
+                                Data.temp_insurance = pData.getPatientsInsurance();
+                                Data.temp_bloodGroup = pData.getPatientsBloodGroup();
+                                Data.temp_description = pData.getDescription();
+                                Data.temp_date_created = String.valueOf(pData.getDateCreated());
+                                Data.temp_date_modified = String.valueOf(pData.getDateModify());
+                                Data.temp_date_deleted = String.valueOf(pData.getDateDelete());
+                                System.out.println("Data.temp_date"+ Data.temp_date);
                                 // NOW LETS CREATE FXML FOR EDIT PATIENT FORM
                                 Parent root = FXMLLoader.load(getClass().getResource("EditPatientForm.fxml"));
                                 Stage stage = new Stage();
@@ -1116,76 +1399,146 @@ public class AdminMainFormController implements Initializable {
 
     }
     public void patientConfirmBtn() throws SQLException {
-        // CHECK IF SOME OR ALL FIELDS ARE EMPTY
+
+
         if (patients_patientName.getText().isEmpty()
                 || patients_gender.getSelectionModel().getSelectedItem() == null
                 || patients_mobileNumber.getText().isEmpty()
-                || patients_password.getText().isEmpty()
-                || patients_address.getText().isEmpty()) {
+                || patients_DOB.getValue() == null) {
             alert.errorMessage("Please fill all blank fields");
         } else {
-            Database.connectDB();
-            try {
-                // Xác định năm hiện tại
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
+//            patients_mobileNumber.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!patients_mobileNumber.getText().matches("-?([0-9][0-9]*)?") || patients_mobileNumber.getText().length() > 10) {
+                    // Show an error message or handle invalid input
+                    alert.errorMessage("Phone Number input error, just number and <10 character");
 
-                // Tìm số thứ tự của bản ghi patient cuối cùng trong cơ sở dữ liệu
-                String lastPatientIDQuery = "SELECT MAX(CAST(RIGHT(patient_id, 5) AS INT)) AS last_patient_id FROM patient";
-                statement = connect.createStatement();
-                result = statement.executeQuery(lastPatientIDQuery);
-                int lastPatientID = 0;
-                if (result.next()) {
-                    lastPatientID = result.getInt("last_patient_id");
+                }else {
+                    if (!patients_EmercencyNumber.getText().matches("-?([0-9][0-9]*)?") || patients_EmercencyNumber.getText().length() > 10) {
+                        // Show an error message or handle invalid input
+                        alert.errorMessage("Emergency Number input error, just number and <10 character");
+
+                    }else{
+                        LocalDate dob = patients_DOB.getValue();
+                        LocalDate currentDate = LocalDate.now();
+                        if (dob.isAfter(currentDate)){
+                            alert.errorMessage("DOB cannot be after the current date");
+                        }else {
+                            Database.connectDB();
+                            try {
+                                // Xác định năm hiện tại
+                                Calendar calendar = Calendar.getInstance();
+                                int year = calendar.get(Calendar.YEAR);
+
+                                // Tìm số thứ tự của bản ghi patient cuối cùng trong cơ sở dữ liệu
+                                String lastPatientIDQuery = "SELECT MAX(CAST(RIGHT(patient_id, 5) AS INT)) AS last_patient_id FROM patient";
+                                statement = connect.createStatement();
+                                result = statement.executeQuery(lastPatientIDQuery);
+                                int lastPatientID = 0;
+                                if (result.next()) {
+                                    lastPatientID = result.getInt("last_patient_id");
+                                }
+
+                                // Tạo patient_id mới
+                                String newPatientID = String.format("%d%05d", year, lastPatientID + 1);
+
+                                // Kiểm tra xem patient_id mới đã tồn tại chưa
+                                String checkPatientID = "SELECT * FROM patient WHERE patient_id = ?";
+                                prepare = connect.prepareStatement(checkPatientID);
+                                prepare.setString(1, newPatientID);
+                                result = prepare.executeQuery();
+                                if (result.next()) {
+                                    alert.errorMessage(newPatientID + " is already exist");
+                                } else {
+                                    Date date = new Date();
+                                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+                                    // TO DISPLAY THE DATA FROM PERSONAL ACCOUNT
+                                    patients_PA_patientID.setText(newPatientID);
+//                    patients_PA_password.setText(patients_password.getText());
+                                    patients_PA_dateCreated.setText(sqlDate.toLocalDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+
+
+                                    // TO DISPLAY THE DATA FROM PERSONAL INFORMATION
+                                    patients_PI_patientName.setText(patients_patientName.getText());
+                                    patients_PI_gender.setText(patients_gender.getSelectionModel().getSelectedItem());
+                                    patients_PI_mobileNumber.setText(patients_mobileNumber.getText());
+                                    patients_PI_address.setText(patients_address.getText());
+                                    patients_PI_DOB.setText(patients_DOB.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+
+                                    patients_PI_emergencyNumber.setText(patients_EmercencyNumber.getText());
+                                    patients_PI_bloodGroup.setText(patients_bloodGroup.getText());
+                                    patients_PI_CCID.setText(patients_ccid.getText());
+                                    patients_PI_insuranceNumber.setText(patients_insurance.getText());
+                                    patients_PI_description.setText(patients_description.getText());
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+
                 }
+//            }
+//        );
 
-                // Tạo patient_id mới
-                String newPatientID = String.format("%d%05d", year, lastPatientID + 1);
 
-                // Kiểm tra xem patient_id mới đã tồn tại chưa
-                String checkPatientID = "SELECT * FROM patient WHERE patient_id = ?";
-                prepare = connect.prepareStatement(checkPatientID);
-                prepare.setString(1, newPatientID);
-                result = prepare.executeQuery();
-                if (result.next()) {
-                    alert.errorMessage(newPatientID + " is already exist");
-                } else {
-                    Date date = new Date();
-                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-
-                    // TO DISPLAY THE DATA FROM PERSONAL ACCOUNT
-                patients_PA_patientID.setText(newPatientID);
-                    patients_PA_password.setText(patients_password.getText());
-                    patients_PA_dateCreated.setText(String.valueOf(sqlDate));
-
-                    // TO DISPLAY THE DATA FROM PERSONAL INFORMATION
-                    patients_PI_patientName.setText(patients_patientName.getText());
-                    patients_PI_gender.setText(patients_gender.getSelectionModel().getSelectedItem());
-                    patients_PI_mobileNumber.setText(patients_mobileNumber.getText());
-                    patients_PI_address.setText(patients_address.getText());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
     public void patientClearFields() {
-//        patients_patientID.clear();
+
         patients_patientName.clear();
         patients_gender.getSelectionModel().clearSelection();
         patients_mobileNumber.clear();
-        patients_password.clear();
+
         patients_address.clear();
+        patients_EmercencyNumber.clear();
+        patients_ccid.clear();
+        patients_bloodGroup.clear();
+        patients_insurance.clear();
+        patients_description.clear();
+        patients_DOB.setValue(null);
 
-//        patients_PA_patientID.setText("");
-        patients_PA_password.setText("");
+        patients_PA_patientID.setText("");
+//        patients_PA_password.setText("");
         patients_PA_dateCreated.setText("");
-
+patients_PI_CCID.setText("");
+patients_PI_insuranceNumber.setText("");
+patients_PI_bloodGroup.setText("");
+patients_PI_emergencyNumber.setText("");
         patients_PI_patientName.setText("");
         patients_PI_gender.setText("");
         patients_PI_mobileNumber.setText("");
         patients_PI_address.setText("");
+        patients_PI_description.setText("");
+        patients_PI_DOB.setText("");
+    }
+    public void doctorClearFields() {
+
+        doctor_name.clear();
+        doctor_gender.getSelectionModel().clearSelection();
+        doctor_mobileNumber.clear();
+        doctor_email.clear();
+        doctor_address.clear();
+        password_password.clear();
+        passwordcf_password.clear();
+        password_ShowPassword.clear();
+        passwordcf_showPassword.clear();
+        doctor_specialized.getSelectionModel().clearSelection();
+        doctor_DOB.setValue(null);
+
+        doctor_PA_doctorID.setText("");
+        doctor_PA_password.setText("");
+        doctor_PA_dateCreated.setText("");
+        doctor_PI_email.setText("");
+
+        doctor_PI_doctorName.setText("");
+        doctor_PI_gender.setText("");
+        doctor_PI_mobileNumber.setText("");
+        doctor_PI_address.setText("");
+//        doctor_PI_description.setText("");
+        doctor_PI_DOB.setText("");
     }
     private void patientGenderList() {
 
@@ -1200,13 +1553,32 @@ public class AdminMainFormController implements Initializable {
 
     }
 
+    public void passwordcf_checkBox() {
+
+        if (passwordcf_checkBox.isSelected()) {
+            passwordcf_showPassword.setText(passwordcf_password.getText());
+            passwordcf_showPassword.setVisible(true);
+            passwordcf_password.setVisible(false);
+
+            password_ShowPassword.setText(password_password.getText());
+            password_ShowPassword.setVisible(true);
+            password_password.setVisible(false);
+        } else {
+            passwordcf_password.setText(passwordcf_showPassword.getText());
+            passwordcf_showPassword.setVisible(false);
+            passwordcf_password.setVisible(true);
+
+            password_password.setText(password_ShowPassword.getText());
+            password_ShowPassword.setVisible(false);
+            password_password.setVisible(true);
+        }
+
+    }
     public void patientAddBtn() {
-        if ( patients_PA_password.getText().isEmpty()
-                || patients_PA_dateCreated.getText().isEmpty()
+        if (  patients_PA_dateCreated.getText().isEmpty()
                 || patients_PI_patientName.getText().isEmpty()
                 || patients_PI_gender.getText().isEmpty()
-                || patients_PI_mobileNumber.getText().isEmpty()
-                || patients_PI_address.getText().isEmpty()) {
+                || patients_PI_mobileNumber.getText().isEmpty()) {
             alert.errorMessage("Something went wrong");
         } else {
             Database.connectDB();
@@ -1236,22 +1608,35 @@ public class AdminMainFormController implements Initializable {
                     alert.errorMessage(newPatientID + " is already exist");
                 } else {
                     // Thêm bản ghi patient vào cơ sở dữ liệu
-                    String insertData = "INSERT INTO patient (patient_id, password, full_name, mobile_number,gender, "
-                            + "address, date, "
-                            + "status) "
-                            + "VALUES(?,?,?,?,?,?,?,?)";
+                    String insertData = "INSERT INTO patient (patient_id, password, full_name, mobile_number,gender,patients_EmergencyNumber, patients_ccid, patients_bloodGroup, patients_insurance,date,"
+                            + "address,"
+                            + "status,date_created,description) "
+                            + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     Date date = new Date();
                     java.sql.Date sqlDate = new java.sql.Date(date.getTime());
                     prepare = connect.prepareStatement(insertData);
                     prepare.setString(1, newPatientID);
-                    prepare.setString(2, patients_PA_password.getText());
+                    prepare.setString(2, "patient123");
                     prepare.setString(3, patients_PI_patientName.getText());
                     prepare.setString(4, patients_PI_mobileNumber.getText());
                     prepare.setString(5, patients_PI_gender.getText());
+                    prepare.setString(6, patients_PI_emergencyNumber.getText());
+                    prepare.setString(7, patients_PI_CCID.getText());
+                    prepare.setString(8, patients_bloodGroup.getText());
 
-                    prepare.setString(6, patients_PI_address.getText());
-                    prepare.setString(7, "" + sqlDate);
-                    prepare.setString(8, "Active");
+                    prepare.setString(9, patients_PI_insuranceNumber.getText());
+                    prepare.setString(10, patients_PI_DOB.getText());
+
+
+
+                    prepare.setString(11, patients_PI_address.getText());
+                    prepare.setString(12, "Active");
+
+                   prepare.setString(13, "" + sqlDate);
+                    prepare.setString(14, patients_PI_description.getText());
+
+
+
                     prepare.executeUpdate();
 
                     alert.successMessage("Added successfully!");
@@ -1262,6 +1647,87 @@ public class AdminMainFormController implements Initializable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+    public void doctorAddBtn() {
+        if (doctor_PA_dateCreated.getText().isEmpty()
+                || doctor_PA_password.getText().isEmpty()
+                || doctor_PI_doctorName.getText().isEmpty()
+                || doctor_PI_gender.getText().isEmpty()
+                || doctor_PI_mobileNumber.getText().isEmpty()) {
+            alert.errorMessage("Please fill all blank fields");
+        } else {
+            if (!passwordcf_password.equals(password_password)||!passwordcf_showPassword.equals(password_ShowPassword)) {
+                alert.errorMessage("Confirm Password is not correct");
+            } else {
+
+
+
+            Database.connectDB();
+            try {
+                // Xác định năm hiện tại
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+
+                // Tìm số thứ tự của bản ghi doctor cuối cùng trong cơ sở dữ liệu
+                String lastDoctorIDQuery = "SELECT MAX(CAST(SUBSTRING(doctor_id, 5, LEN(doctor_id)) AS INT)) AS last_doctor_id FROM doctor";
+                statement = connect.createStatement();
+                result = statement.executeQuery(lastDoctorIDQuery);
+                int lastDoctorID = 0;
+                if (result.next()) {
+                    lastDoctorID = result.getInt("last_doctor_id");
+                }
+
+                // Tạo doctor_id mới
+                String newDoctorID = String.format("DID-%d", lastDoctorID + 1);
+
+                // Kiểm tra xem doctor_id mới đã tồn tại chưa
+                String checkDoctorID = "SELECT * FROM doctor WHERE doctor_id = ?";
+                prepare = connect.prepareStatement(checkDoctorID);
+                prepare.setString(1, newDoctorID);
+                result = prepare.executeQuery();
+                if (result.next()) {
+                    alert.errorMessage(newDoctorID + " is already exist");
+                } else {
+                    // Thêm bản ghi doctor vào cơ sở dữ liệu
+                    String insertData = "INSERT INTO doctor (doctor_id, password, full_name, mobile_number, gender, date_created, address, specialized,date,status,email) "
+                            + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+                    Date date = new Date();
+                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                    prepare = connect.prepareStatement(insertData);
+                    prepare.setString(1, newDoctorID);
+                    prepare.setString(2, doctor_PA_password.getText());
+                    prepare.setString(3, doctor_PI_doctorName.getText());
+                    prepare.setString(4, doctor_PI_mobileNumber.getText());
+                    prepare.setString(5, doctor_PI_gender.getText());
+                    prepare.setString(6, "" + sqlDate);
+                    prepare.setString(7, doctor_PI_address.getText());
+                    prepare.setString(8, doctor_PI_specialized.getText());
+                    prepare.setString(9, doctor_PI_DOB.getText());
+                    prepare.setString(10, "Active");
+                    prepare.setString(11, doctor_PI_email.getText());
+                    System.out.println("newDoctorID: " + newDoctorID);
+                    System.out.println("doctor_PA_password: " + doctor_PA_password.getText());
+                    System.out.println("doctor_PI_doctorName: " + doctor_PI_doctorName.getText());
+                    System.out.println("doctor_PI_mobileNumber: " + doctor_PI_mobileNumber.getText());
+                    System.out.println("doctor_PI_gender: " + doctor_PI_gender.getText());
+                    System.out.println("sqlDate: " + sqlDate);
+                    System.out.println("doctor_PI_address: " + doctor_PI_address.getText());
+                    System.out.println("doctor_PI_specialized: " + doctor_PI_specialized.getText());
+                    System.out.println("doctor_PI_DOB: " + doctor_PI_DOB.getText());
+                    System.out.println("Status: Active");
+                    System.out.println("doctor_PI_email: " + doctor_PI_email.getText());
+
+                    prepare.executeUpdate();
+
+                    alert.successMessage("Doctor added successfully!");
+
+                    // Xóa tất cả các trường và một số nhãn
+                    doctorClearFields();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }       }
         }
     }
 
@@ -1431,6 +1897,7 @@ public class AdminMainFormController implements Initializable {
             payment_form.setVisible(false);
             profile_form.setVisible(false);
             patients_addForm.setVisible(false);
+            doctors_addForm.setVisible(false);
 
 
             dashboardAD();
@@ -1448,6 +1915,7 @@ public class AdminMainFormController implements Initializable {
             payment_form.setVisible(false);
             profile_form.setVisible(false);
             patients_addForm.setVisible(false);
+            doctors_addForm.setVisible(false);
 
 
             // TO DISPLAY IMMEDIATELY THE DATA OF DOCTORS IN TABLEVIEW
@@ -1463,6 +1931,7 @@ public class AdminMainFormController implements Initializable {
             payment_form.setVisible(false);
             profile_form.setVisible(false);
             patients_addForm.setVisible(false);
+            doctors_addForm.setVisible(false);
 
 
             // TO DISPLAY IMMEDIATELY THE DATA OF PATIENTS IN TABLEVIEW
@@ -1477,6 +1946,7 @@ public class AdminMainFormController implements Initializable {
             payment_form.setVisible(false);
             profile_form.setVisible(false);
             patients_addForm.setVisible(false);
+            doctors_addForm.setVisible(false);
 
 
             // TO DISPLAY IMMEDIATELY THE DATA OF APPOINTMENTS IN TABLEVIEW
@@ -1492,6 +1962,7 @@ public class AdminMainFormController implements Initializable {
             profile_form.setVisible(false);
             patients_addForm.setVisible(false);
             payment_form.setVisible(true);
+            doctors_addForm.setVisible(false);
 
 
             paymentDisplayData();
@@ -1506,6 +1977,7 @@ public class AdminMainFormController implements Initializable {
             patients_addForm.setVisible(false);
 
             profile_form.setVisible(true);
+            doctors_addForm.setVisible(false);
 
 
             profileStatusList();
@@ -1522,12 +1994,29 @@ public class AdminMainFormController implements Initializable {
             payment_form.setVisible(false);
             profile_form.setVisible(false);
             patients_addForm.setVisible(true);
+            doctors_addForm.setVisible(false);
 
             profileStatusList();
             profileDisplayInfo();
             profileDisplayImages();
 
             current_form.setText("Add New Patient Form");
+        } else if (event.getSource() == addNewDoctor_btn) {
+
+            dashboard_form.setVisible(false);
+            doctors_form.setVisible(false);
+            patients_form.setVisible(false);
+            appointments_form.setVisible(false);
+            payment_form.setVisible(false);
+            profile_form.setVisible(false);
+            patients_addForm.setVisible(false);
+            doctors_addForm.setVisible(true);
+
+            profileStatusList();
+            profileDisplayInfo();
+            profileDisplayImages();
+
+            current_form.setText("Add Doctor Form");
         }
 
     }
@@ -1618,7 +2107,8 @@ public class AdminMainFormController implements Initializable {
         // TO DISPLAY IMMEDIATELY THE DATA OF DOCTORS IN TABLEVIEW
         doctorDisplayData();
         doctorActionButton();
-
+        doctorGenderList();
+        doctorSpecializedList();
         // TO DISPLAY IMMEDIATELY THE DATA OF PATIENTS IN TABLEVIEW
         patientDisplayData();
         patientActionButton();
