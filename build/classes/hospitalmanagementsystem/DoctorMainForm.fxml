@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<!--<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>-->
+
 <?import java.lang.String?>
 <?import javafx.scene.chart.AreaChart?>
 <?import javafx.scene.chart.BarChart?>
@@ -22,7 +23,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hospitalmanagementsystem.DoctorMainFormController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hospitalmanagementsystem.DoctorMainFormController">
    <children>
       <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
          <children>
@@ -65,7 +66,7 @@
                <left>
                   <AnchorPane prefHeight="560.0" prefWidth="214.0" styleClass="bg-color-2" stylesheets="@../design/DoctorMainFormDesign.css" BorderPane.alignment="CENTER">
                      <children>
-                        <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="83.0" layoutY="65.0" size="5em" />
+<!--                        <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="83.0" layoutY="65.0" size="5em" />-->
                         <Label layoutX="23.0" layoutY="85.0" text="Doctor ID:" textFill="WHITE" />
                         <Label fx:id="nav_adminID" layoutX="83.0" layoutY="84.0" prefHeight="17.0" prefWidth="117.0" text="1" textFill="WHITE">
                            <font>
@@ -79,27 +80,27 @@
                            </font>
                         </Label>
                         <Line endX="88.0" layoutX="113.0" layoutY="152.0" startX="-100.0" stroke="WHITE" />
-                        <FontAwesomeIconView fill="#d738c7" glyphName="HOSPITAL_ALT" layoutX="60.0" layoutY="522.0" size="10em" AnchorPane.bottomAnchor="20.857139587402344" AnchorPane.leftAnchor="60.0" />
+<!--                        <FontAwesomeIconView fill="#d738c7" glyphName="HOSPITAL_ALT" layoutX="60.0" layoutY="522.0" size="10em" AnchorPane.bottomAnchor="20.857139587402344" AnchorPane.leftAnchor="60.0" />-->
                         <Label layoutX="13.0" layoutY="162.0" text="Feature" textFill="WHITE" />
                         <Button fx:id="dashboard_btn" layoutX="7.0" layoutY="187.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Dashboard">
                            <graphic>
-                              <FontAwesomeIconView glyphName="DASHBOARD" size="1.5em" />
+<!--                              <FontAwesomeIconView glyphName="DASHBOARD" size="1.5em" />-->
                            </graphic>
                         </Button>
                         <Button fx:id="patients_btn" layoutX="7.0" layoutY="240.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Patients">
                            <graphic>
-                              <FontAwesomeIconView glyphName="USERS" size="1.5em" />
+<!--                              <FontAwesomeIconView glyphName="USERS" size="1.5em" />-->
                            </graphic>
                         </Button>
                         <Button fx:id="appointments_btn" layoutX="7.0" layoutY="292.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Appointments">
                            <graphic>
-                              <FontAwesomeIconView glyphName="CLIPBOARD" size="1.5em" />
+<!--                              <FontAwesomeIconView glyphName="CLIPBOARD" size="1.5em" />-->
                            </graphic>
                         </Button>
                         <Label layoutX="13.0" layoutY="342.0" text="Profile" textFill="WHITE" />
                         <Button fx:id="profile_btn" layoutX="7.0" layoutY="367.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Profile Setting">
                            <graphic>
-                              <FontAwesomeIconView glyphName="COGS" size="1.5em" />
+<!--                              <FontAwesomeIconView glyphName="COGS" size="1.5em" />-->
                            </graphic>
                         </Button>
                      </children>
@@ -127,7 +128,7 @@
                                                       <String fx:value="radius" />
                                                    </styleClass>
                                                    <children>
-                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />
+<!--                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />-->
                                                       <Label fx:id="dashboard_IP" alignment="CENTER_RIGHT" layoutX="92.0" layoutY="17.0" prefHeight="17.0" prefWidth="134.0" text="0" textFill="WHITE">
                                                          <font>
                                                             <Font size="14.0" />
@@ -146,7 +147,7 @@
                                                       <String fx:value="radius" />
                                                    </styleClass>
                                                    <children>
-                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />
+<!--                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />-->
                                                       <Label fx:id="dashboard_TP" alignment="CENTER_RIGHT" layoutX="92.0" layoutY="17.0" prefHeight="17.0" prefWidth="134.0" text="0" textFill="WHITE">
                                                          <font>
                                                             <Font size="14.0" />
@@ -165,7 +166,7 @@
                                                       <String fx:value="radius" />
                                                    </styleClass>
                                                    <children>
-                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />
+<!--                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />-->
                                                       <Label fx:id="dashboard_AP" alignment="CENTER_RIGHT" layoutX="92.0" layoutY="17.0" prefHeight="17.0" prefWidth="134.0" text="0" textFill="WHITE">
                                                          <font>
                                                             <Font size="14.0" />
@@ -184,7 +185,7 @@
                                                       <String fx:value="radius" />
                                                    </styleClass>
                                                    <children>
-                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />
+<!--                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />-->
                                                       <Label fx:id="dashboard_tA" alignment="CENTER_RIGHT" layoutX="92.0" layoutY="17.0" prefHeight="17.0" prefWidth="134.0" text="0" textFill="WHITE">
                                                          <font>
                                                             <Font size="14.0" />
@@ -321,7 +322,7 @@
                                     <Label fx:id="patients_PA_password" layoutX="102.0" layoutY="102.0" prefHeight="17.0" prefWidth="98.0" />
                                     <Label layoutX="21.0" layoutY="138.0" text="Date Created:" />
                                     <Label fx:id="patients_PA_dateCreated" layoutX="102.0" layoutY="138.0" prefHeight="17.0" prefWidth="98.0" />
-                                    <FontAwesomeIconView fill="#d738c7" glyphName="USER" layoutX="224.0" layoutY="144.0" opacity="0.31" size="10em" />
+<!--                                    <FontAwesomeIconView fill="#d738c7" glyphName="USER" layoutX="224.0" layoutY="144.0" opacity="0.31" size="10em" />-->
                                  </children>
                               </AnchorPane>
                               <AnchorPane layoutX="539.0" layoutY="234.0" prefHeight="312.0" prefWidth="333.0" stylesheets="@../design/DoctorMainFormDesign.css" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="234.0">
@@ -344,22 +345,22 @@
                                     <Label fx:id="patients_PI_mobileNumber" layoutX="117.0" layoutY="126.0" prefHeight="17.0" prefWidth="98.0" />
                                     <Label layoutX="68.0" layoutY="155.0" text="Address:" />
                                     <Label fx:id="patients_PI_address" layoutX="117.0" layoutY="155.0" prefHeight="17.0" prefWidth="98.0" />
-                                    <FontAwesomeIconView fill="#d738c7" glyphName="CLIPBOARD" layoutX="199.0" layoutY="275.0" opacity="0.3" size="10em" strokeWidth="0.0" AnchorPane.bottomAnchor="19.857139587402344" AnchorPane.rightAnchor="14.0" />
+<!--                                    <FontAwesomeIconView fill="#d738c7" glyphName="CLIPBOARD" layoutX="199.0" layoutY="275.0" opacity="0.3" size="10em" strokeWidth="0.0" AnchorPane.bottomAnchor="19.857139587402344" AnchorPane.rightAnchor="14.0" />-->
                                     <Button fx:id="patients_PI_addBtn" layoutX="44.0" layoutY="262.0" mnemonicParsing="false" onAction="#patientAddBtn" prefHeight="36.0" prefWidth="97.0" styleClass="btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Add" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="44.0">
                                        <graphic>
-                                          <FontAwesomeIconView fill="WHITE" glyphName="PLUS" />
+<!--                                          <FontAwesomeIconView fill="WHITE" glyphName="PLUS" />-->
                                        </graphic>
                                     </Button>
                                     <Button fx:id="patients_PI_recordBtn" layoutX="193.0" layoutY="262.0" mnemonicParsing="false" onAction="#patientRecordBtn" prefHeight="36.0" prefWidth="97.0" styleClass="btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Record" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="43.0">
                                        <graphic>
-                                          <FontAwesomeIconView fill="WHITE" glyphName="CLIPBOARD" />
+<!--                                          <FontAwesomeIconView fill="WHITE" glyphName="CLIPBOARD" />-->
                                        </graphic>
                                     </Button>
                                  </children>
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="appointments_form" layoutX="5.0" layoutY="5.0" prefHeight="560.0" prefWidth="886.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="appointments_form" layoutX="5.0" layoutY="5.0" prefHeight="560.0" prefWidth="886.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="9.0" layoutY="14.0" prefHeight="295.0" prefWidth="868.0" stylesheets="@../design/MainFormDesign.css" AnchorPane.bottomAnchor="251.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="14.0">
                                  <styleClass>
@@ -399,28 +400,28 @@
                                  </styleClass>
                                  <children>
                                     <Label layoutX="30.0" layoutY="18.0" text="Appointment ID:" />
-                                    <TextField fx:id="appointment_appointmentID" layoutX="125.0" layoutY="14.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                                    <TextField fx:id="appointment_appointmentID" layoutX="131.0" layoutY="14.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
                                     <Label layoutX="83.0" layoutY="55.0" text="Name:" />
-                                    <TextField fx:id="appointment_name" layoutX="125.0" layoutY="51.0" prefHeight="25.0" prefWidth="180.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                                    <TextField fx:id="appointment_name" layoutX="131.0" layoutY="51.0" prefHeight="25.0" prefWidth="180.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
                                     <Label layoutX="74.0" layoutY="89.0" text="Gender:" />
-                                    <ComboBox fx:id="appointment_gender" layoutX="126.0" layoutY="86.0" prefHeight="25.0" prefWidth="180.0" promptText="Choose..." styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                                    <ComboBox fx:id="appointment_gender" layoutX="132.0" layoutY="86.0" prefHeight="25.0" prefWidth="180.0" promptText="Choose..." styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
                                     <Label layoutX="341.0" layoutY="19.0" text="Description:" />
-                                    <TextField fx:id="appointment_description" layoutX="409.0" layoutY="15.0" prefHeight="25.0" prefWidth="180.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                                    <TextField fx:id="appointment_description" layoutX="413.0" layoutY="15.0" prefHeight="25.0" prefWidth="180.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
                                     <Label layoutX="345.0" layoutY="56.0" text="Diagnosis:" />
-                                    <TextField fx:id="appointment_diagnosis" layoutX="409.0" layoutY="52.0" prefHeight="25.0" prefWidth="180.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                                    <TextField fx:id="appointment_diagnosis" layoutX="413.0" layoutY="52.0" prefHeight="25.0" prefWidth="180.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
                                     <Label layoutX="345.0" layoutY="91.0" text="Treatment:" />
-                                    <TextField fx:id="appointment_treatment" layoutX="409.0" layoutY="87.0" prefHeight="25.0" prefWidth="180.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                                    <TextField fx:id="appointment_treatment" layoutX="413.0" layoutY="87.0" prefHeight="25.0" prefWidth="180.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
                                     <Label layoutX="74.0" layoutY="125.0" text="Mobile #:" />
-                                    <TextField fx:id="appointment_mobileNumber" layoutX="128.0" layoutY="121.0" prefHeight="25.0" prefWidth="166.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                                    <TextField fx:id="appointment_mobileNumber" layoutX="134.0" layoutY="121.0" prefHeight="25.0" prefWidth="166.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
                                     <Label layoutX="622.0" layoutY="25.0" text="Address:" />
-                                    <TextArea fx:id="appointment_address" layoutX="674.0" layoutY="25.0" prefHeight="40.0" prefWidth="167.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                                    <TextArea fx:id="appointment_address" layoutX="677.0" layoutY="25.0" prefHeight="40.0" prefWidth="167.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
                                     <Label layoutX="627.0" layoutY="84.0" text="Status:" />
-                                    <ComboBox fx:id="appointment_status" layoutX="674.0" layoutY="80.0" prefHeight="25.0" prefWidth="168.0" promptText="Choose..." styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                                    <ComboBox fx:id="appointment_status" layoutX="677.0" layoutY="80.0" prefHeight="25.0" prefWidth="168.0" promptText="Choose..." styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
                                     <Button fx:id="appointment_insertBtn" layoutX="167.0" layoutY="171.0" mnemonicParsing="false" onAction="#appointmentInsertBtn" prefHeight="36.0" prefWidth="100.0" styleClass="btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Insert" />
                                     <Button fx:id="appointment_updateBtn" layoutX="286.0" layoutY="171.0" mnemonicParsing="false" onAction="#appointmentUpdateBtn" prefHeight="36.0" prefWidth="100.0" styleClass="btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Update" />
                                     <Button fx:id="appointment_clearBtn" layoutX="430.0" layoutY="171.0" mnemonicParsing="false" onAction="#appointmentClearBtn" prefHeight="36.0" prefWidth="100.0" styleClass="btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Clear" />
                                     <Button fx:id="appointment_deleteBtn" layoutX="549.0" layoutY="171.0" mnemonicParsing="false" onAction="#appointmentDeleteBtn" prefHeight="36.0" prefWidth="100.0" styleClass="btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Delete" />
-                                    <DatePicker fx:id="appointment_schedule" layoutX="671.0" layoutY="121.0" />
+                                    <DatePicker fx:id="appointment_schedule" layoutX="674.0" layoutY="121.0" />
                                     <Label layoutX="612.0" layoutY="125.0" text="Schedule:" />
                                  </children>
                               </AnchorPane>
@@ -454,13 +455,13 @@
                                     <String fx:value="radius" />
                                  </styleClass>
                                  <children>
-                                    <FontAwesomeIconView fill="#c512c5" glyphName="COGS" layoutX="312.0" layoutY="478.0" opacity="0.33" size="20em" AnchorPane.bottomAnchor="18.714279174804688" AnchorPane.rightAnchor="14.857147216796875" />
+<!--                                    <FontAwesomeIconView fill="#c512c5" glyphName="COGS" layoutX="312.0" layoutY="478.0" opacity="0.33" size="20em" AnchorPane.bottomAnchor="18.714279174804688" AnchorPane.rightAnchor="14.857147216796875" />-->
                                     <Label layoutX="14.0" layoutY="14.0" styleClass="header-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Edit Profile">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <FontAwesomeIconView glyphName="EDIT" layoutX="124.0" layoutY="37.0" size="2em" />
+<!--                                    <FontAwesomeIconView glyphName="EDIT" layoutX="124.0" layoutY="37.0" size="2em" />-->
                                     <Label layoutX="123.0" layoutY="68.0" text="Doctor ID:">
                                        <font>
                                           <Font size="15.0" />

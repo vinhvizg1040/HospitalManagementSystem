@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<!--<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>-->
 <?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -27,7 +27,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <FontAwesomeIconView glyphName="EDIT" layoutX="122.0" layoutY="35.0" size="1.5em" />
+<!--                  <FontAwesomeIconView glyphName="EDIT" layoutX="122.0" layoutY="35.0" size="1.5em" />-->
                   <Label layoutX="86.0" layoutY="78.0" text="Patient ID:">
                      <font>
                         <Font size="13.0" />
@@ -64,7 +64,7 @@
                      </font>
                   </Label>
                   <ComboBox fx:id="edit_status" layoutX="412.0" layoutY="75.0" prefHeight="25.0" prefWidth="179.0" promptText="Choose..." styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
-                  <FontAwesomeIconView fill="#a413a1" glyphName="EDIT" layoutX="365.0" layoutY="380.0" opacity="0.28" size="20em" />
+<!--                  <FontAwesomeIconView fill="#a413a1" glyphName="EDIT" layoutX="365.0" layoutY="380.0" opacity="0.28" size="20em" />-->
                   <Button fx:id="edit_updateBtn" layoutX="220.0" layoutY="373.0" mnemonicParsing="false" onAction="#updateBtn" prefHeight="40.0" prefWidth="230.0" styleClass="btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Update" />
                </children>
             </AnchorPane>
