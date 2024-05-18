@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>-->
+
 <?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -11,11 +13,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hospitalmanagementsystem.EditPatientFormController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hospitalmanagementsystem.EditPatientFormController">
    <children>
       <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
          <children>
-            <AnchorPane layoutX="12.0" layoutY="12.0" prefHeight="427.0" prefWidth="627.0" stylesheets="@../design/DoctorMainFormDesign.css">
+            <AnchorPane layoutX="11.0" layoutY="11.0" prefHeight="427.0" prefWidth="627.0" stylesheets="@../design/DoctorMainFormDesign.css">
                <styleClass>
                   <String fx:value="white-bg" />
                   <String fx:value="shadow" />
@@ -33,7 +35,7 @@
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="edit_patientID" layoutX="156.0" layoutY="75.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                  <TextField fx:id="edit_patientID" editable="false" layoutX="156.0" layoutY="75.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
                   <Label layoutX="112.0" layoutY="114.0" text="Name:">
                      <font>
                         <Font size="13.0" />
@@ -52,20 +54,70 @@
                      </font>
                   </Label>
                   <TextField fx:id="edit_contactNumber" layoutX="156.0" layoutY="189.0" prefHeight="25.0" prefWidth="179.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
-                  <Label layoutX="98.0" layoutY="233.0" text="Address:">
+                  <Label layoutX="100.0" layoutY="301.0" text="Address:">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="edit_address" layoutX="156.0" layoutY="233.0" prefHeight="86.0" prefWidth="200.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
-                  <Label layoutX="365.0" layoutY="78.0" text="Status:">
+                  <TextArea fx:id="edit_address" layoutX="158.0" layoutY="301.0" prefHeight="30.0" prefWidth="438.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                  <Label layoutX="421.0" layoutY="57.0" text="Status:">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="edit_status" layoutX="412.0" layoutY="75.0" prefHeight="25.0" prefWidth="179.0" promptText="Choose..." styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                  <ComboBox fx:id="edit_status" layoutX="421.0" layoutY="75.0" prefHeight="25.0" prefWidth="179.0" promptText="Choose..." styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
 <!--                  <FontAwesomeIconView fill="#a413a1" glyphName="EDIT" layoutX="365.0" layoutY="380.0" opacity="0.28" size="20em" />-->
-                  <Button fx:id="edit_updateBtn" layoutX="220.0" layoutY="373.0" mnemonicParsing="false" onAction="#updateBtn" prefHeight="40.0" prefWidth="230.0" styleClass="btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Update" />
+                  <Button fx:id="edit_updateBtn" layoutX="220.0" layoutY="391.0" mnemonicParsing="false" onAction="#updateBtn" prefHeight="40.0" prefWidth="230.0" styleClass="btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Update" />
+                  <Label layoutX="31.0" layoutY="232.0" prefHeight="19.0" prefWidth="137.0" text="Emergancy Number:">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="edit_emergancyNumber" layoutX="156.0" layoutY="229.0" prefHeight="25.0" prefWidth="179.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                  <Label layoutX="421.0" layoutY="110.0" prefHeight="17.0" prefWidth="75.0" text="Day of Birth" />
+                  <DatePicker fx:id="edit_DOB" layoutX="422.0" layoutY="127.0" prefHeight="25.0" prefWidth="176.0" />
+                  <Label layoutX="424.0" layoutY="166.0" text="CCID / Passport" />
+                  <TextField fx:id="edit_ccid" layoutX="422.0" layoutY="183.0" prefHeight="25.0" prefWidth="177.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                  <Label layoutX="422.0" layoutY="218.0" text="Health insurance Number" />
+                  <TextField fx:id="edit_insurance" layoutX="421.0" layoutY="235.0" prefHeight="25.0" prefWidth="177.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                  <TextField fx:id="edit_bloodGroup" layoutX="158.0" layoutY="268.0" prefHeight="25.0" prefWidth="175.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
+                  <Label layoutX="77.0" layoutY="272.0" prefHeight="17.0" prefWidth="75.0" text="Blood Group:" />
+                  <Label layoutX="152.0" layoutY="22.0" text="Date Created: ">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="316.0" layoutY="22.0" text="Date Edit: ">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="469.0" layoutY="22.0" text="Date Deleted: ">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="edit_date_created" layoutX="220.0" layoutY="22.0" prefHeight="15.0" prefWidth="75.0">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="edit_date_deleted" layoutX="532.0" layoutY="24.0" prefHeight="15.0" prefWidth="75.0">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="edit_date_modified" layoutX="361.0" layoutY="22.0" prefHeight="15.0" prefWidth="63.0">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="81.0" layoutY="347.0" prefHeight="19.0" prefWidth="75.0" text="Description: ">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <TextArea fx:id="edit_description" layoutX="158.0" layoutY="347.0" prefHeight="30.0" prefWidth="438.0" styleClass="textfield-2" stylesheets="@../design/DoctorMainFormDesign.css" />
                </children>
             </AnchorPane>
          </children>

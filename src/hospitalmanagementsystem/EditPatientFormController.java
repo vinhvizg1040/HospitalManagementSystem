@@ -9,6 +9,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,10 +18,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -46,13 +44,31 @@ public class EditPatientFormController implements Initializable {
 
     @FXML
     private TextArea edit_address;
-
+    @FXML
+    private TextArea edit_description;
+    @FXML
+    private TextField edit_bloodGroup;
+    @FXML
+    private TextField edit_ccid;
+    @FXML
+    private TextField edit_emergancyNumber;
+    @FXML
+    private TextField edit_insurance;
+    @FXML
+    private DatePicker edit_DOB;
     @FXML
     private ComboBox<String> edit_status;
 
     @FXML
     private Button edit_updateBtn;
+    @FXML
+    private Label edit_date_created;
 
+    @FXML
+    private Label edit_date_deleted;
+
+    @FXML
+    private Label edit_date_modified;
     private AlertMessage alert = new AlertMessage();
 
     private Connection connect;
@@ -69,7 +85,7 @@ public class EditPatientFormController implements Initializable {
             alert.errorMessage("Please fill all blank fields");
         } else {
             String updateData = "UPDATE patient SET full_name = ?, gender = ?"
-                    + ", mobile_number = ?, address = ?, status = ?, date_modify = ? "
+                    + ", mobile_number = ?, address = ?, status = ?, date_modify = ?,date = ?,patients_EmergencyNumber = ?, patients_ccid = ?, patients_bloodGroup = ?, patients_insurance =?, description = ? "
                     + "WHERE patient_id = '"
                     + edit_patientID.getText() + "'";
             connect = Database.connectDB();
@@ -85,6 +101,13 @@ public class EditPatientFormController implements Initializable {
                     prepare.setString(4, edit_address.getText());
                     prepare.setString(5, edit_status.getSelectionModel().getSelectedItem());
                     prepare.setString(6, String.valueOf(sqlDate));
+                    prepare.setString(7, edit_DOB.getValue().toString());
+                    prepare.setString(8, edit_emergancyNumber.getText());
+                    prepare.setString(9, edit_ccid.getText());
+                    prepare.setString(10, edit_bloodGroup.getText());
+                    prepare.setString(11, edit_insurance.getText());
+                    prepare.setString(12, edit_description.getText());
+
                     prepare.executeUpdate();
                     alert.successMessage("Updated Successfully!");
                 } else {
@@ -100,13 +123,28 @@ public class EditPatientFormController implements Initializable {
 
     // CLOSE THE EDITPATIENTFORM FXML FILE AND OPEN IT AGAIN
     public void setField() {
-        edit_patientID.setText(String.valueOf(Data.temp_PatientID));
-        edit_name.setText(Data.temp_name);
+        edit_patientID.setText(Data.temp_PatientID != null ? String.valueOf(Data.temp_PatientID) : "");
+        edit_name.setText(Data.temp_name != null ? Data.temp_name : "");
         edit_gender.getSelectionModel().select(Data.temp_gender);
-        edit_contactNumber.setText(String.valueOf(Data.temp_number));
-        edit_address.setText(Data.temp_address);
+        edit_contactNumber.setText(Data.temp_number != null ? String.valueOf(Data.temp_number) : "");
+        edit_address.setText(Data.temp_address != null ? Data.temp_address : "");
         edit_status.getSelectionModel().select(Data.temp_status);
+        edit_insurance.setText(Data.temp_insurance != null ? String.valueOf(Data.temp_insurance) : "");
+        edit_emergancyNumber.setText(Data.temp_emergancyNumber != null ? String.valueOf(Data.temp_emergancyNumber) : "");
+        edit_ccid.setText(Data.temp_ccid != null ? String.valueOf(Data.temp_ccid) : "");
+        edit_bloodGroup.setText(Data.temp_bloodGroup != null ? String.valueOf(Data.temp_bloodGroup) : "");
+        edit_date_created.setText(Data.temp_date_created != null ? Data.temp_date_created : "");
+        edit_date_deleted.setText(Data.temp_date_deleted != null ? String.valueOf(Data.temp_date_deleted) : "");
+        edit_date_modified.setText(Data.temp_date_modified != null ? String.valueOf(Data.temp_date_modified) : "");
+        edit_description.setText(Data.temp_description != null ? String.valueOf(Data.temp_description) : "");
+
+        if (Data.temp_date != null) {
+            edit_DOB.setValue(LocalDate.parse(Data.temp_date));
+        } else {
+            edit_DOB.setValue(null);
+        }
     }
+
 
     public void genderList() {
         List<String> genderL = new ArrayList<>();

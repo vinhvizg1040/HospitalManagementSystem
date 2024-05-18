@@ -14,6 +14,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,10 +23,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -75,6 +73,17 @@ public class EditDoctorFormController implements Initializable {
 
     @FXML
     private Button editDoctor_cancelBtn;
+    @FXML
+    private DatePicker edit_DOB;
+
+    @FXML
+    private Label edit_date_created;
+
+    @FXML
+    private Label edit_date_deleted;
+
+    @FXML
+    private Label edit_date_modified;
 
     private AlertMessage alert = new AlertMessage();
 
@@ -141,7 +150,7 @@ public class EditDoctorFormController implements Initializable {
                 || editDoctor_specialized.getSelectionModel().getSelectedItem() == null
                 || editDoctor_gender.getSelectionModel().getSelectedItem() == null
                 || editDoctor_mobileNumber.getText().isEmpty()
-                || editDoctor_address.getText().isEmpty()
+
                 || editDoctor_status.getSelectionModel().getSelectedItem() == null) {
             alert.errorMessage("Please fill all blank fields");
         } else {
@@ -156,8 +165,11 @@ public class EditDoctorFormController implements Initializable {
                         + editDoctor_specialized.getSelectionModel().getSelectedItem() + "', gender = '"
                         + editDoctor_gender.getSelectionModel().getSelectedItem() + "', mobile_number = '"
                         + editDoctor_mobileNumber.getText() + "', address = '"
-                        + editDoctor_address.getText() + "', status = '"
-                        + editDoctor_status.getSelectionModel().getSelectedItem() + "', modify_date = '"
+                        + editDoctor_address.getText()
+                        + "', status = '" + editDoctor_status.getSelectionModel().getSelectedItem()
+                        + "', date = '" + edit_DOB.getValue().toString()
+                        + "', modify_date = '"
+
                         + String.valueOf(sqlDate) + "' "
                         + "WHERE doctor_id = '" + editDoctor_doctorID.getText() + "'";
                 try {
@@ -195,12 +207,13 @@ public class EditDoctorFormController implements Initializable {
                                 + editDoctor_gender.getSelectionModel().getSelectedItem() + "', mobile_number = '"
                                 + editDoctor_mobileNumber.getText() + "', image = '"
                                 + insertImage + "', address = '"
-                                + editDoctor_address.getText() + "', status = '"
+                                + editDoctor_address.getText() + "', status = '"   + "', date = '" + edit_DOB.getValue().toString()
                                 + editDoctor_status.getSelectionModel().getSelectedItem() + "' "
                                 + "WHERE doctor_id = '" + editDoctor_doctorID.getText() + "'";
 
                         prepare = connect.prepareStatement(updateData);
                         prepare.executeUpdate();
+                        alert.successMessage("Update Successfully!");
 
                     } else {
                         alert.errorMessage("Cancelled.");
@@ -228,9 +241,16 @@ public class EditDoctorFormController implements Initializable {
         editDoctor_mobileNumber.setText(Data.temp_doctorMobileNumber);
         editDoctor_address.setText(Data.temp_doctorName);
         editDoctor_status.getSelectionModel().select(Data.temp_doctorStatus);
-
+        edit_date_created.setText(Data.temp_date_created != null ? Data.temp_date_created : "");
+        edit_date_deleted.setText(Data.temp_date_deleted != null ? String.valueOf(Data.temp_date_deleted) : "");
+        edit_date_modified.setText(Data.temp_date_modified != null ? String.valueOf(Data.temp_date_modified) : "");
         image = new Image("File:" + Data.temp_doctorImagePath, 112, 121, false, true);
         editDoctor_imageView.setImage(image);
+        if (Data.temp_date != null) {
+            edit_DOB.setValue(LocalDate.parse(Data.temp_date));
+        } else {
+            edit_DOB.setValue(null);
+        }
     }
 
     public void specializationList() {

@@ -12,7 +12,7 @@ import java.sql.Date;
  * @author WINDOWS 10
  */
 public class PatientsData {
-    
+
     private Integer id;
     private Integer patientID;
     private String password;
@@ -30,11 +30,18 @@ public class PatientsData {
     private Date dateModify;
     private Date dateDelete;
     private String status;
-    
+    private Long patientsEmergencyNumber; // Thêm trường Emergency Number
+    private String patientsCCID; // Thêm trường CCID
+    private String patientsBloodGroup; // Thêm trường Blood Group
+    private String patientsInsurance;
+    private Date dateCreated;
+
+
     public PatientsData(Integer id, Integer patientID, String password, String fullName, Long mobileNumber
             , String gender, String address, String image, String description, String diagnosis, String treatment
             , String doctor, String specialized, Date date, Date dateModify
-            , Date dateDelete, String status){
+            , Date dateDelete, String status, Long patientsEmergencyNumber, String patientsCCID
+            , String patientsBloodGroup, String patientsInsurance,Date dateCreated) {
         this.id = id;
         this.patientID = patientID;
         this.password = password;
@@ -52,11 +59,16 @@ public class PatientsData {
         this.dateModify = dateModify;
         this.dateDelete = dateDelete;
         this.status = status;
+        this.patientsEmergencyNumber = patientsEmergencyNumber;
+        this.patientsCCID = patientsCCID;
+        this.patientsBloodGroup = patientsBloodGroup;
+        this.patientsInsurance = patientsInsurance;
+        this.dateCreated = dateCreated;
     }
-    
+
     public PatientsData(Integer id, Integer patientID, String fullName, String gender,
-            Long mobileNumber, String address, String status, Date date
-            , Date dateModify, Date dateDelete){
+                        Long mobileNumber, String address, String status, Date date
+            , Date dateModify, Date dateDelete, Date dateCreated) {
         this.id = id;
         this.patientID = patientID;
         this.fullName = fullName;
@@ -67,6 +79,7 @@ public class PatientsData {
         this.date = date;
         this.dateModify = dateModify;
         this.dateDelete = dateDelete;
+        this.dateCreated = dateCreated;
     }
     
     public PatientsData(Integer id, Integer patientID, String fullName, String gender
@@ -139,4 +152,16 @@ public class PatientsData {
     public String getStatus(){
         return status;
     }
+    public String getPatientsInsurance(){return patientsInsurance;}
+    public String getPatientsCCID(){return patientsCCID;}
+    public String getPatientsBloodGroup(){return patientsBloodGroup;}
+    public Long getPatientsEmergencyNumber(){
+        return patientsEmergencyNumber;
+    }
+    public Date getDateCreated(){
+        return dateCreated;
+    }
+    public String getDescription(){return description;}
+
+
 }
