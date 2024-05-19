@@ -13,7 +13,7 @@ public class Database {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
             // Kết nối đến cơ sở dữ liệu
-            connect = DriverManager.getConnection("jdbc:sqlserver://localhost\\HOANG:1433;databaseName=hospital;trustServerCertificate=true",
+            connect = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=hospital;trustServerCertificate=true",
                     "sa",
                     "1"
             );
