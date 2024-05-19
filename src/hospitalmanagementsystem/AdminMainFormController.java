@@ -1291,14 +1291,23 @@ String passwordShow = password_ShowPassword.getText();
 //            AppointmentData(Integer id, Integer appointmentID, String name, String gender,
 //            Long mobileNumber, String description, String diagnosis, String treatment, String address,
 //            Date date, Date dateModify, Date dateDelete, String status, Date schedule)
-                aData = new AppointmentData(result.getInt("id"), result.getInt("appointment_id"),
+                aData = new AppointmentData(
+                        result.getInt("id"), 
+                        result.getInt("appointment_id"),
                         result.getLong("patient_id"),
-                        result.getString("name"), result.getString("gender"), result.getLong("mobile_number"),
-                        result.getString("description"), result.getString("diagnosis"),
-                        result.getString("treatment"), result.getString("address"),
-                        result.getDate("date"), result.getDate("date_modify"),
-                        result.getDate("date_delete"), result.getString("status"),
-                        result.getInt("total_pay"), result.getString("payment_status"),
+                        result.getString("name"), 
+                        result.getString("gender"), 
+                        result.getLong("mobile_number"),
+                        result.getString("description"), 
+                        result.getString("diagnosis"),
+                        result.getString("treatment"), 
+                        result.getString("address"),
+                        result.getDate("date"), 
+                        result.getDate("date_modify"),
+                        result.getDate("date_delete"), 
+                        result.getString("status"),
+                        result.getInt("total_pay"), 
+                        result.getString("payment_status"),
                         result.getInt("quantity"),
                         result.getDate("schedule"));
                 listData.add(aData);
@@ -2147,6 +2156,7 @@ patients_PI_emergencyNumber.setText("");
             profile_form.setVisible(false);
             patients_addForm.setVisible(false);
             doctors_addForm.setVisible(false);
+            appointments_addForm.setVisible(false);
 
 
             dashboardAD();
@@ -2165,6 +2175,7 @@ patients_PI_emergencyNumber.setText("");
             profile_form.setVisible(false);
             patients_addForm.setVisible(false);
             doctors_addForm.setVisible(false);
+            appointments_addForm.setVisible(false);
 
 
             // TO DISPLAY IMMEDIATELY THE DATA OF DOCTORS IN TABLEVIEW
@@ -2181,6 +2192,7 @@ patients_PI_emergencyNumber.setText("");
             profile_form.setVisible(false);
             patients_addForm.setVisible(false);
             doctors_addForm.setVisible(false);
+            appointments_addForm.setVisible(false);
 
 
             // TO DISPLAY IMMEDIATELY THE DATA OF PATIENTS IN TABLEVIEW
@@ -2196,6 +2208,7 @@ patients_PI_emergencyNumber.setText("");
             profile_form.setVisible(false);
             patients_addForm.setVisible(false);
             doctors_addForm.setVisible(false);
+            appointments_addForm.setVisible(false);
 
 
             // TO DISPLAY IMMEDIATELY THE DATA OF APPOINTMENTS IN TABLEVIEW
@@ -2212,6 +2225,7 @@ patients_PI_emergencyNumber.setText("");
             patients_addForm.setVisible(false);
             payment_form.setVisible(true);
             doctors_addForm.setVisible(false);
+            appointments_addForm.setVisible(false);
 
             paymentDisplayData();
 
@@ -2226,6 +2240,7 @@ patients_PI_emergencyNumber.setText("");
             appointments_addForm.setVisible(false);
             profile_form.setVisible(true);
             doctors_addForm.setVisible(false);
+            appointments_addForm.setVisible(false);
 
             profileStatusList();
             profileDisplayInfo();
@@ -2242,6 +2257,7 @@ patients_PI_emergencyNumber.setText("");
             appointments_addForm.setVisible(false);
             patients_addForm.setVisible(true);
             doctors_addForm.setVisible(false);
+            appointments_addForm.setVisible(false);
 
             profileStatusList();
             profileDisplayInfo();
@@ -2257,6 +2273,7 @@ patients_PI_emergencyNumber.setText("");
             payment_form.setVisible(false);
             profile_form.setVisible(false);
             patients_addForm.setVisible(false);
+            appointments_addForm.setVisible(false);
             doctors_addForm.setVisible(true);
 
             profileStatusList();
@@ -2264,6 +2281,23 @@ patients_PI_emergencyNumber.setText("");
             profileDisplayImages();
 
             current_form.setText("Add Doctor Form");
+        }else if (event.getSource() == addNewAppointment_btn) {
+
+            dashboard_form.setVisible(false);
+            doctors_form.setVisible(false);
+            patients_form.setVisible(false);
+            appointments_form.setVisible(false);
+            payment_form.setVisible(false);
+            profile_form.setVisible(false);
+            patients_addForm.setVisible(false);
+            doctors_addForm.setVisible(false);
+            appointments_addForm.setVisible(true);
+            
+            profileStatusList();
+            profileDisplayInfo();
+            profileDisplayImages();
+
+            current_form.setText("Add Appointment Form");
         }
 
     }

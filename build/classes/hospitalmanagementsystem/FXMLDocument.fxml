@@ -21,20 +21,14 @@
          <children>
             <AnchorPane fx:id="login_form" layoutY="7.0" prefHeight="550.0" prefWidth="330.0" styleClass="white-bg" stylesheets="@../design/PageDesign.css" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="7.0">
                <children>
-<!--                  <FontAwesomeIconView fill="#188ba7" glyphName="USER" layoutX="141.0" layoutY="91.0" size="5em" />-->
-                  <Label layoutX="103.0" layoutY="81.0" text="Login Account" textFill="#188ba7">
-                     <font>
-                        <Font name="Tahoma" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="130.0" layoutY="125.0" text="Staff Portal" />
-                  <TextField fx:id="login_username" layoutX="39.0" layoutY="177.0" onAction="#loginAccount" prefHeight="30.0" prefWidth="250.0" promptText="Username" stylesheets="@../design/PageDesign.css">
+                  <Label layoutX="130.0" layoutY="117.0" text="Staff Portal" />
+                  <TextField fx:id="login_username" layoutX="39.0" layoutY="160.0" onAction="#loginAccount" prefHeight="30.0" prefWidth="250.0" stylesheets="@../design/PageDesign.css">
                      <styleClass>
                         <String fx:value="textfield-1" />
                         <String fx:value="white-bg" />
                      </styleClass>
                   </TextField>
-                  <PasswordField fx:id="login_password" layoutX="39.0" layoutY="213.0" onAction="#loginAccount" prefHeight="30.0" prefWidth="250.0" promptText="Password" stylesheets="@../design/PageDesign.css">
+                  <PasswordField fx:id="login_password" layoutX="39.0" layoutY="213.0" onAction="#loginAccount" prefHeight="30.0" prefWidth="250.0" stylesheets="@../design/PageDesign.css">
                      <styleClass>
                         <String fx:value="textfield-1" />
                         <String fx:value="white-bg" />
@@ -60,15 +54,17 @@
                         <String fx:value="white-bg" />
                      </styleClass>
                   </ComboBox>
-                  <Label layoutX="68.0" layoutY="516.0" text="Have no account yet?" />
-                  <Hyperlink fx:id="login_registerHere" layoutX="184.0" layoutY="513.0" onAction="#switchForm" text="Click to Register " />
+<!--                  <Label layoutX="68.0" layoutY="516.0" text="Have no account yet?" />-->
+<!--                  <Hyperlink fx:id="login_registerHere" layoutX="184.0" layoutY="513.0" onAction="#switchForm" text="Click to Register " />-->
 <!--                  <FontAwesomeIconView layoutX="152.0" layoutY="368.0" />-->
                   <GlyphsStack layoutX="157.0" layoutY="394.0" />
-                  <Label layoutX="24.0" layoutY="40.0" prefHeight="25.0" prefWidth="315.0" text="Welcom to Hospital Managerment" textFill="#10a69e">
+                  <Label layoutX="89.0" layoutY="70.0" prefHeight="25.0" prefWidth="135.0" text="Medical Center" textFill="#10a69e">
                      <font>
                         <Font name="Tahoma" size="20.0" />
                      </font>
                   </Label>
+                  <Label layoutX="40.0" layoutY="143.0" text="User Name" />
+                  <Label layoutX="40.0" layoutY="195.0" text="Password" />
 <!--                  <FontAwesomeIconView layoutX="156.0" layoutY="354.0" />-->
                </children>
             </AnchorPane>
