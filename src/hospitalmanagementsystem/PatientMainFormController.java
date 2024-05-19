@@ -310,7 +310,8 @@ public class PatientMainFormController implements Initializable {
                 aData = new AppointmentData(result.getInt("appointment_id"),
                         result.getString("description"),
                         result.getString("diagnosis"), result.getString("treatment"),
-                        result.getString("doctor"), result.getDate("schedule"));
+//                        result.getString("doctor"),
+                        result.getDate("schedule"));
 
                 listData.add(aData);
             }

@@ -29,21 +29,43 @@
 <?import javafx.scene.text.Font?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hospitalmanagementsystem.AdminMainFormController">
-   <children>
-      <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
-         <children>
-            <BorderPane layoutX="144.0" layoutY="64.0" prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <top>
-                  <AnchorPane prefHeight="40.0" prefWidth="1100.0" stylesheets="@../design/MainFormDesign.css" BorderPane.alignment="CENTER">
-                     <children>
-                        <AnchorPane layoutX="-58.0" layoutY="-86.0" prefHeight="40.0" prefWidth="214.0" styleClass="bg-color-1" stylesheets="@../design/MainFormDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <Label layoutX="21.0" layoutY="11.0" text="Hospital Management System" textFill="WHITE">
-                                 <font>
-                                    <Font size="13.0" />
-                                 </font>
-                              </Label>
-                           </children>
+    <children>
+        <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
+            <children>
+                <BorderPane layoutX="144.0" layoutY="64.0" prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <top>
+                        <AnchorPane prefHeight="40.0" prefWidth="1100.0" stylesheets="@../design/MainFormDesign.css" BorderPane.alignment="CENTER">
+                            <children>
+                                <AnchorPane layoutX="-58.0" layoutY="-86.0" prefHeight="40.0" prefWidth="214.0" styleClass="bg-color-1" stylesheets="@../design/MainFormDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <children>
+                                        <Label layoutX="21.0" layoutY="11.0" text="Hospital Management System" textFill="WHITE">
+                                            <font>
+                                                <Font size="13.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                                <Circle fx:id="top_profile" fill="DODGERBLUE" layoutX="1012.0" layoutY="22.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" AnchorPane.rightAnchor="75.0" />
+                                <Label layoutX="1036.0" layoutY="13.0" text="Active" AnchorPane.rightAnchor="31.0" />
+                                <Circle fill="#24c756" layoutX="1081.0" layoutY="22.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" AnchorPane.rightAnchor="14.0" />
+                                <Label layoutX="687.0" layoutY="12.0" text="Welcome," AnchorPane.rightAnchor="360.0" />
+                                <Label fx:id="top_username" layoutX="747.0" layoutY="11.0" prefHeight="17.0" prefWidth="138.0" text="MarcoMan" AnchorPane.rightAnchor="215.0">
+                                    <font>
+                                        <Font name="System Bold" size="13.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="date_time" alignment="CENTER_RIGHT" layoutX="470.0" layoutY="12.0" prefHeight="17.0" prefWidth="187.0" text="MM:DD:YYYY" AnchorPane.rightAnchor="443.0" />
+                                <Label fx:id="current_form" layoutX="233.0" layoutY="11.0" prefHeight="17.0" prefWidth="325.0" styleClass="header-1" stylesheets="@../design/MainFormDesign.css" text="Dashboard Form" AnchorPane.leftAnchor="233.0" AnchorPane.topAnchor="11.0">
+                                    <font>
+                                        <Font size="15.0" />
+                                    </font>
+                                </Label>
+                                <Button fx:id="logout_btn" layoutX="879.0" layoutY="10.0" mnemonicParsing="false" onAction="#logoutBtn" prefHeight="25.0" prefWidth="79.0" styleClass="btn-1" stylesheets="@../design/PageDesign.css" text="Logout" AnchorPane.rightAnchor="142.0" AnchorPane.topAnchor="10.0" />
+                            </children>
+                            <styleClass>
+                                <String fx:value="white-bg" />
+                                <String fx:value="border-top" />
+                            </styleClass>
                         </AnchorPane>
                         <Circle fx:id="top_profile" fill="DODGERBLUE" layoutX="1012.0" layoutY="22.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" AnchorPane.rightAnchor="75.0" />
                         <Label layoutX="1036.0" layoutY="13.0" text="Active" AnchorPane.rightAnchor="31.0" />
@@ -155,43 +177,47 @@
                                                       </Label>
                                                    </children>
                                                 </AnchorPane>
-                                                <AnchorPane layoutX="307.0" layoutY="20.0" prefHeight="114.0" prefWidth="240.0" stylesheets="@../design/MainFormDesign.css">
-                                                   <styleClass>
-                                                      <String fx:value="bg-color-1" />
-                                                      <String fx:value="radius" />
-                                                   </styleClass>
-                                                   <children>
-<!--                                                      <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="14.0" layoutY="78.0" size="5em" />-->
-                                                      <Label fx:id="dashboard_TP" alignment="CENTER_RIGHT" layoutX="92.0" layoutY="17.0" prefHeight="17.0" prefWidth="134.0" text="0" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <Label alignment="CENTER" layoutX="75.0" layoutY="77.0" prefHeight="17.0" prefWidth="134.0" text="Total Patients" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                   </children>
+                                                <AnchorPane layoutX="463.0" layoutY="211.0" prefHeight="129.0" prefWidth="383.0" stylesheets="@../design/MainFormDesign.css" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                                                    <styleClass>
+                                                        <String fx:value="white-bg" />
+                                                        <String fx:value="shadow" />
+                                                        <String fx:value="radius" />
+                                                    </styleClass>
+                                                    <children>
+                                                        <BarChart fx:id="dashboad_chart_DD" layoutX="-49.0" layoutY="-129.0" prefHeight="271.0" prefWidth="451.0" title="Doctor's Data" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                            <xAxis>
+                                                                <CategoryAxis side="BOTTOM" />
+                                                            </xAxis>
+                                                            <yAxis>
+                                                                <NumberAxis side="LEFT" />
+                                                            </yAxis>
+                                                        </BarChart>
+                                                    </children>
                                                 </AnchorPane>
-                                                <AnchorPane layoutX="576.0" layoutY="20.0" prefHeight="114.0" prefWidth="240.0" stylesheets="@../design/MainFormDesign.css">
-                                                   <styleClass>
-                                                      <String fx:value="bg-color-1" />
-                                                      <String fx:value="radius" />
-                                                   </styleClass>
-                                                   <children>
-<!--                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />-->
-                                                      <Label fx:id="dashboard_AP" alignment="CENTER_RIGHT" layoutX="92.0" layoutY="17.0" prefHeight="17.0" prefWidth="134.0" text="0" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <Label alignment="CENTER" layoutX="75.0" layoutY="77.0" prefHeight="17.0" prefWidth="134.0" text="Active Patients" textFill="WHITE">
-                                                         <font>
-                                                            <Font size="14.0" />
-                                                         </font>
-                                                      </Label>
-                                                   </children>
+                                                <AnchorPane layoutX="14.0" layoutY="13.0" prefHeight="328.0" prefWidth="433.0" stylesheets="@../design/MainFormDesign.css" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="413.0" AnchorPane.topAnchor="13.0">
+                                                    <styleClass>
+                                                        <String fx:value="white-bg" />
+                                                        <String fx:value="shadow" />
+                                                        <String fx:value="radius" />
+                                                    </styleClass>
+                                                    <children>
+                                                        <TableView fx:id="dashboad_tableView" layoutX="13.0" layoutY="41.0" prefHeight="273.0" prefWidth="407.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="41.0">
+                                                            <columns>
+                                                                <TableColumn fx:id="dashboad_col_doctorID" prefWidth="81.0" text="Doctor ID" />
+                                                                <TableColumn fx:id="dashboad_col_name" prefWidth="117.0" text="Name" />
+                                                                <TableColumn fx:id="dashboad_col_specialized" prefWidth="119.0" text="Specialized" />
+                                                                <TableColumn fx:id="dashboad_col_status" prefWidth="89.0" text="Status" />
+                                                            </columns>
+                                                            <columnResizePolicy>
+                                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                            </columnResizePolicy>
+                                                        </TableView>
+                                                        <Label layoutX="13.0" layoutY="14.0" styleClass="header-1" stylesheets="@../design/MainFormDesign.css" text="Doctor Information">
+                                                            <font>
+                                                                <Font size="14.0" />
+                                                            </font>
+                                                        </Label>
+                                                    </children>
                                                 </AnchorPane>
                                                 <AnchorPane layoutX="846.0" layoutY="20.0" prefHeight="114.0" prefWidth="240.0" stylesheets="@../design/MainFormDesign.css">
                                                    <styleClass>
@@ -844,11 +870,15 @@
                              </children>
                          </AnchorPane>
 
-                     </children>
-                  </AnchorPane>
-               </center>
-            </BorderPane>
-         </children>
-      </AnchorPane>
-   </children>
+                                            </children>
+                                        </AnchorPane>
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </AnchorPane>
+                    </center>
+                </BorderPane>
+            </children>
+        </AnchorPane>
+    </children>
 </StackPane>
