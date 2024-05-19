@@ -192,7 +192,7 @@ public class AdminMainFormController implements Initializable {
 
     @FXML
     private TableView<AppointmentData> appointments_tableView;
-    
+
     @FXML
     private TableColumn<AppointmentData, String> appointments_col_appointmentID;
 
@@ -225,7 +225,7 @@ public class AdminMainFormController implements Initializable {
 
     @FXML
     private TableColumn<AppointmentData, String> appointments_appointmentID;
-    
+
     @FXML
     private TableColumn<AppointmentData, String> appointments_patientID;
 
@@ -845,8 +845,9 @@ public class AdminMainFormController implements Initializable {
                         result.getString("address"),
                         result.getString("image"), result.getString("description"),
                         result.getString("diagnosis"),
-                        result.getString("treatment"), result.getString("doctor"),
-                        result.getString("specialized"), result.getDate("date"),
+                        result.getString("treatment"),
+                        //                        result.getString("doctor"),result.getString("specialized"), 
+                        result.getDate("date"),
                         result.getDate("date_modify"), result.getDate("date_delete"),
                         result.getString("status"));
 
@@ -1169,7 +1170,8 @@ public class AdminMainFormController implements Initializable {
                         result.getInt("patient_id"), result.getString("full_name"),
                         result.getString("gender"), result.getString("description"),
                         result.getString("diagnosis"), result.getString("treatment"),
-                        result.getString("doctor"), result.getString("image"), result.getDate("date"));
+                        //                        result.getString("doctor"), 
+                        result.getString("image"), result.getDate("date"));
 
                 listData.add(pData);
             }
@@ -1217,7 +1219,7 @@ public class AdminMainFormController implements Initializable {
 
         payment_patientID.setText(String.valueOf(pData.getPatientID()));
         payment_name.setText(pData.getFullName());
-        payment_doctor.setText(pData.getDoctor());
+//        payment_doctor.setText(pData.getDoctor());
         payment_date.setText(String.valueOf(pData.getDate()));
 
     }
@@ -1352,7 +1354,7 @@ public class AdminMainFormController implements Initializable {
                     prepare = connect.prepareStatement(insertData);
                     long patientID = Long.parseLong(appointment_patientID.getText());
                     long mobileNumber = Long.parseLong(appointment_mobileNumber.getText());
-                    
+
                     prepare.setString(1, appointment_appointmentID.getText());
                     prepare.setLong(2, patientID);
                     prepare.setString(3, appointments_patients_PA_name.getText());
@@ -1371,8 +1373,8 @@ public class AdminMainFormController implements Initializable {
 
                     prepare.executeUpdate();
 
-                    appointmentShowData();
-                    appointmentAppointmentID();
+//                    appointmentShowData();
+//                    appointmentAppointmentID();
                     appointmentClearBtn();
                     alert.successMessage("Successully added!");
 
@@ -1849,7 +1851,6 @@ public class AdminMainFormController implements Initializable {
     public void appointmentClearBtn() {
         appointment_appointmentID.clear();
         appointment_patientID.clear();
-        appointment_gender.getSelectionModel().clearSelection();
         appointment_mobileNumber.clear();
         appointment_description.clear();
         appointment_treatment.clear();
