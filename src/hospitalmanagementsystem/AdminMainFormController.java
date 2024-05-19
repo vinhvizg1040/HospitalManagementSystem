@@ -31,9 +31,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -338,7 +341,11 @@ public class AdminMainFormController implements Initializable {
 
     @FXML
     private AnchorPane payment_form;
+    @FXML
+    private TableColumn<?, ?> payment_col_status;
 
+    @FXML
+    private TableColumn<?, ?> payment_col_totalPay;
     @FXML
     private TextField patients_patientID;
 
@@ -407,25 +414,27 @@ public class AdminMainFormController implements Initializable {
     @FXML
     private Button patients_PI_addBtn;
     @FXML
-    private TableView<PatientsData> payment_tableView;
+    private TableView<PaymentData> payment_tableView;
 
     @FXML
-    private TableColumn<PatientsData, String> payment_col_patientID;
+    private TableColumn<PaymentData, String> payment_col_patientID;
 
     @FXML
-    private TableColumn<PatientsData, String> payment_col_name;
+    private TableColumn<PaymentData, String> payment_col_name;
 
     @FXML
-    private TableColumn<PatientsData, String> payment_col_gender;
+    private TableColumn<PaymentData, String> payment_col_gender;
+    @FXML
+    private TableColumn<PaymentData, String> payment_col_services;
 
     @FXML
-    private TableColumn<PatientsData, String> payment_col_diagnosis;
+    private TableColumn<PaymentData, String> payment_col_diagnosis;
 
     @FXML
-    private TableColumn<PatientsData, String> payment_col_doctor;
+    private TableColumn<PaymentData, String> payment_col_doctor;
 
     @FXML
-    private TableColumn<PatientsData, String> payment_col_date;
+    private TableColumn<PaymentData, String> payment_col_date;
 
     @FXML
     private Circle payment_circle;
@@ -980,8 +989,8 @@ String passwordShow = password_ShowPassword.getText();
                         result.getString("address"),
                         result.getString("image"), result.getString("description"),
                         result.getString("diagnosis"),
-                        result.getString("treatment"), result.getString("doctor"),
-                        result.getString("specialized"), result.getDate("date"),
+                        result.getString("treatment"), 
+                     result.getDate("date"),
                         result.getDate("date_modify"), result.getDate("date_delete"),
                         result.getString("status"),result.getLong("patients_EmergencyNumber"),
                         result.getString("patients_ccid"),result.getString("patients_bloodGroup"),result.getString("patients_insurance"), result.getDate("date_created")
@@ -1326,28 +1335,37 @@ String passwordShow = password_ShowPassword.getText();
 
     }
 
-    public ObservableList<PatientsData> paymentGetData() {
+    public ObservableList<PaymentData> paymentGetData() {
 
-        ObservableList<PatientsData> listData = FXCollections.observableArrayList();
+        ObservableList<PaymentData> listData = FXCollections.observableArrayList();
 
-        String sql = "SELECT * FROM patient WHERE date_delete IS NULL AND status_pay IS NULL";
+        String sql = "SELECT * FROM payment";
         connect = Database.connectDB();
 
         try {
             prepare = connect.prepareStatement(sql);
             result = prepare.executeQuery();
 
-            PatientsData pData;
+
             while (result.next()) {
 //                (Integer id, Integer patientID, String fullName, String gender
 //            , String description, String diagnosis, String treatment
 //            , String doctor, String image, Date date)
-                pData = new PatientsData(result.getInt("id"),
-                        result.getInt("patient_id"), result.getString("full_name"),
-                        result.getString("gender"), result.getString("description"),
-                        result.getString("diagnosis"), result.getString("treatment"),
-                        result.getString("doctor"), result.getString("image"), result.getDate("date"));
+                PaymentData pData = new PaymentData(
+                        result.getInt("id"),
+                        result.getInt("patient_id"),
+                        result.getString("patient_name"),
 
+                        result.getString("doctor"),
+                        result.getInt("total_days"),
+                        result.getInt("total_price"),
+                        result.getString("services"),
+
+                        result.getTimestamp("date"), // Sử dụng result.getTimestamp cho kiểu Timestamp
+                        result.getTimestamp("date_checkout"),
+                        result.getString("status_pay"),
+                        result.getTimestamp("date_pay")
+                );
                 listData.add(pData);
             }
         } catch (Exception e) {
@@ -1356,16 +1374,19 @@ String passwordShow = password_ShowPassword.getText();
         return listData;
     }
 
-    public ObservableList<PatientsData> paymentListData;
+    public ObservableList<PaymentData> paymentListData;
 
     public void paymentDisplayData() {
         paymentListData = paymentGetData();
 
-        payment_col_patientID.setCellValueFactory(new PropertyValueFactory<>("patientID"));
-        payment_col_name.setCellValueFactory(new PropertyValueFactory<>("fullName"));
-        payment_col_gender.setCellValueFactory(new PropertyValueFactory<>("gender"));
-        payment_col_diagnosis.setCellValueFactory(new PropertyValueFactory<>("diagnosis"));
+        payment_col_patientID.setCellValueFactory(new PropertyValueFactory<>("patientId"));
+        payment_col_name.setCellValueFactory(new PropertyValueFactory<>("patientName"));
+//        payment_col_gender.setCellValueFactory(new PropertyValueFactory<>("gender"));
+//        payment_col_diagnosis.setCellValueFactory(new PropertyValueFactory<>("diagnosis"));
+      payment_col_services.setCellValueFactory(new PropertyValueFactory<>("services"));
         payment_col_doctor.setCellValueFactory(new PropertyValueFactory<>("doctor"));
+        payment_col_totalPay.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
+        payment_col_status.setCellValueFactory(new PropertyValueFactory<>("statusPay"));
         payment_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
 
         payment_tableView.setItems(paymentListData);
@@ -1374,26 +1395,20 @@ String passwordShow = password_ShowPassword.getText();
 
     public void paymentSelectItems() {
 
-        PatientsData pData = payment_tableView.getSelectionModel().getSelectedItem();
+        PaymentData pData = payment_tableView.getSelectionModel().getSelectedItem();
         int num = payment_tableView.getSelectionModel().getSelectedIndex();
 
         if ((num - 1) < -1) {
             return;
         }
-        if (pData.getImage() != null) {
-            String path = "File:" + pData.getImage();
-            image = new Image(path, 144, 105, false, true);
-            payment_circle.setFill(new ImagePattern(image));
 
-            Data.temp_path = pData.getImage();
-        }
-
-        Data.temp_PatientID = pData.getPatientID();
-        Data.temp_name = pData.getFullName();
+//
+//        Data.temp_PatientID = pData.getPatientID();
+//        Data.temp_name = pData.getFullName();
         Data.temp_date = String.valueOf(pData.getDate());
 
-        payment_patientID.setText(String.valueOf(pData.getPatientID()));
-        payment_name.setText(pData.getFullName());
+        payment_patientID.setText(String.valueOf(pData.getPatientId()));
+//        payment_name.setText(pData.());
         payment_doctor.setText(pData.getDoctor());
         payment_date.setText(String.valueOf(pData.getDate()));
 
@@ -2123,8 +2138,120 @@ patients_PI_emergencyNumber.setText("");
         profileStatusList();
         profileDisplayInfo();
         profileDisplayImages();
+        payment_tableView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Kiểm tra nhấp đúp chuột
+                PaymentData selectedPayment = payment_tableView.getSelectionModel().getSelectedItem();
+                if (selectedPayment != null) {
+                    showPaymentDetail(selectedPayment);
+                }
+            }
+        });
+        
     }
 
+    // Định nghĩa hàm showPaymentDetail()
+    // Định nghĩa hàm showPaymentDetail()
+    private void showPaymentDetail(PaymentData paymentData) {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Payment Detail");
+
+        // Tạo GridPane để hiển thị thông tin chi tiết
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+
+        int rowIndex = 0;
+
+        addRow(grid, "Patient ID:", String.valueOf(paymentData.getPatientId()), rowIndex++);
+        addRow(grid, "Patient Name:", paymentData.getPatientName(), rowIndex++);
+        addRow(grid, "Doctor:", paymentData.getDoctor(), rowIndex++);
+        addRow(grid, "Total Days:", String.valueOf(paymentData.getTotalDays()), rowIndex++);
+        addRow(grid, "Total Price:", String.valueOf(paymentData.getTotalPrice()), rowIndex++);
+        addRow(grid, "Services:", paymentData.getServices(), rowIndex++);
+        addRow(grid, "Date:", paymentData.getDate().toString(), rowIndex++);
+        addRow(grid, "Date Checkout:", paymentData.getDateCheckout().toString(), rowIndex++);
+
+        // Thêm ComboBox để chọn trạng thái
+        grid.add(new Label("Status Pay:"), 0, rowIndex);
+        ObservableList<String> options = FXCollections.observableArrayList("Pending", "Paid");
+        ComboBox<String> statusComboBox = new ComboBox<>(options);
+        statusComboBox.setValue(paymentData.getStatusPay());
+        grid.add(statusComboBox, 1, rowIndex++);
+
+        addRow(grid, "Date Pay:", paymentData.getDatePay().toString(), rowIndex++);
+
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.setContent(grid);
+
+        // Thêm nút "OK" và "Cancel" để đóng Dialog
+        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // Kiểm tra và cập nhật trạng thái nếu có thay đổi
+            String newStatus = statusComboBox.getValue();
+            if (!newStatus.equals(paymentData.getStatusPay())) {
+                paymentData.setStatusPay(newStatus);
+                updatePaymentStatus(paymentData);
+            }
+        }
+    }
+
+    // Hàm trợ giúp để thêm dòng
+    private void addRow(GridPane grid, String label, String value, int rowIndex) {
+        grid.add(new Label(label), 0, rowIndex);
+        grid.add(new Label(value), 1, rowIndex);
+    }
+
+    // Hàm cập nhật trạng thái thanh toán vào cơ sở dữ liệu
+    private void updatePaymentStatus(PaymentData paymentData) {
+        String updateQuery = "UPDATE payment SET status_pay = ? WHERE id = ?";
+        Connection connect = null;
+        PreparedStatement prepare = null;
+
+        try {
+            connect = Database.connectDB();
+            prepare = connect.prepareStatement(updateQuery);
+
+            // Thiết lập giá trị cho preparedStatement
+            prepare.setString(1, paymentData.getStatusPay());
+            prepare.setInt(2, paymentData.getId());
+
+            prepare.executeUpdate();
+
+            // Hiển thị thông báo thành công
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText(null);
+            alert.setContentText("Payment status updated successfully!");
+            alert.showAndWait();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Hiển thị thông báo lỗi
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Failed to update payment status.");
+            alert.showAndWait();
+        } finally {
+            // Đóng kết nối và preparedStatement
+            if (prepare != null) {
+                try {
+                    prepare.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connect != null) {
+                try {
+                    connect.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
 
 

@@ -23,8 +23,6 @@ public class PatientsData {
     private String description;
     private String diagnosis;
     private String treatment;
-    private String doctor;
-    private String specialized;
     private String gender;
     private Date date;
     private Date dateModify;
@@ -39,9 +37,8 @@ public class PatientsData {
 
     public PatientsData(Integer id, Integer patientID, String password, String fullName, Long mobileNumber
             , String gender, String address, String image, String description, String diagnosis, String treatment
-            , String doctor, String specialized, Date date, Date dateModify
-            , Date dateDelete, String status, Long patientsEmergencyNumber, String patientsCCID
-            , String patientsBloodGroup, String patientsInsurance,Date dateCreated) {
+            , Date date, Date dateModify, Date dateDelete, String status, Long patientsEmergencyNumber
+            , String patientsCCID, String patientsBloodGroup, String patientsInsurance, Date dateCreated) {
         this.id = id;
         this.patientID = patientID;
         this.password = password;
@@ -53,8 +50,6 @@ public class PatientsData {
         this.description = description;
         this.diagnosis = diagnosis;
         this.treatment = treatment;
-        this.doctor = doctor;
-        this.specialized = specialized;
         this.date = date;
         this.dateModify = dateModify;
         this.dateDelete = dateDelete;
@@ -81,10 +76,10 @@ public class PatientsData {
         this.dateDelete = dateDelete;
         this.dateCreated = dateCreated;
     }
-    
+
     public PatientsData(Integer id, Integer patientID, String fullName, String gender
             , String description, String diagnosis, String treatment
-            , String doctor, String image, Date date){
+            , String image, Date date){
         this.id = id;
         this.patientID = patientID;
         this.fullName = fullName;
@@ -92,11 +87,10 @@ public class PatientsData {
         this.description = description;
         this.diagnosis = diagnosis;
         this.treatment = treatment;
-        this.doctor = doctor;
         this.image = image;
         this.date = date;
     }
-    
+
     public PatientsData(Integer id, Integer patientID, String description
             , String diagnosis, String treatment, Date date){
         this.id = id;
@@ -106,7 +100,7 @@ public class PatientsData {
         this.treatment = treatment;
         this.date = date;
     }
-    
+
     public Integer getId(){
         return id;
     }
@@ -133,12 +127,6 @@ public class PatientsData {
     }
     public String getTreatment(){
         return treatment;
-    }
-    public String getDoctor(){
-        return doctor;
-    }
-    public String getSpecialized(){
-        return specialized;
     }
     public Date getDate(){
         return date;
