@@ -1915,7 +1915,7 @@ patients_PI_emergencyNumber.setText("");
                 || doctor_PI_mobileNumber.getText().isEmpty()) {
             alert.errorMessage("Please fill all blank fields");
         } else {
-            if (!passwordcf_password.equals(password_password)||!passwordcf_showPassword.equals(password_ShowPassword)) {
+            if (!passwordcf_password.getText().equals(password_password.getText())||!passwordcf_showPassword.getText().equals(password_ShowPassword.getText())) {
                 alert.errorMessage("Confirm Password is not correct");
             } else {
 
@@ -1950,26 +1950,34 @@ patients_PI_emergencyNumber.setText("");
                     // Thêm bản ghi doctor vào cơ sở dữ liệu
                     String insertData = "INSERT INTO doctor (doctor_id, password, full_name, mobile_number, gender, date_created, address, specialized,date,status,email) "
                             + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-                    Date date = new Date();
-                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                    // Chuyển đổi dateCreated thành java.sql.Date
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date parsedDate = dateFormat.parse(doctor_PA_dateCreated.getText());
+                    java.sql.Date sqlDateCreated = new java.sql.Date(parsedDate.getTime());
+
+                    // Chuyển đổi ngày sinh thành java.sql.Date
+                    parsedDate = dateFormat.parse(doctor_PI_DOB.getText());
+                    java.sql.Date sqlDOB = new java.sql.Date(parsedDate.getTime());
+
                     prepare = connect.prepareStatement(insertData);
                     prepare.setString(1, newDoctorID);
                     prepare.setString(2, doctor_PA_password.getText());
                     prepare.setString(3, doctor_PI_doctorName.getText());
                     prepare.setString(4, doctor_PI_mobileNumber.getText());
                     prepare.setString(5, doctor_PI_gender.getText());
-                    prepare.setString(6, "" + sqlDate);
+                    prepare.setDate(6, sqlDateCreated);
                     prepare.setString(7, doctor_PI_address.getText());
                     prepare.setString(8, doctor_PI_specialized.getText());
-                    prepare.setString(9, doctor_PI_DOB.getText());
+                    prepare.setDate(9, sqlDOB);
                     prepare.setString(10, "Active");
                     prepare.setString(11, doctor_PI_email.getText());
+                    
                     System.out.println("newDoctorID: " + newDoctorID);
                     System.out.println("doctor_PA_password: " + doctor_PA_password.getText());
                     System.out.println("doctor_PI_doctorName: " + doctor_PI_doctorName.getText());
                     System.out.println("doctor_PI_mobileNumber: " + doctor_PI_mobileNumber.getText());
                     System.out.println("doctor_PI_gender: " + doctor_PI_gender.getText());
-                    System.out.println("sqlDate: " + sqlDate);
+                    System.out.println("sqlDate: " + sqlDateCreated);
                     System.out.println("doctor_PI_address: " + doctor_PI_address.getText());
                     System.out.println("doctor_PI_specialized: " + doctor_PI_specialized.getText());
                     System.out.println("doctor_PI_DOB: " + doctor_PI_DOB.getText());
