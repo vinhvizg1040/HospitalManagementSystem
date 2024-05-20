@@ -13,7 +13,6 @@ import java.sql.Date;
  */
 public class AppointmentData {
 
-    private Integer id;
     private Integer appointmentID;
     private Long patientID;
     private String name;
@@ -32,11 +31,10 @@ public class AppointmentData {
     private Integer quantity;
     private Date schedule;
 
-    public AppointmentData(Integer id, Integer appointmentID, Long patientID, String name, String gender,
+    public AppointmentData(Integer appointmentID, Long patientID, String name, String gender,
             Long mobileNumber, String description, String diagnosis, String treatment, String address,
             Date date, Date dateModify, Date dateDelete, String status, Integer totalPay,
             String paymentStatus, Integer quantity, Date schedule) {
-        this.id = id;
         this.appointmentID = appointmentID;
         this.patientID = patientID;
         this.name = name;
@@ -94,9 +92,6 @@ public class AppointmentData {
         this.schedule = schedule;
     }
 
-    public Integer getId() {
-        return id;
-    }
 
     public Integer getAppointmentID() {
         return appointmentID;

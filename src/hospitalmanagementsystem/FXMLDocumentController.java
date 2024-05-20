@@ -136,7 +136,7 @@ public class FXMLDocumentController implements Initializable {
                     Parent root = FXMLLoader.load(getClass().getResource("AdminMainForm.fxml"));
                     Stage stage = new Stage();
 
-                    stage.setTitle("Hospital Management System | Admin Portal");
+                    stage.setTitle("Hospital Management System | Staff Portal");
                     stage.setScene(new Scene(root));
                     stage.show();
 
@@ -266,7 +266,7 @@ public class FXMLDocumentController implements Initializable {
 
     public void switchPage() {
 
-        if (login_user.getSelectionModel().getSelectedItem() == "Admin Portal") {
+        if (login_user.getSelectionModel().getSelectedItem() == "Staff Portal") {
 
             try {
 

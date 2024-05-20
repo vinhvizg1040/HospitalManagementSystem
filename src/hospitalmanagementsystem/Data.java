@@ -22,12 +22,22 @@ public class Data {
 
     public static String[] gender = {"Male", "Female", "Others"};
 
-    public static String[] status = {"Active", "Inactive", "Confirm"};
+    public static String[] status = {"Active", "Inactive", "Confirm","Deleted"};
 
     public static String[] specialization = {"Allergist", "Dermatologist", "Ophthalmologist", "Gynecologist", "Cardiologist"};
 
     public static Integer temp_PatientID;
     public static String temp_name;
+    public static String temp_insurance;
+    public static String temp_emergancyNumber;
+    public static String temp_ccid;
+    public static String temp_bloodGroup;
+    public static String temp_description;
+    public  static String temp_date_created;
+    public  static String temp_date_modified;
+    public  static String temp_date_deleted;
+
+
     public static String temp_gender;
     public static Long temp_number;
     public static String temp_address;
