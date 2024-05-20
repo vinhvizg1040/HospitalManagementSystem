@@ -13,9 +13,9 @@ import java.sql.Date;
  */
 public class AppointmentData {
 
-    private Integer id;
+//    private Integer id;
     private Integer appointmentID;
-    private Integer patientID;
+    private Long patientID;
     private String name;
     private String gender;
     private String description;
@@ -27,16 +27,20 @@ public class AppointmentData {
     private Date dateModify;
     private Date dateDelete;
     private String status;
-    private String doctorID;
-    private String specialized;
+    private Integer totalPay;
+    private String paymentStatus;
+    private Integer quantity;
     private Date schedule;
 
-    public AppointmentData(Integer id, Integer appointmentID, String name, String gender,
+    public AppointmentData(
+//            Integer id,
+                           Integer appointmentID, Long patientID, String name, String gender,
             Long mobileNumber, String description, String diagnosis, String treatment, String address,
-            String doctorID, String specialized,
-            Date date, Date dateModify, Date dateDelete, String status, Date schedule) {
-        this.id = id;
+            Date date, Date dateModify, Date dateDelete, String status, Integer totalPay,
+            String paymentStatus, Integer quantity, Date schedule) {
+//        this.id = id;
         this.appointmentID = appointmentID;
+        this.patientID = patientID;
         this.name = name;
         this.gender = gender;
         this.mobileNumber = mobileNumber;
@@ -44,20 +48,20 @@ public class AppointmentData {
         this.diagnosis = diagnosis;
         this.treatment = treatment;
         this.address = address;
-        this.doctorID = doctorID;
-        this.specialized = specialized;
         this.date = date;
         this.dateModify = dateModify;
         this.dateDelete = dateDelete;
         this.status = status;
         this.schedule = schedule;
-
+        this.totalPay = totalPay;
+        this.paymentStatus = paymentStatus;
+        this.quantity = quantity;
     }
 
     public AppointmentData(Integer appointmentID, String name, String gender,
             Long mobileNumber, String description, String diagnosis, String treatment, String address,
             Date date, Date dateModify, Date dateDelete, String status, Date schedule) {
-
+        this.patientID = patientID;
         this.appointmentID = appointmentID;
         this.name = name;
         this.gender = gender;
@@ -84,18 +88,17 @@ public class AppointmentData {
     }
 
     public AppointmentData(Integer appointmentID, String description,
-            String diagnosis, String treatment, String doctorID, Date schedule) {
+            String diagnosis, String treatment, Date schedule) {
         this.appointmentID = appointmentID;
         this.description = description;
         this.diagnosis = diagnosis;
         this.treatment = treatment;
-        this.doctorID = doctorID;
         this.schedule = schedule;
     }
 
-    public Integer getId() {
-        return id;
-    }
+//    public Integer getId() {
+//        return id;
+//    }
 
     public Integer getAppointmentID() {
         return appointmentID;
@@ -129,14 +132,6 @@ public class AppointmentData {
         return address;
     }
 
-    public String getDoctorID() {
-        return doctorID;
-    }
-
-    public String getSpecialized() {
-        return specialized;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -155,6 +150,22 @@ public class AppointmentData {
 
     public Date getSchedule() {
         return schedule;
+    }
+
+    public Long getPatientID() {
+        return patientID;
+    }
+
+    public Integer getTotalPay() {
+        return totalPay;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
     }
 
 }

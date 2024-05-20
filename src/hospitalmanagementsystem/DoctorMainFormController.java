@@ -916,8 +916,6 @@ public class DoctorMainFormController implements Initializable {
         }
 
         appointment_appointmentID.setText("" + appData.getAppointmentID());
-        appointment_name.setText(appData.getName());
-        appointment_gender.getSelectionModel().select(appData.getGender());
         appointment_mobileNumber.setText("" + appData.getMobileNumber());
         appointment_description.setText(appData.getDescription());
         appointment_diagnosis.setText(appData.getDiagnosis());
