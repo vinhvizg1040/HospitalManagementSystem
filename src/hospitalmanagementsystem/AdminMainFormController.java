@@ -21,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -33,10 +34,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -83,7 +82,8 @@ public class AdminMainFormController implements Initializable {
 
     @FXML
     private Button profile_btn;
-
+    @FXML
+    private Button services_btn;
     @FXML
     private AnchorPane dashboard_form;
     @FXML
@@ -122,7 +122,7 @@ public class AdminMainFormController implements Initializable {
     private TableColumn<DoctorData, String> dashboad_col_status;
 
     @FXML
-    private AnchorPane doctors_form;
+    public AnchorPane doctors_form;
     @FXML
     private DatePicker doctor_DOB;
     @FXML
@@ -193,15 +193,16 @@ public class AdminMainFormController implements Initializable {
     private TextField doctor_name;
 
     @FXML
-    private ComboBox<?> doctor_specialized;
+    private ComboBox<String> doctor_specialized;
 
     @FXML
     private AnchorPane doctors_addForm;
 
-
+    @FXML
+    private AnchorPane servicesPane;
 
     @FXML
-    private TableView<DoctorData> doctors_tableView;
+    public TableView<DoctorData> doctors_tableView;
 
     @FXML
     private TableColumn<DoctorData, String> doctors_col_doctorID;
@@ -566,7 +567,35 @@ public class AdminMainFormController implements Initializable {
 
     @FXML
     private AnchorPane patients_addForm;
+    @FXML
+    private TableView<Services> servicesTable;
+    @FXML
+    private TableColumn<Services, Integer> columnServiceId;
+    @FXML
+    private TableColumn<Services, String> columnServiceName;
+    @FXML
+    private TableColumn<Services, String> columnDescription;
+    @FXML
+    private TableColumn<Services, Double> columnPrice;
+    @FXML
+    private TableColumn<Services, Void> columnAction;
+    @FXML
+    private TextField service_name;
+    @FXML
+    private TextField service_description;
+    @FXML
+    private TextField service_price;
 
+    @FXML
+    private Button service_confirmBtn;
+    @FXML
+    private Button service_addBtn;
+    @FXML
+    private Button service_editBtn;
+    @FXML
+    private Button service_deleteBtn;
+
+    private ObservableList<Services> serviceList;
     @FXML
     private AnchorPane appointments_addForm;
 
@@ -808,17 +837,17 @@ String passwordShow = password_ShowPassword.getText();
  }
     private String[] specialization = {"Allergist", "Dermatologist", "Ophthalmologist", "Gynecologist", "Cardiologist"};
 
-    public void doctorSpecializedList() {
-
-        List<String> listS = new ArrayList<>();
-
-        for (String data : specialization) {
-            listS.add(data);
-        }
-
-        ObservableList listData = FXCollections.observableArrayList(listS);
-        doctor_specialized.setItems(listData);
-    }
+//    public void doctorSpecializedList() {
+//
+//        List<String> listS = new ArrayList<>();
+//
+//        for (String data : specialization) {
+//            listS.add(data);
+//        }
+//
+//        ObservableList listData = FXCollections.observableArrayList(listS);
+//        doctor_specialized.setItems(listData);
+//    }
     private void doctorGenderList() {
 
         List<String> listG = new ArrayList<>();
@@ -1028,8 +1057,7 @@ String passwordShow = password_ShowPassword.getText();
                                 return;
                             }
 
-                            String deleteData = "UPDATE doctor SET delete_date = ? WHERE doctor_id = '"
-                                    + pData.getDoctorID() + "'";
+                            String deleteData = "UPDATE doctor SET delete_date = ?, status = 'Deleted' WHERE doctor_id = ?";
 
                             try {
                                 if (alert.confirmationMessage("Are you sure you want to delete Doctor ID: " + pData.getDoctorID() + "?")) {
@@ -1037,16 +1065,20 @@ String passwordShow = password_ShowPassword.getText();
                                     Date date = new Date();
                                     java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
-                                    prepare.setString(1, String.valueOf(sqlDate));
-                                    prepare.executeUpdate();
+                                    prepare.setDate(1, sqlDate);
+                                    prepare.setString(2, pData.getDoctorID());
 
-                                    doctorGetData();
+                                    prepare.executeUpdate();
                                     alert.successMessage("Deleted Successfully!");
 
+                                    doctorGetData();
+                                    doctorDisplayData();
+                                    doctors_tableView.refresh();
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+
                         });
 
                         HBox manageBtn = new HBox(editButton, removeButton);
@@ -1292,7 +1324,7 @@ String passwordShow = password_ShowPassword.getText();
 //            Long mobileNumber, String description, String diagnosis, String treatment, String address,
 //            Date date, Date dateModify, Date dateDelete, String status, Date schedule)
                 aData = new AppointmentData(
-                        result.getInt("id"), 
+//                        result.getInt("id"),
                         result.getInt("appointment_id"),
                         result.getLong("patient_id"),
                         result.getString("name"), 
@@ -2165,6 +2197,8 @@ patients_PI_emergencyNumber.setText("");
             patients_addForm.setVisible(false);
             doctors_addForm.setVisible(false);
             appointments_addForm.setVisible(false);
+            servicesPane.setVisible(false);
+
 
 
             dashboardAD();
@@ -2184,6 +2218,7 @@ patients_PI_emergencyNumber.setText("");
             patients_addForm.setVisible(false);
             doctors_addForm.setVisible(false);
             appointments_addForm.setVisible(false);
+            servicesPane.setVisible(false);
 
 
             // TO DISPLAY IMMEDIATELY THE DATA OF DOCTORS IN TABLEVIEW
@@ -2201,6 +2236,7 @@ patients_PI_emergencyNumber.setText("");
             patients_addForm.setVisible(false);
             doctors_addForm.setVisible(false);
             appointments_addForm.setVisible(false);
+            servicesPane.setVisible(false);
 
 
             // TO DISPLAY IMMEDIATELY THE DATA OF PATIENTS IN TABLEVIEW
@@ -2217,6 +2253,7 @@ patients_PI_emergencyNumber.setText("");
             patients_addForm.setVisible(false);
             doctors_addForm.setVisible(false);
             appointments_addForm.setVisible(false);
+            servicesPane.setVisible(false);
 
 
             // TO DISPLAY IMMEDIATELY THE DATA OF APPOINTMENTS IN TABLEVIEW
@@ -2228,7 +2265,8 @@ patients_PI_emergencyNumber.setText("");
             doctors_form.setVisible(false);
             patients_form.setVisible(false);
             appointments_form.setVisible(false);
-            appointments_addForm.setVisible(false);
+            appointments_addForm.setVisible(false);            servicesPane.setVisible(false);
+
             profile_form.setVisible(false);
             patients_addForm.setVisible(false);
             payment_form.setVisible(true);
@@ -2237,7 +2275,7 @@ patients_PI_emergencyNumber.setText("");
 
             paymentDisplayData();
 
-            current_form.setText("Payment Form");
+            current_form.setText("Bill Form");
         } else if (event.getSource() == profile_btn) {
             dashboard_form.setVisible(false);
             doctors_form.setVisible(false);
@@ -2245,7 +2283,8 @@ patients_PI_emergencyNumber.setText("");
             appointments_form.setVisible(false);
             payment_form.setVisible(false);
             patients_addForm.setVisible(false);
-            appointments_addForm.setVisible(false);
+            appointments_addForm.setVisible(false);            servicesPane.setVisible(false);
+
             profile_form.setVisible(true);
             doctors_addForm.setVisible(false);
             appointments_addForm.setVisible(false);
@@ -2265,11 +2304,11 @@ patients_PI_emergencyNumber.setText("");
             appointments_addForm.setVisible(false);
             patients_addForm.setVisible(true);
             doctors_addForm.setVisible(false);
-            appointments_addForm.setVisible(false);
+            servicesPane.setVisible(false);
 
-            profileStatusList();
-            profileDisplayInfo();
-            profileDisplayImages();
+//            profileStatusList();
+//            profileDisplayInfo();
+//            profileDisplayImages();
 
             current_form.setText("Add New Patient Form");
         } else if (event.getSource() == addNewDoctor_btn) {
@@ -2283,10 +2322,11 @@ patients_PI_emergencyNumber.setText("");
             patients_addForm.setVisible(false);
             appointments_addForm.setVisible(false);
             doctors_addForm.setVisible(true);
+            servicesPane.setVisible(false);
 
-            profileStatusList();
-            profileDisplayInfo();
-            profileDisplayImages();
+//            profileStatusList();
+//            profileDisplayInfo();
+//            profileDisplayImages();
 
             current_form.setText("Add Doctor Form");
         }else if (event.getSource() == addNewAppointment_btn) {
@@ -2306,6 +2346,21 @@ patients_PI_emergencyNumber.setText("");
             profileDisplayImages();
 
             current_form.setText("Add Appointment Form");
+        }else if (event.getSource() == services_btn) {
+
+            dashboard_form.setVisible(false);
+            doctors_form.setVisible(false);
+            patients_form.setVisible(false);
+            appointments_form.setVisible(false);
+            payment_form.setVisible(false);
+            profile_form.setVisible(false);
+            patients_addForm.setVisible(false);
+            doctors_addForm.setVisible(false);
+            servicesPane.setVisible(true);
+
+
+
+            current_form.setText("Services Form");
         }
 
     }
@@ -2456,6 +2511,301 @@ patients_PI_emergencyNumber.setText("");
 
     }
 
+    //Services section
+    public ObservableList<Services> dashboardGetServiceData() {
+
+        ObservableList<Services> listData = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM services ";
+
+        Connection connect = Database.connectDB();
+
+        try {
+
+            PreparedStatement prepare = connect.prepareStatement(sql);
+            ResultSet result = prepare.executeQuery();
+
+            Services sData;
+
+            while (result.next()) {
+                sData = new Services(result.getInt("service_id"),
+                        result.getString("service_name"),
+                        result.getString("description"),
+                        result.getDouble("price"));
+
+                listData.add(sData);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listData;
+    }
+
+
+    public void getServiceData() {
+        serviceList = dashboardGetServiceData(); // Lấy dữ liệu từ cơ sở dữ liệu
+
+        // Chỉ định kiểu dữ liệu cụ thể cho mỗi trường
+        columnServiceId.setCellValueFactory(new PropertyValueFactory<>("serviceId"));
+        columnServiceName.setCellValueFactory(new PropertyValueFactory<>("serviceName"));
+        columnDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        columnPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        servicesTable.setItems(serviceList);
+    }
+
+
+    @FXML
+    private void addService() {
+        String name = service_name.getText();
+        String description = service_description.getText();
+        String priceText = service_price.getText();
+
+        if (name.isEmpty() || description.isEmpty() || priceText.isEmpty()) {
+            // Hiển thị thông báo lỗi nếu có trường nào đó là null hoặc trống
+            alert.errorMessage("Please fill in all fields.");
+        } else {
+            try {
+                double price = Double.parseDouble(priceText);
+
+                // Kết nối đến cơ sở dữ liệu
+                Connection connect = Database.connectDB();
+
+                // Tạo truy vấn SQL để chèn dữ liệu
+                String insertQuery = "INSERT INTO services (service_name, description, price) VALUES (?, ?, ?)";
+                PreparedStatement prepare = connect.prepareStatement(insertQuery);
+                prepare.setString(1, name);
+                prepare.setString(2, description);
+                prepare.setDouble(3, price);
+
+                // Thực thi truy vấn và kiểm tra kết quả
+                int rowsAffected = prepare.executeUpdate();
+                if (rowsAffected > 0) {
+                    // Nếu dữ liệu được chèn thành công, thêm vào danh sách và hiển thị thông báo thành công
+                    Services newService = new Services(serviceList.size() + 1, name, description, price);
+                    serviceList.add(newService);
+                    alert.successMessage("Service created successfully!");
+                } else {
+                    // Nếu không thành công, hiển thị thông báo lỗi
+                    alert.errorMessage("Failed to add service to database.");
+                }
+
+                // Đóng kết nối và truy vấn
+                prepare.close();
+                connect.close();
+            } catch (NumberFormatException e) {
+                // Hiển thị thông báo lỗi nếu giá trị giá không hợp lệ
+                alert.errorMessage("Invalid price format.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Hiển thị thông báo lỗi nếu có lỗi xảy ra trong quá trình thêm dữ liệu vào cơ sở dữ liệu
+                alert.errorMessage("Error adding service to database.");
+            }
+        }
+    }
+
+
+    @FXML
+    private void editService(Services service) {
+        Services selectedService = servicesTable.getSelectionModel().getSelectedItem();
+        if (selectedService != null) {
+            // Lấy các giá trị mới từ các TextField
+            String newName = service.getServiceName();
+            String newDescription = service.getDescription();
+            double newPrice = service.getPrice();
+            System.out.println(newPrice);
+            // Cập nhật dịch vụ trong cơ sở dữ liệu
+            String updateQuery = "UPDATE services SET service_name = ?, description = ?, price = ? WHERE service_id = ?";
+            Connection connect = null;
+            PreparedStatement prepare = null;
+
+            try {
+                connect = Database.connectDB();
+                prepare = connect.prepareStatement(updateQuery);
+
+                // Thiết lập giá trị cho preparedStatement
+                prepare.setString(1, newName);
+                prepare.setString(2, newDescription);
+                prepare.setDouble(3, newPrice);
+                prepare.setInt(4, selectedService.getServiceId());
+
+                int rowsUpdated = prepare.executeUpdate();
+
+                if (rowsUpdated > 0) {
+                    // Cập nhật thông tin trong bảng hiển thị
+                    selectedService.setServiceName(newName);
+                    selectedService.setDescription(newDescription);
+                    selectedService.setPrice(newPrice);
+                    servicesTable.refresh();
+
+                    // Hiển thị thông báo thành công
+                    alert.successMessage("Update successfull");
+                } else {
+                    // Hiển thị thông báo lỗi nếu không có hàng nào được cập nhật
+                    alert.errorMessage("Update Failed");
+
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Hiển thị thông báo lỗi
+                alert.errorMessage("Update Failed");
+
+            } finally {
+                // Đóng kết nối và preparedStatement
+                if (prepare != null) {
+                    try {
+                        prepare.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (connect != null) {
+                    try {
+                        connect.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+
+    @FXML
+    private void deleteService(Services service) {
+        Services selectedService = servicesTable.getSelectionModel().getSelectedItem();
+        if (selectedService != null) {
+            // Kết nối đến cơ sở dữ liệu
+            Connection connect = null;
+            PreparedStatement prepare = null;
+
+            try {
+                connect = Database.connectDB();
+
+                // Tạo truy vấn SQL để xóa dữ liệu
+                String deleteQuery = "DELETE FROM services WHERE service_id = ?";
+                prepare = connect.prepareStatement(deleteQuery);
+                prepare.setInt(1, selectedService.getServiceId());
+
+                // Thực thi truy vấn và kiểm tra kết quả
+                int rowsAffected = prepare.executeUpdate();
+                if (rowsAffected > 0) {
+                    // Nếu dữ liệu được xóa thành công, xóa khỏi danh sách và hiển thị thông báo thành công
+                    serviceList.remove(selectedService);
+                    alert.successMessage("Service deleted successfully!");
+                } else {
+                    // Nếu không thành công, hiển thị thông báo lỗi
+                    alert.errorMessage("Failed to delete service from database.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Hiển thị thông báo lỗi nếu có lỗi xảy ra trong quá trình xóa dữ liệu khỏi cơ sở dữ liệu
+                alert.errorMessage("Error deleting service from database.");
+            } finally {
+                // Đóng kết nối và truy vấn
+                if (prepare != null) {
+                    try {
+                        prepare.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (connect != null) {
+                    try {
+                        connect.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } else {
+            // Hiển thị thông báo nếu không có dịch vụ nào được chọn
+            alert.errorMessage("Please select a service to delete.");
+        }
+    }
+
+
+    @FXML
+    private void serviceConfirmBtn() {
+        if (service_name.getText().isEmpty()
+                || service_description.getText().isEmpty()
+                || service_price.getText().isEmpty()) {
+            alert.errorMessage("Please fill all blank fields");
+        } else {
+            try {
+                double price = Double.parseDouble(service_price.getText());
+                if (price <= 0) {
+                    alert.errorMessage("Price must be a positive number");
+                } else {
+                    Connection connect = Database.connectDB();
+                    try {
+                        // Tìm số thứ tự của bản ghi service cuối cùng trong cơ sở dữ liệu
+                        String lastServiceIDQuery = "SELECT MAX(service_id) AS last_service_id FROM services";
+                        Statement statement = connect.createStatement();
+                        ResultSet result = statement.executeQuery(lastServiceIDQuery);
+                        int lastServiceID = 0;
+                        if (result.next()) {
+                            lastServiceID = result.getInt("last_service_id");
+                        }
+
+                        // Tạo service mới
+                        int newServiceID = lastServiceID + 1;
+                        String name = service_name.getText();
+                        String description = service_description.getText();
+
+                        // Kiểm tra xem service_id mới đã tồn tại chưa
+                        String checkServiceID = "SELECT * FROM services WHERE service_id = ?";
+                        PreparedStatement prepare = connect.prepareStatement(checkServiceID);
+                        prepare.setInt(1, newServiceID);
+                        result = prepare.executeQuery();
+                        if (result.next()) {
+                            alert.errorMessage("Service ID " + newServiceID + " already exists");
+                        } else {
+                            // Thêm service mới vào cơ sở dữ liệu
+                            String insertService = "INSERT INTO services (service_id, service_name, description, price) VALUES (?, ?, ?, ?)";
+                            prepare = connect.prepareStatement(insertService);
+                            prepare.setInt(1, newServiceID);
+                            prepare.setString(2, name);
+                            prepare.setString(3, description);
+                            prepare.setDouble(4, price);
+                            prepare.executeUpdate();
+
+                            // Cập nhật bảng hiển thị
+                            Services newService = new Services(newServiceID, name, description, price);
+                            serviceList.add(newService);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (NumberFormatException e) {
+                alert.errorMessage("Invalid price format");
+            }
+        }
+    }
+    private void loadSpecializedServices() {
+        Connection connection = Database.connectDB();
+        ObservableList<String> specializedList = FXCollections.observableArrayList();
+
+        if (connection != null) {
+            try {
+                String query = "SELECT service_name FROM services";
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) {
+                    specializedList.add(resultSet.getString("service_name"));
+                }
+
+                doctor_specialized.setItems(specializedList);
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         runTime();
@@ -2474,7 +2824,8 @@ patients_PI_emergencyNumber.setText("");
         doctorDisplayData();
         doctorActionButton();
         doctorGenderList();
-        doctorSpecializedList();
+//        doctorSpecializedList();
+        loadSpecializedServices();
         // TO DISPLAY IMMEDIATELY THE DATA OF PATIENTS IN TABLEVIEW
         patientDisplayData();
         patientActionButton();
@@ -2497,8 +2848,89 @@ patients_PI_emergencyNumber.setText("");
                 }
             }
         });
-        
+
+        //Services
+        getServiceData();
+        columnAction.setCellFactory(param -> new TableCell<Services, Void>() {
+            private final Button editButton = new Button("Edit");
+            private final Button deleteButton = new Button("Delete");
+
+            {
+                // Define action for Edit button
+                editButton.setOnAction(event -> {
+                    Services service = getTableView().getItems().get(getIndex());
+                    // Handle Edit action here
+                    showAlert("Edit", service);
+                });
+
+                // Define action for Delete button
+                deleteButton.setOnAction(event -> {
+                    Services service = getTableView().getItems().get(getIndex());
+                    // Handle Delete action here
+                    deleteService(service);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    HBox buttons = new HBox(editButton, deleteButton);
+                    buttons.setSpacing(5);
+                    setGraphic(buttons);
+                }
+            }
+        });
     }
+
+    // Method to show alert for Edit action
+    private void showAlert(String action, Services service) {
+        // Tạo một GridPane để chứa các TextField
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(20));
+
+        // Tạo các TextField và gán giá trị từ đối tượng Services
+        TextField serviceNameField = new TextField(service.getServiceName());
+        TextField descriptionField = new TextField(service.getDescription());
+        TextField priceField = new TextField(String.valueOf(service.getPrice()));
+
+        // Thêm các TextField vào GridPane
+        gridPane.addRow(0, new Label("Service Name:"), serviceNameField);
+        gridPane.addRow(1, new Label("Description:"), descriptionField);
+        gridPane.addRow(2, new Label("Price:"), priceField);
+
+        // Tạo một cửa sổ Alert với layout là GridPane
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(action + " Service");
+        alert.setHeaderText(null);
+        alert.getDialogPane().setContent(gridPane);
+
+        // Thêm một nút "OK" và đặt hành động cho nút này
+        ButtonType okButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        alert.getButtonTypes().setAll(okButton);
+
+        // Xử lý hành động khi nhấn nút "OK"
+        Button okBtn = (Button) alert.getDialogPane().lookupButton(okButton);
+        okBtn.setOnAction(event -> {
+            // Gọi phương thức editService() với các giá trị mới từ các TextField
+            String newName = serviceNameField.getText();
+            String newDescription = descriptionField.getText();
+            double newPrice = Double.parseDouble(priceField.getText());
+            service.setServiceName(newName);
+            service.setDescription(newDescription);
+            service.setPrice(newPrice);
+            editService(service);
+        });
+
+        // Hiển thị cửa sổ Alert và chờ đợi người dùng tương tác
+        alert.showAndWait();
+    }
+
+
 
     // Định nghĩa hàm showPaymentDetail()
     // Định nghĩa hàm showPaymentDetail()
@@ -2576,6 +3008,7 @@ patients_PI_emergencyNumber.setText("");
             alert.setHeaderText(null);
             alert.setContentText("Payment status updated successfully!");
             alert.showAndWait();
+            payment_tableView.refresh();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -2603,6 +3036,7 @@ patients_PI_emergencyNumber.setText("");
             }
         }
     }
+
 }
 
 // THATS IT FOR THESE VIDEOS, THANKS FOR WATCHING
