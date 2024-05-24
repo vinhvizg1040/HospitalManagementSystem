@@ -848,7 +848,7 @@
                                  </AnchorPane>
                              </children>
                          </AnchorPane>
-                         <AnchorPane fx:id="appointments_addForm" layoutX="1.0" prefHeight="560.0" prefWidth="886.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                         <AnchorPane fx:id="appointments_addForm" layoutX="1.0" prefHeight="560.0" prefWidth="886.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
                                 <AnchorPane layoutX="7.0" layoutY="13.0" prefHeight="534.0" prefWidth="510.0" stylesheets="@../design/DoctorMainFormDesign.css" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="362.0" AnchorPane.topAnchor="13.0">
                                     <styleClass>
