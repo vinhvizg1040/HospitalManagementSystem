@@ -369,9 +369,6 @@ public class AdminMainFormController implements Initializable {
     private TextArea appointment_address;
 
     @FXML
-    private ComboBox<String> appointment_status;
-
-    @FXML
     private DatePicker appointment_schedule;
 
     @FXML
@@ -681,7 +678,7 @@ public class AdminMainFormController implements Initializable {
 
     public void dashboardTA() {
 
-        String sql = "SELECT COUNT(id) FROM appointment WHERE date_delete IS NULL";
+        String sql = "SELECT COUNT(appointment_id) FROM appointment WHERE date_delete IS NULL";
 
         connect = Database.connectDB();
 
@@ -1314,7 +1311,7 @@ public class AdminMainFormController implements Initializable {
 //            Long mobileNumber, String description, String diagnosis, String treatment, String address,
 //            Date date, Date dateModify, Date dateDelete, String status, Date schedule)
                 aData = new AppointmentData(
-                        result.getInt("appointment_id"),
+                        result.getString("appointment_id"),
                         result.getLong("patient_id"),
                         result.getString("name"),
                         result.getString("gender"),
@@ -1327,7 +1324,7 @@ public class AdminMainFormController implements Initializable {
                         result.getDate("date_modify"),
                         result.getDate("date_delete"),
                         result.getString("status"),
-                        result.getInt("total_pay"),
+                        result.getBigDecimal("total_pay"),
                         result.getString("payment_status"),
                         result.getInt("quantity"),
                         result.getDate("schedule"));
@@ -1402,14 +1399,14 @@ public class AdminMainFormController implements Initializable {
                                 }
 
                                 Data.temp_appID = String.valueOf(aData.getAppointmentID());
+                                Data.temp_patID = aData.getPatientID();
                                 Data.temp_appName = aData.getName();
                                 Data.temp_appGender = aData.getGender();
                                 Data.temp_appAddress = aData.getAddress();
                                 Data.temp_appDescription = aData.getDescription();
                                 Data.temp_appDiagnosis = aData.getDiagnosis();
                                 Data.temp_appTreatment = aData.getTreatment();
-                                Data.temp_appMobileNumber = String.valueOf(aData.getMobileNumber());
-                                Data.temp_appStatus = aData.getStatus();
+                                Data.temp_appMobileNumber = aData.getMobileNumber();
 
                                 // NOW LETS CREATE FXML FOR EDIT APPOINTMENT FORM
                                 Parent root = FXMLLoader.load(getClass().getResource("EditAppointmentForm.fxml"));
@@ -1444,9 +1441,11 @@ public class AdminMainFormController implements Initializable {
                                     prepare.setString(1, String.valueOf(sqlDate));
                                     prepare.executeUpdate();
 
-                                    doctorGetData();
                                     alert.successMessage("Deleted Successfully!");
 
+                                    appointmentGetData();
+                                    appointmentShowData();
+                                    appointments_tableView.refresh();
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -1461,7 +1460,6 @@ public class AdminMainFormController implements Initializable {
                     }
                 }
             };
-            doctorDisplayData();
             return cell;
         };
 
@@ -1638,7 +1636,6 @@ public class AdminMainFormController implements Initializable {
                 || appointment_mobileNumber.getText().isEmpty()
                 || appointment_description.getText().isEmpty()
                 || appointment_address.getText().isEmpty()
-                //|| appointment_status.getSelectionModel().getSelectedItem() == null
                 || appointment_schedule.getValue() == null) {
             alert.errorMessage("Please fill the blank fields");
         } else {
@@ -1684,7 +1681,6 @@ public class AdminMainFormController implements Initializable {
                 || appointment_mobileNumber.getText().isEmpty()
                 || appointment_description.getText().isEmpty()
                 || appointment_address.getText().isEmpty()
-                //|| appointment_status.getSelectionModel().getSelectedItem() == null
                 || appointment_schedule.getValue() == null) {
             alert.errorMessage("Please fill the blank fields");
         } else {
@@ -1720,12 +1716,11 @@ public class AdminMainFormController implements Initializable {
                     java.sql.Date sqlDate = new java.sql.Date(new Date().getTime());
 
                     prepare.setString(10, "" + sqlDate);
-                    prepare.setString(11, (String) appointment_status.getSelectionModel().getSelectedItem());
                     prepare.setString(12, "" + appointment_schedule.getValue());
 
                     prepare.executeUpdate();
 
-//                    appointmentShowData();
+                    appointmentShowData();
 //                    appointmentAppointmentID();
                     appointmentClearBtn();
                     alert.successMessage("Successully added!");
@@ -2072,7 +2067,7 @@ public class AdminMainFormController implements Initializable {
                     path = path.replace("\\", "\\\\");
                     Path transfer = Paths.get(path);
 
-                    Path copy = Paths.get("D:\\Aptech\\HK2\\Project\\code\\HospitalManagementSystem\\src\\Admin_Directory\\"
+                    Path copy = Paths.get("src\\Admin_Directory\\"
                             + Data.admin_id + ".jpg");
 
                     Files.copy(transfer, copy, StandardCopyOption.REPLACE_EXISTING);
@@ -2188,7 +2183,6 @@ public class AdminMainFormController implements Initializable {
             appointments_addForm.setVisible(false);
             servicesPane.setVisible(false);
 
-
             dashboardAD();
             dashboardTP();
             dashboardAP();
@@ -2243,14 +2237,15 @@ public class AdminMainFormController implements Initializable {
 
             // TO DISPLAY IMMEDIATELY THE DATA OF APPOINTMENTS IN TABLEVIEW
             appointmentDisplayData();
-
+            appointmentActionButton();
             current_form.setText("Appointment's Form");
         } else if (event.getSource() == payment_btn) {
             dashboard_form.setVisible(false);
             doctors_form.setVisible(false);
             patients_form.setVisible(false);
             appointments_form.setVisible(false);
-            appointments_addForm.setVisible(false);            servicesPane.setVisible(false);
+            appointments_addForm.setVisible(false);
+            servicesPane.setVisible(false);
 
             profile_form.setVisible(false);
             patients_addForm.setVisible(false);
@@ -2268,7 +2263,8 @@ public class AdminMainFormController implements Initializable {
             appointments_form.setVisible(false);
             payment_form.setVisible(false);
             patients_addForm.setVisible(false);
-            appointments_addForm.setVisible(false);            servicesPane.setVisible(false);
+            appointments_addForm.setVisible(false);
+            servicesPane.setVisible(false);
 
             profile_form.setVisible(true);
             doctors_addForm.setVisible(false);
@@ -2294,7 +2290,6 @@ public class AdminMainFormController implements Initializable {
 //            profileStatusList();
 //            profileDisplayInfo();
 //            profileDisplayImages();
-
             current_form.setText("Add New Patient Form");
         } else if (event.getSource() == addNewDoctor_btn) {
 
@@ -2312,7 +2307,6 @@ public class AdminMainFormController implements Initializable {
 //            profileStatusList();
 //            profileDisplayInfo();
 //            profileDisplayImages();
-
             current_form.setText("Add Doctor Form");
         } else if (event.getSource() == addNewAppointment_btn) {
 
@@ -2331,7 +2325,7 @@ public class AdminMainFormController implements Initializable {
             profileDisplayImages();
 
             current_form.setText("Add Appointment Form");
-        }else if (event.getSource() == services_btn) {
+        } else if (event.getSource() == services_btn) {
 
             dashboard_form.setVisible(false);
             doctors_form.setVisible(false);
@@ -2342,8 +2336,6 @@ public class AdminMainFormController implements Initializable {
             patients_addForm.setVisible(false);
             doctors_addForm.setVisible(false);
             servicesPane.setVisible(true);
-
-
 
             current_form.setText("Services Form");
         }
@@ -2428,7 +2420,6 @@ public class AdminMainFormController implements Initializable {
         appointment_treatment.clear();
         appointment_diagnosis.clear();
         appointment_address.clear();
-        appointment_status.getSelectionModel().clearSelection();
         appointment_schedule.setValue(null);
     }
 
@@ -2465,9 +2456,8 @@ public class AdminMainFormController implements Initializable {
     }
 
     public void registerAppointmentID() {
-        String appointmentID = "";
-        int tempID = 0;
-        String sql = "SELECT MAX(id) FROM appointment";
+        int appointmentCount = 0;
+        String sql = "SELECT COUNT(*) AS total_count FROM appointment";
 
         connect = Database.connectDB();
 
@@ -2477,17 +2467,10 @@ public class AdminMainFormController implements Initializable {
             result = prepare.executeQuery();
 
             if (result.next()) {
-                tempID = result.getInt(1);
+                appointmentCount = result.getInt("total_count");
             }
 
-            if (tempID == 0) {
-                tempID += 1;
-                appointmentID += tempID;
-            } else {
-                appointmentID += (tempID + 1);
-            }
-
-            appointment_appointmentID.setText(appointmentID);
+            appointment_appointmentID.setText("" + appointmentCount);
             appointment_appointmentID.setDisable(true);
 
         } catch (Exception e) {
@@ -2526,7 +2509,6 @@ public class AdminMainFormController implements Initializable {
         return listData;
     }
 
-
     public void getServiceData() {
         serviceList = dashboardGetServiceData(); // Lấy dữ liệu từ cơ sở dữ liệu
 
@@ -2538,7 +2520,6 @@ public class AdminMainFormController implements Initializable {
 
         servicesTable.setItems(serviceList);
     }
-
 
     @FXML
     private void addService() {
@@ -2588,7 +2569,6 @@ public class AdminMainFormController implements Initializable {
             }
         }
     }
-
 
     @FXML
     private void editService(Services service) {
@@ -2656,7 +2636,6 @@ public class AdminMainFormController implements Initializable {
         }
     }
 
-
     @FXML
     private void deleteService(Services service) {
         Services selectedService = servicesTable.getSelectionModel().getSelectedItem();
@@ -2709,7 +2688,6 @@ public class AdminMainFormController implements Initializable {
             alert.errorMessage("Please select a service to delete.");
         }
     }
-
 
     @FXML
     private void serviceConfirmBtn() {
@@ -2769,6 +2747,7 @@ public class AdminMainFormController implements Initializable {
             }
         }
     }
+
     private void loadSpecializedServices() {
         Connection connection = Database.connectDB();
         ObservableList<String> specializedList = FXCollections.observableArrayList();
@@ -2914,8 +2893,6 @@ public class AdminMainFormController implements Initializable {
         // Hiển thị cửa sổ Alert và chờ đợi người dùng tương tác
         alert.showAndWait();
     }
-
-
 
     // Định nghĩa hàm showPaymentDetail()
     // Định nghĩa hàm showPaymentDetail()

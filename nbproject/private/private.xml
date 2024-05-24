@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/G:/OneDrive/Documents/Coding/cl/HospitalManagementSystem/src/hospitalmanagementsystem/AppointmentData.java</file>
             <file>file:/G:/OneDrive/Documents/Coding/cl/HospitalManagementSystem/src/hospitalmanagementsystem/DoctorMainFormController.java</file>
             <file>file:/G:/OneDrive/Documents/Coding/cl/HospitalManagementSystem/src/hospitalmanagementsystem/AdminMainFormController.java</file>
-            <file>file:/G:/OneDrive/Documents/Coding/cl/HospitalManagementSystem/src/hospitalmanagementsystem/DoctorPageController.java</file>
-            <file>file:/G:/OneDrive/Documents/Coding/cl/HospitalManagementSystem/src/hospitalmanagementsystem/DoctorMainForm.fxml</file>
+            <file>file:/G:/OneDrive/Documents/Coding/cl/HospitalManagementSystem/src/hospitalmanagementsystem/EditAppointmentFormController.java</file>
+            <file>file:/G:/OneDrive/Documents/Coding/cl/HospitalManagementSystem/src/hospitalmanagementsystem/EditAppointmentDetailFormController.java</file>
         </group>
     </open-files>
 </project-private>

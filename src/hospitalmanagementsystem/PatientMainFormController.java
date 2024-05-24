@@ -307,7 +307,7 @@ public class PatientMainFormController implements Initializable {
             while (result.next()) {
 //                AppointmentData(Integer appointmentID, String description,
 //            String diagnosis, String treatment, String doctorID, Date schedule)
-                aData = new AppointmentData(result.getInt("appointment_id"),
+                aData = new AppointmentData(result.getString("appointment_id"),
                         result.getString("description"),
                         result.getString("diagnosis"), result.getString("treatment"),
 //                        result.getString("doctor"),
