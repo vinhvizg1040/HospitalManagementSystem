@@ -87,18 +87,13 @@
 <!--                              <FontAwesomeIconView glyphName="DASHBOARD" size="1.5em" />-->
                            </graphic>
                         </Button>
-                        <Button fx:id="patients_btn" layoutX="7.0" layoutY="240.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Patients">
-                           <graphic>
-<!--                              <FontAwesomeIconView glyphName="USERS" size="1.5em" />-->
-                           </graphic>
-                        </Button>
-                        <Button fx:id="appointments_btn" layoutX="7.0" layoutY="292.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Appointments">
+                        <Button fx:id="appointments_btn" layoutX="7.0" layoutY="235.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="43.0" prefWidth="200.0" styleClass="nav-btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Appointments">
                            <graphic>
 <!--                              <FontAwesomeIconView glyphName="CLIPBOARD" size="1.5em" />-->
                            </graphic>
                         </Button>
-                        <Label layoutX="13.0" layoutY="342.0" text="Profile" textFill="WHITE" />
-                        <Button fx:id="profile_btn" layoutX="7.0" layoutY="367.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Profile Setting">
+                        <Label layoutX="13.0" layoutY="285.0" prefHeight="23.0" prefWidth="34.0" text="Profile" textFill="WHITE" />
+                        <Button fx:id="profile_btn" layoutX="7.0" layoutY="312.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="35.0" prefWidth="200.0" styleClass="nav-btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Profile Setting">
                            <graphic>
 <!--                              <FontAwesomeIconView glyphName="COGS" size="1.5em" />-->
                            </graphic>

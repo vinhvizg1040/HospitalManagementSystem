@@ -31,6 +31,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -1190,6 +1191,9 @@ String passwordShow = password_ShowPassword.getText();
 
         patients_tableView.setItems(patientListData);
     }
+    @FXML
+    private TextField searchPatientByNameField;
+
 
     public void patientActionButton() {
 
@@ -1324,7 +1328,7 @@ String passwordShow = password_ShowPassword.getText();
 //            Long mobileNumber, String description, String diagnosis, String treatment, String address,
 //            Date date, Date dateModify, Date dateDelete, String status, Date schedule)
                 aData = new AppointmentData(
-//                        result.getInt("id"),
+                        result.getInt("id"),
                         result.getInt("appointment_id"),
                         result.getLong("patient_id"),
                         result.getString("name"), 
@@ -2341,9 +2345,9 @@ patients_PI_emergencyNumber.setText("");
             doctors_addForm.setVisible(false);
             appointments_addForm.setVisible(true);
             
-            profileStatusList();
-            profileDisplayInfo();
-            profileDisplayImages();
+//            profileStatusList();
+//            profileDisplayInfo();
+//            profileDisplayImages();
 
             current_form.setText("Add Appointment Form");
         }else if (event.getSource() == services_btn) {
@@ -2359,7 +2363,8 @@ patients_PI_emergencyNumber.setText("");
             servicesPane.setVisible(true);
 
 
-
+            getServiceData();
+            servicesTable.refresh();
             current_form.setText("Services Form");
         }
 
@@ -2566,36 +2571,55 @@ patients_PI_emergencyNumber.setText("");
             alert.errorMessage("Please fill in all fields.");
         } else {
             try {
+                // Kiểm tra xem priceText có phải là số và lớn hơn 0 không
                 double price = Double.parseDouble(priceText);
+                if (price <= 0) {
+                    alert.errorMessage("Price must be greater than 0.");
+                    return;
+                }
 
                 // Kết nối đến cơ sở dữ liệu
                 Connection connect = Database.connectDB();
 
-                // Tạo truy vấn SQL để chèn dữ liệu
-                String insertQuery = "INSERT INTO services (service_name, description, price) VALUES (?, ?, ?)";
-                PreparedStatement prepare = connect.prepareStatement(insertQuery);
-                prepare.setString(1, name);
-                prepare.setString(2, description);
-                prepare.setDouble(3, price);
+                // Kiểm tra sự tồn tại của service_name trong cơ sở dữ liệu
+                String checkQuery = "SELECT COUNT(*) FROM services WHERE service_name = ?";
+                PreparedStatement checkPrepare = connect.prepareStatement(checkQuery);
+                checkPrepare.setString(1, name);
+                ResultSet resultSet = checkPrepare.executeQuery();
 
-                // Thực thi truy vấn và kiểm tra kết quả
-                int rowsAffected = prepare.executeUpdate();
-                if (rowsAffected > 0) {
-                    // Nếu dữ liệu được chèn thành công, thêm vào danh sách và hiển thị thông báo thành công
-                    Services newService = new Services(serviceList.size() + 1, name, description, price);
-                    serviceList.add(newService);
-                    alert.successMessage("Service created successfully!");
+                if (resultSet.next() && resultSet.getInt(1) > 0) {
+                    // Nếu service_name đã tồn tại, hiển thị thông báo lỗi
+                    alert.errorMessage("Service name already exists.");
                 } else {
-                    // Nếu không thành công, hiển thị thông báo lỗi
-                    alert.errorMessage("Failed to add service to database.");
+                    // Nếu service_name chưa tồn tại, tiếp tục thêm dịch vụ mới vào cơ sở dữ liệu
+                    String insertQuery = "INSERT INTO services (service_name, description, price) VALUES (?, ?, ?)";
+                    PreparedStatement prepare = connect.prepareStatement(insertQuery);
+                    prepare.setString(1, name);
+                    prepare.setString(2, description);
+                    prepare.setDouble(3, price);
+
+                    // Thực thi truy vấn và kiểm tra kết quả
+                    int rowsAffected = prepare.executeUpdate();
+                    if (rowsAffected > 0) {
+                        // Nếu dữ liệu được chèn thành công, thêm vào danh sách và hiển thị thông báo thành công
+                        getServiceData();
+                        servicesTable.refresh();
+                        alert.successMessage("Service created successfully!");
+                    } else {
+                        // Nếu không thành công, hiển thị thông báo lỗi
+                        alert.errorMessage("Failed to add service to database.");
+                    }
+
+                    // Đóng truy vấn chèn
+                    prepare.close();
                 }
 
-                // Đóng kết nối và truy vấn
-                prepare.close();
+                // Đóng kết nối và truy vấn kiểm tra
+                checkPrepare.close();
                 connect.close();
             } catch (NumberFormatException e) {
                 // Hiển thị thông báo lỗi nếu giá trị giá không hợp lệ
-                alert.errorMessage("Invalid price format.");
+                alert.errorMessage("Invalid price format. Price must be a number.");
             } catch (SQLException e) {
                 e.printStackTrace();
                 // Hiển thị thông báo lỗi nếu có lỗi xảy ra trong quá trình thêm dữ liệu vào cơ sở dữ liệu
@@ -2603,6 +2627,7 @@ patients_PI_emergencyNumber.setText("");
             }
         }
     }
+
 
 
     @FXML
@@ -2806,6 +2831,53 @@ patients_PI_emergencyNumber.setText("");
         }
     }
 
+    public void searchDoctorByName(KeyEvent keyEvent) {
+        String searchKeyword = ((TextField) keyEvent.getSource()).getText().trim();
+        System.out.println(searchKeyword);
+        ObservableList<DoctorData> searchResultdoctor = searchDoctorByNameInDatabase(searchKeyword);
+        // Cập nhật TableView để hiển thị kết quả tìm kiếm
+        updateDoctorTableView(searchResultdoctor);
+    }
+
+    // Hàm tìm kiếm bệnh nhân trong cơ sở dữ liệu
+    private ObservableList<DoctorData> searchDoctorByNameInDatabase(String name) {
+        ObservableList<DoctorData> searchResult = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM doctor WHERE full_name LIKE ?";
+
+//        connect = Database.connectDB();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            prepare.setString(1, "%" + name + "%");
+            result = prepare.executeQuery();
+            while (result.next()) {
+
+
+                while (result.next()) {
+                    DoctorData dData = new DoctorData(result.getInt("id"), result.getString("doctor_id"),
+                            result.getString("password"), result.getString("full_name"),
+                            result.getString("email"), result.getString("gender"),
+                            result.getLong("mobile_number"), result.getString("specialized"),
+                            result.getString("address"), result.getString("image"),
+                            result.getDate("date"), result.getDate("date_created"), result.getDate("modify_date"),
+                            result.getDate("delete_date"), result.getString("status"));
+
+                    searchResult.add(dData);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+//            closeConnection();
+        }
+
+        return searchResult;
+    }
+    private void updateDoctorTableView(ObservableList<DoctorData> list) {
+        doctors_tableView.setItems(list);
+
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         runTime();
@@ -3036,6 +3108,80 @@ patients_PI_emergencyNumber.setText("");
             }
         }
     }
+
+    public void searchPatientByName(KeyEvent keyEvent) {
+        String searchKeyword = ((TextField) keyEvent.getSource()).getText().trim();
+        System.out.println(searchKeyword);
+
+        ObservableList<PatientsData> searchResult = searchPatientByNameInDatabase(searchKeyword);
+        // Cập nhật TableView để hiển thị kết quả tìm kiếm
+        updatePatientTableView(searchResult);
+    }
+
+    // Hàm tìm kiếm bệnh nhân trong cơ sở dữ liệu
+    private ObservableList<PatientsData> searchPatientByNameInDatabase(String name) {
+        ObservableList<PatientsData> searchResult = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM patient WHERE full_name LIKE ?";
+
+        connect = Database.connectDB();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            prepare.setString(1, "%" + name + "%");
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                PatientsData pData = new PatientsData(
+                        result.getInt("id"),
+                        result.getInt("patient_id"),
+                        result.getString("password"),
+                        result.getString("full_name"),
+                        result.getLong("mobile_number"),
+                        result.getString("gender"),
+                        result.getString("address"),
+                        result.getString("image"),
+                        result.getString("description"),
+                        result.getString("diagnosis"),
+                        result.getString("treatment"),
+                        result.getDate("date"),
+                        result.getDate("date_modify"),
+                        result.getDate("date_delete"),
+                        result.getString("status"),
+                        result.getLong("patients_EmergencyNumber"),
+                        result.getString("patients_ccid"),
+                        result.getString("patients_bloodGroup"),
+                        result.getString("patients_insurance"),
+                        result.getDate("date_created")
+                );
+                searchResult.add(pData);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+
+        return searchResult;
+    }
+
+
+    private void updatePatientTableView(ObservableList<PatientsData> list) {
+        patients_tableView.setItems(list);
+
+    }
+    // Đóng kết nối
+    private void closeConnection() {
+        try {
+            if (result != null) result.close();
+            if (prepare != null) prepare.close();
+            if (connect != null) connect.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 }
 

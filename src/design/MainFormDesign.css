@@ -40,6 +40,11 @@ and open the template in the editor.
 .bg-color-1{
     -fx-background-color: linear-gradient(to bottom right, #188ba7, #306090);
 }
+.btn-color-1 {
+    -fx-background-color: linear-gradient(to bottom right, #188ba7, #306090);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
 
 .bg-color-2{
     -fx-background-color: linear-gradient(to bottom right, #a413a1, #64308e);
