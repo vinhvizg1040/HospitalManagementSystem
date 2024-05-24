@@ -36,6 +36,7 @@ public class AppointmentData {
             Long mobileNumber, String description, String diagnosis, String treatment, String address,
             Date date, Date dateModify, Date dateDelete, String status, BigDecimal totalPay,
             String paymentStatus, Integer quantity, Date schedule) {
+        this.id = id;
         this.appointmentID = appointmentID;
         this.patientID = patientID;
         this.name = name;
@@ -93,6 +94,9 @@ public class AppointmentData {
         this.schedule = schedule;
     }
 
+    public Integer getId() {
+        return id;
+    }
 
     public String getAppointmentID() {
         return appointmentID;
