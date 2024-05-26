@@ -25,15 +25,23 @@ public class AppointmentData {
     private Date date;
     private Date dateModify;
     private Date dateDelete;
+<<<<<<< Updated upstream
     private String status;
     private Integer totalPay;
+=======
+    private BigDecimal totalPay;
+>>>>>>> Stashed changes
     private String paymentStatus;
     private Integer quantity;
     private Date schedule;
 
     public AppointmentData(Integer appointmentID, Long patientID, String name, String gender,
             Long mobileNumber, String description, String diagnosis, String treatment, String address,
+<<<<<<< Updated upstream
             Date date, Date dateModify, Date dateDelete, String status, Integer totalPay,
+=======
+            Date date, Date dateModify, Date dateDelete, BigDecimal totalPay,
+>>>>>>> Stashed changes
             String paymentStatus, Integer quantity, Date schedule) {
         this.appointmentID = appointmentID;
         this.patientID = patientID;
@@ -47,7 +55,6 @@ public class AppointmentData {
         this.date = date;
         this.dateModify = dateModify;
         this.dateDelete = dateDelete;
-        this.status = status;
         this.schedule = schedule;
         this.totalPay = totalPay;
         this.paymentStatus = paymentStatus;
@@ -56,9 +63,9 @@ public class AppointmentData {
 
     public AppointmentData(Integer appointmentID, String name, String gender,
             Long mobileNumber, String description, String diagnosis, String treatment, String address,
-            Date date, Date dateModify, Date dateDelete, String status, Date schedule) {
-        this.patientID = patientID;
+            Date date, Date dateModify, Date dateDelete, Date schedule) {
         this.appointmentID = appointmentID;
+        this.patientID = patientID;
         this.name = name;
         this.gender = gender;
         this.mobileNumber = mobileNumber;
@@ -69,18 +76,21 @@ public class AppointmentData {
         this.date = date;
         this.dateModify = dateModify;
         this.dateDelete = dateDelete;
-        this.status = status;
         this.schedule = schedule;
 
     }
 
+<<<<<<< Updated upstream
     public AppointmentData(Integer appointmentID, String name,
             String description, Date date, String status) {
+=======
+    public AppointmentData(String appointmentID, String name,
+            String description, Date date) {
+>>>>>>> Stashed changes
         this.appointmentID = appointmentID;
         this.name = name;
         this.description = description;
         this.date = date;
-        this.status = status;
     }
 
     public AppointmentData(Integer appointmentID, String description,
@@ -135,10 +145,6 @@ public class AppointmentData {
 
     public Date getDateDelete() {
         return dateDelete;
-    }
-
-    public String getStatus() {
-        return status;
     }
 
     public Date getSchedule() {

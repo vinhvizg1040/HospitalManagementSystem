@@ -445,19 +445,27 @@ public class DoctorMainFormController implements Initializable {
 
     }
 
-//    // TO CLEAR ALL FIELDS
-//    public void appointmentClearBtn() {
-//        appointment_appointmentID.clear();
-//        appointment_name.clear();
-//        appointment_gender.getSelectionModel().clearSelection();
-//        appointment_mobileNumber.clear();
-//        appointment_description.clear();
-//        appointment_treatment.clear();
-//        appointment_diagnosis.clear();
-//        appointment_address.clear();
-//        appointment_status.getSelectionModel().clearSelection();
-//        appointment_schedule.setValue(null);
-//    }
+    // TO CLEAR ALL FIELDS
+    public void appointmentClearBtn() {
+        appointments_service_appointmentID.setText("");
+        appointments_service_patientID.setText("");
+        appointments_service_diagnosis.clear();
+        appointments_service_treatment.clear();
+        appointments_service_description.clear();
+        appointment_service.getSelectionModel().clearSelection();
+        appointments_service_redate.setValue(null);
+
+        appointments_appointmentID.clear();
+        appointments_patients_name.setText("");
+        appointments_mobileNumber.setText("");
+        appointments_patients_gender.setText("");
+        appointments_patients_address.setText("");
+
+        appointments_diagnosis.setText("");
+        appointments_treatment.setText("");
+        appointments_description.setText("");
+    }
+
     private Integer appointmentID;
 
     public void appointmentGetAppointmentID() {
@@ -553,16 +561,22 @@ public class DoctorMainFormController implements Initializable {
                 statement = connect.createStatement();
                 result = statement.executeQuery(getAppointment);
                 if (result.next()) {
-                    // TO DISPLAY THE DATA FROM PERSONAL ACCOUNT 
-                    appointments_service_appointmentID.setText(appointments_appointmentID.getText());
-                    appointments_service_patientID.setText(result.getString("patient_id"));
-                    appointments_patients_name.setText(result.getString("name"));
-                    appointments_patients_gender.setText(result.getString("gender"));
-                    appointments_mobileNumber.setText(result.getString("mobile_number"));
-                    appointments_patients_address.setText(result.getString("address"));
-                    appointments_diagnosis.setText(result.getString("diagnosis"));
-                    appointments_treatment.setText(result.getString("treatment"));
-                    appointments_description.setText(result.getString("description"));
+                    if (result.getString("payment_status").equals("Paid")) {
+                        alert.errorMessage(appointments_appointmentID.getText() + " have been paid");
+                    } else if (result.getDate("date_delete") != null) {
+                        alert.errorMessage(appointments_appointmentID.getText() + " have been deleted");
+                    } else {
+                        // TO DISPLAY THE DATA FROM PERSONAL ACCOUNT 
+                        appointments_service_appointmentID.setText(appointments_appointmentID.getText());
+                        appointments_service_patientID.setText(result.getString("patient_id"));
+                        appointments_patients_name.setText(result.getString("name"));
+                        appointments_patients_gender.setText(result.getString("gender"));
+                        appointments_mobileNumber.setText(result.getString("mobile_number"));
+                        appointments_patients_address.setText(result.getString("address"));
+                        appointments_diagnosis.setText(result.getString("diagnosis"));
+                        appointments_treatment.setText(result.getString("treatment"));
+                        appointments_description.setText(result.getString("description"));
+                    }
                 } else {
                     alert.errorMessage(appointments_appointmentID.getText() + " is not exist");
                 }
@@ -600,6 +614,7 @@ public class DoctorMainFormController implements Initializable {
             prepare.setString(5, appointments_service_diagnosis.getText());
             prepare.setString(6, appointments_service_treatment.getText());
             //Default of doctor: 
+<<<<<<< Updated upstream
             prepare.setString(7, "Pending");
             prepare.setString(8, "" + appointments_service_redate.getValue());
             prepare.setString(9, "" + Data.doctor_id);
@@ -609,10 +624,216 @@ public class DoctorMainFormController implements Initializable {
 //            appointmentShowData();
 //            appointmentAppointmentID();
 //            appointmentClearBtn();
+=======
+            prepare.setString(8, "Pending");
+
+            LocalDate selectedDate = appointments_service_redate.getValue();
+            prepare.setString(9, selectedDate != null ? selectedDate.toString() : null);
+
+            prepare.setString(10, "" + Data.doctor_id);
+
+            prepare.executeUpdate();
+
+            //update serives on appointment
+            updatePriceAppointment("insert", price, appointments_service_appointmentID.getText());
+
+            appointmentShowData();
+            appointmentClearBtn();
+>>>>>>> Stashed changes
             alert.successMessage("Successully added!");
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    public void updatePriceAppointment(String status, double price, String appointment_id) {
+        try {
+            // Establish database connection
+            connect = Database.connectDB();
+
+            if ("insert".equals(status)) {
+                String sql = "UPDATE appointment SET quantity = quantity + 1, total_pay = total_pay + ? WHERE appointment_id = ?";
+                prepare = connect.prepareStatement(sql);
+                prepare.setDouble(1, price);
+                prepare.setString(2, appointment_id);
+
+            } else if ("delete".equals(status)) {
+                String sql = "UPDATE appointment SET quantity = quantity - 1, total_pay = total_pay - ? WHERE appointment_id = ?";
+                prepare = connect.prepareStatement(sql);
+                prepare.setDouble(1, price);
+                prepare.setString(2, appointment_id);
+            } else {
+                System.out.println("Status is not 'insert' or 'delete', no update performed.");
+                return;
+            }
+
+            // Execute the update
+            int rowsUpdated = prepare.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Update successful!");
+            } else {
+                System.out.println("No appointment found with the given id.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Double getServicePrice(int service_id) {
+        String selectData = "SELECT price FROM services WHERE service_id ="
+                + service_id;
+        Double price = null;
+        connect = Database.connectDB();
+        PreparedStatement pricePreparedStatement;
+        try {
+            pricePreparedStatement = connect.prepareStatement(selectData);
+            ResultSet rs;
+            rs = pricePreparedStatement.executeQuery();
+
+            if (rs.next()) {
+                price = rs.getDouble("price");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return price;
+    }
+
+    public void loadServicesData() {
+        List<String> services = new ArrayList<>();
+
+        String selectData = "SELECT * FROM services";
+
+        connect = Database.connectDB();
+        try {
+            prepare = connect.prepareStatement(selectData);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                String name = result.getString("service_name");
+                int id = result.getInt("service_id");
+                serviceMap.put(name, id);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ObservableList listData = FXCollections.observableArrayList(serviceMap.keySet());
+
+        appointment_service.setItems(listData);
+    }
+
+    private ObservableList<AppointmentDetailData> appointmentListData;
+
+    public void appointmentActionButton() {
+
+        connect = Database.connectDB();
+        appointmentListData = appointmentGetData();
+
+        Callback<TableColumn<AppointmentDetailData, String>, TableCell<AppointmentDetailData, String>> cellFactory = (TableColumn<AppointmentDetailData, String> param) -> {
+            final TableCell<AppointmentDetailData, String> cell = new TableCell<AppointmentDetailData, String>() {
+                public void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty) {
+                        setGraphic(null);
+                        setText(null);
+                    } else {
+                        Button editButton = new Button("Edit");
+                        Button removeButton = new Button("Delete");
+
+                        editButton.setStyle("-fx-background-color: linear-gradient(to bottom right, #188ba7, #306090);\n"
+                                + "    -fx-cursor: hand;\n"
+                                + "    -fx-text-fill: #fff;\n"
+                                + "    -fx-font-size: 14px;\n"
+                                + "    -fx-font-family: Arial;");
+
+                        removeButton.setStyle("-fx-background-color: linear-gradient(to bottom right, #188ba7, #306090);\n"
+                                + "    -fx-cursor: hand;\n"
+                                + "    -fx-text-fill: #fff;\n"
+                                + "    -fx-font-size: 14px;\n"
+                                + "    -fx-font-family: Arial;");
+
+                        editButton.setOnAction((ActionEvent event) -> {
+                            try {
+
+                                AppointmentDetailData aData = appointments_tableView.getSelectionModel().getSelectedItem();
+                                int num = appointments_tableView.getSelectionModel().getSelectedIndex();
+
+                                if ((num - 1) < -1) {
+                                    alert.errorMessage("Please select item first");
+                                    return;
+                                }
+
+                                Data.temp_appDID = String.valueOf(aData.getAppointmentDetailID());
+                                Data.temp_appID = aData.getAppointmentID();
+                                Data.temp_serviceID = aData.getServiceID();
+                                Data.temp_appDate = aData.getDate();
+                                Data.temp_appDescription = aData.getDescription();
+                                Data.temp_appDiagnosis = aData.getDiagnosis();
+                                Data.temp_appTreatment = aData.getTreatment();
+                                Data.temp_appReDate = aData.getReExamDate();
+
+                                // NOW LETS CREATE FXML FOR EDIT APPOINTMENT FORM
+                                Parent root = FXMLLoader.load(getClass().getResource("EditAppointmentDetailForm.fxml"));
+                                Stage stage = new Stage();
+
+                                stage.setScene(new Scene(root));
+                                stage.show();
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        removeButton.setOnAction((ActionEvent event) -> {
+                            AppointmentDetailData aData = appointments_tableView.getSelectionModel().getSelectedItem();
+                            int num = appointments_tableView.getSelectionModel().getSelectedIndex();
+
+                            if ((num - 1) < -1) {
+                                alert.errorMessage("Please select item first");
+                                return;
+                            }
+
+                            String deleteData = "DELETE FROM appointment_detail WHERE appointment_detail_id = '"
+                                    + aData.getAppointmentDetailID() + "'";
+
+                            try {
+                                if (alert.confirmationMessage("Are you sure you want to delete Appointment ID: " + aData.getAppointmentDetailID() + "?")) {
+                                    prepare = connect.prepareStatement(deleteData);
+
+                                    prepare.executeUpdate();
+
+                                    updatePriceAppointment("delete", getServicePrice(aData.getServiceID()), aData.getAppointmentID());
+
+                                    alert.successMessage("Deleted Successfully!");
+
+                                    appointmentGetData();
+                                    appointmentShowData();
+                                    appointments_tableView.refresh();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        HBox manageBtn = new HBox(editButton, removeButton);
+                        manageBtn.setAlignment(Pos.CENTER);
+                        manageBtn.setSpacing(5);
+                        setGraphic(manageBtn);
+                        setText(null);
+                    }
+                }
+            };
+            appointmentShowData();
+            return cell;
+        };
+
+        appointments_action.setCellFactory(cellFactory);
+        appointments_tableView.setItems(appointmentListData);
+    }
+
+>>>>>>> Stashed changes
     public void profileUpdateBtn() {
 
         connect = Database.connectDB();

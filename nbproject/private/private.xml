@@ -6,8 +6,13 @@
             <file>file:/G:/OneDrive/Documents/Coding/cl/HospitalManagementSystem/src/hospitalmanagementsystem/AppointmentData.java</file>
             <file>file:/G:/OneDrive/Documents/Coding/cl/HospitalManagementSystem/src/hospitalmanagementsystem/DoctorMainFormController.java</file>
             <file>file:/G:/OneDrive/Documents/Coding/cl/HospitalManagementSystem/src/hospitalmanagementsystem/AdminMainFormController.java</file>
+<<<<<<< Updated upstream
             <file>file:/G:/OneDrive/Documents/Coding/cl/HospitalManagementSystem/src/hospitalmanagementsystem/DoctorPageController.java</file>
             <file>file:/G:/OneDrive/Documents/Coding/cl/HospitalManagementSystem/src/hospitalmanagementsystem/DoctorMainForm.fxml</file>
+=======
+            <file>file:/G:/OneDrive/Documents/Coding/cl/HospitalManagementSystem/src/hospitalmanagementsystem/AppointmentDetailData.java</file>
+            <file>file:/G:/OneDrive/Documents/Coding/cl/HospitalManagementSystem/src/hospitalmanagementsystem/EditAppointmentDetailFormController.java</file>
+>>>>>>> Stashed changes
         </group>
     </open-files>
 </project-private>
