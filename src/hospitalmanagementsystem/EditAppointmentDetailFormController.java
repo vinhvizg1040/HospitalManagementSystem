@@ -101,7 +101,9 @@ public class EditAppointmentDetailFormController implements Initializable {
                     prepare.setString(1, editApp_description.getText());
                     prepare.setString(2, editApp_diagnosis.getText());
                     prepare.setString(3, editApp_treatment.getText());
-                    prepare.setString(4, "" + editApp_redate.getValue());
+                    
+                    LocalDate selectedDate = editApp_redate.getValue();
+                    prepare.setString(4, selectedDate != null ? selectedDate.toString() : null);
 
                     int serviceId = serviceMap.get(editApp_service.getSelectionModel().getSelectedItem());
                     double price = getServicePrice(serviceId);
@@ -109,6 +111,9 @@ public class EditAppointmentDetailFormController implements Initializable {
                     prepare.setInt(5, serviceId);
                     prepare.setDouble(6, price);
                     prepare.executeUpdate();
+
+                    updatePriceAppointment(Data.temp_serviceID, price, Data.temp_appID);
+
                     alert.successMessage("Updated Successfully!");
                 } else {
                     alert.errorMessage("Cancelled.");
@@ -117,6 +122,30 @@ public class EditAppointmentDetailFormController implements Initializable {
                 e.printStackTrace();
             }
 
+        }
+    }
+
+    public void updatePriceAppointment(int service_id, double new_price, String appointment_id) {
+        try {
+            // Establish database connection
+            connect = Database.connectDB();
+
+            String sql = "UPDATE appointment SET total_pay = total_pay - ? + ? WHERE appointment_id = ?";
+            double oldPrice = getServicePrice(service_id);
+            prepare = connect.prepareStatement(sql);
+            prepare.setDouble(1, oldPrice);
+            prepare.setDouble(2, new_price);
+            prepare.setString(3, appointment_id);
+
+            // Execute the update
+            int rowsUpdated = prepare.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Update successful!");
+            } else {
+                System.out.println("No appointment found with the given id.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -131,11 +160,17 @@ public class EditAppointmentDetailFormController implements Initializable {
         editApp_treatment.setText(Data.temp_appTreatment);
         editApp_create_date.setText(String.valueOf(Data.temp_appDate));
 
-        // Chuyển đổi Date sang LocalDate
-        LocalDate localDate = Instant.ofEpochMilli(Data.temp_appReDate.getTime())
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        editApp_redate.setValue(localDate);
+        if (Data.temp_appReDate != null) {
+            // Chuyển đổi Date sang LocalDate
+            LocalDate localDate = Instant.ofEpochMilli(Data.temp_appReDate.getTime())
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            editApp_redate.setValue(localDate);
+        } else {
+            // Xử lý khi Data.temp_appReDate là null
+            editApp_redate.setValue(null); // Hoặc một giá trị mặc định khác nếu cần
+        }
+
         setDefaultService(Data.temp_serviceID);
     }
 

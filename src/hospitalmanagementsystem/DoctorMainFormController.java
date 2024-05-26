@@ -6,7 +6,6 @@
 package hospitalmanagementsystem;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -99,6 +98,9 @@ public class DoctorMainFormController implements Initializable {
 
     @FXML
     private AnchorPane dashboard_form;
+
+    @FXML
+    private Label dashboard_IP;
 
     @FXML
     private Label dashboard_TP;
@@ -268,6 +270,8 @@ public class DoctorMainFormController implements Initializable {
     @FXML
     private Button profile_updateBtn;
 
+    private Map<String, Integer> serviceMap = new HashMap<>();
+
 //    DATABASE TOOLSs
     private Connection connect;
     private PreparedStatement prepare;
@@ -276,12 +280,28 @@ public class DoctorMainFormController implements Initializable {
 
     private Image image;
 
-    private Map<String, Integer> serviceMap = new HashMap<>();
-
     private final AlertMessage alert = new AlertMessage();
 
+    public void dashbboardDisplayIP() {
+        String sql = "SELECT COUNT(id) FROM patient WHERE status = 'Inactive' AND doctor = '"
+                + Data.doctor_id + "'";
+        connect = Database.connectDB();
+        int getIP = 0;
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                getIP = result.getInt("COUNT(id)");
+            }
+            dashboard_IP.setText(String.valueOf(getIP));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void dashbboardDisplayTP() {
-        String sql = "SELECT COUNT(id) FROM appointment_detail WHERE doctor = '"
+        String sql = "SELECT COUNT(id) FROM patient WHERE doctor = '"
                 + Data.doctor_id + "'";
         connect = Database.connectDB();
         int getTP = 0;
@@ -368,9 +388,9 @@ public class DoctorMainFormController implements Initializable {
         dashboardGetData = dashboardAppointmentTableView();
 
         dashboad_col_appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
-        dashboad_col_date.setCellValueFactory(new PropertyValueFactory<>("name"));
+        dashboad_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
         dashboad_col_description.setCellValueFactory(new PropertyValueFactory<>("description"));
-        dashboad_col_redate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        dashboad_col_redate.setCellValueFactory(new PropertyValueFactory<>("reExamDate"));
 
         dashboad_tableView.setItems(dashboardGetData);
     }
@@ -379,11 +399,8 @@ public class DoctorMainFormController implements Initializable {
 
         dashboad_chart_PD.getData().clear();
 
-//        String sql = "SELECT date, COUNT(id) FROM patient WHERE doctor = '"
-//                + Data.doctor_id + "' GROUP BY TIMESTAMP(date) ASC LIMIT 8";
-        String sql = "SELECT TOP 8 [date], COUNT(id) FROM patient WHERE doctor = '"
-                + Data.doctor_id + "' GROUP BY [date] ORDER BY [date] ASC";
-
+        String sql = "SELECT date, COUNT(id) FROM patient WHERE doctor = '"
+                + Data.doctor_id + "' GROUP BY TIMESTAMP(date) ASC LIMIT 8";
         connect = Database.connectDB();
 
         try {
@@ -407,11 +424,8 @@ public class DoctorMainFormController implements Initializable {
 
         dashboad_chart_DD.getData().clear();
 
-//        String sql = "SELECT date, COUNT(id) FROM appointment WHERE doctor = '"
-//                + Data.doctor_id + "' GROUP BY TIMESTAMP(date) ASC LIMIT 7";
-        String sql = "SELECT TOP 7 [date], COUNT(id) FROM appointment WHERE doctor = '"
-                + Data.doctor_id + "' GROUP BY [date] ORDER BY [date] ASC";
-
+        String sql = "SELECT date, COUNT(id) FROM appointment WHERE doctor = '"
+                + Data.doctor_id + "' GROUP BY TIMESTAMP(date) ASC LIMIT 7";
         connect = Database.connectDB();
 
         try {
@@ -431,19 +445,27 @@ public class DoctorMainFormController implements Initializable {
 
     }
 
-//    // TO CLEAR ALL FIELDS
-//    public void appointmentClearBtn() {
-//        appointment_appointmentID.clear();
-//        appointment_name.clear();
-//        appointment_gender.getSelectionModel().clearSelection();
-//        appointment_mobileNumber.clear();
-//        appointment_description.clear();
-//        appointment_treatment.clear();
-//        appointment_diagnosis.clear();
-//        appointment_address.clear();
-//        appointment_status.getSelectionModel().clearSelection();
-//        appointment_schedule.setValue(null);
-//    }
+    // TO CLEAR ALL FIELDS
+    public void appointmentClearBtn() {
+        appointments_service_appointmentID.setText("");
+        appointments_service_patientID.setText("");
+        appointments_service_diagnosis.clear();
+        appointments_service_treatment.clear();
+        appointments_service_description.clear();
+        appointment_service.getSelectionModel().clearSelection();
+        appointments_service_redate.setValue(null);
+
+        appointments_appointmentID.clear();
+        appointments_patients_name.setText("");
+        appointments_mobileNumber.setText("");
+        appointments_patients_gender.setText("");
+        appointments_patients_address.setText("");
+
+        appointments_diagnosis.setText("");
+        appointments_treatment.setText("");
+        appointments_description.setText("");
+    }
+
     private Integer appointmentID;
 
     public void appointmentGetAppointmentID() {
@@ -541,16 +563,22 @@ public class DoctorMainFormController implements Initializable {
                 statement = connect.createStatement();
                 result = statement.executeQuery(getAppointment);
                 if (result.next()) {
-                    // TO DISPLAY THE DATA FROM PERSONAL ACCOUNT 
-                    appointments_service_appointmentID.setText(appointments_appointmentID.getText());
-                    appointments_service_patientID.setText(result.getString("patient_id"));
-                    appointments_patients_name.setText(result.getString("name"));
-                    appointments_patients_gender.setText(result.getString("gender"));
-                    appointments_mobileNumber.setText(result.getString("mobile_number"));
-                    appointments_patients_address.setText(result.getString("address"));
-                    appointments_diagnosis.setText(result.getString("diagnosis"));
-                    appointments_treatment.setText(result.getString("treatment"));
-                    appointments_description.setText(result.getString("description"));
+                    if (result.getString("payment_status").equals("Paid")) {
+                        alert.errorMessage(appointments_appointmentID.getText() + " have been paid");
+                    } else if (result.getDate("date_delete") != null) {
+                        alert.errorMessage(appointments_appointmentID.getText() + " have been deleted");
+                    } else {
+                        // TO DISPLAY THE DATA FROM PERSONAL ACCOUNT 
+                        appointments_service_appointmentID.setText(appointments_appointmentID.getText());
+                        appointments_service_patientID.setText(result.getString("patient_id"));
+                        appointments_patients_name.setText(result.getString("name"));
+                        appointments_patients_gender.setText(result.getString("gender"));
+                        appointments_mobileNumber.setText(result.getString("mobile_number"));
+                        appointments_patients_address.setText(result.getString("address"));
+                        appointments_diagnosis.setText(result.getString("diagnosis"));
+                        appointments_treatment.setText(result.getString("treatment"));
+                        appointments_description.setText(result.getString("description"));
+                    }
                 } else {
                     alert.errorMessage(appointments_appointmentID.getText() + " is not exist");
                 }
@@ -565,19 +593,18 @@ public class DoctorMainFormController implements Initializable {
         if (appointments_service_appointmentID.getText().isEmpty()
                 || appointments_service_patientID.getText().isEmpty()
                 || appointments_service_diagnosis.getText().isEmpty()
-                || appointments_service_treatment.getText().isEmpty()
-                || appointment_service.getSelectionModel().getSelectedItem() == null) {
+                || appointments_service_treatment.getText().isEmpty() //                || appointment_service.getSelectionModel().getSelectedItem() == null
+                ) {
             alert.errorMessage("Please fill the blank fields");
         } else {
             Date date = new Date();
             java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
             String insertData = "INSERT INTO appointment_detail (appointment_id, service_id"
-                    + ", date, price, description, diagnosis, treatment, payment_status"
-                    + ", re_examination_date, doctor) "
+                    + ", date, description, diagnosis, treatment, payment_status"
+                    + ", re_examination_date, doctor, price) "
                     + "VALUES(?,?,?,?,?,?,?,?,?,?)";
             prepare = connect.prepareStatement(insertData);
-
             prepare.setString(1, appointments_service_appointmentID.getText());
 
             int serviceId = serviceMap.get(appointment_service.getSelectionModel().getSelectedItem());
@@ -585,21 +612,56 @@ public class DoctorMainFormController implements Initializable {
 
             prepare.setInt(2, serviceId);
             prepare.setString(3, "" + sqlDate);
-            prepare.setDouble(4, price);
-            prepare.setString(5, appointments_service_description.getText());
-            prepare.setString(6, appointments_service_diagnosis.getText());
-            prepare.setString(7, appointments_service_treatment.getText());
+            prepare.setString(4, appointments_service_description.getText());
+            prepare.setString(5, appointments_service_diagnosis.getText());
+            prepare.setString(6, appointments_service_treatment.getText());
             //Default of doctor: 
-            prepare.setString(8, "Pending");
-            prepare.setString(9, "" + appointments_service_redate.getValue());
-            prepare.setString(10, "" + Data.doctor_id);
+            prepare.setString(7, "Pending");
+            LocalDate selectedDate = appointments_service_redate.getValue();
+            prepare.setString(8, selectedDate != null ? selectedDate.toString() : null);
 
+            prepare.setString(9, "" + Data.doctor_id);
+            prepare.setDouble(10, price);
             prepare.executeUpdate();
+            //update serives on appointment
+            updatePriceAppointment("insert", price, appointments_service_appointmentID.getText());
 
-            appointmentShowData();
-//            appointmentAppointmentID();
-//            appointmentClearBtn();
+//            appointmentShowData();
+            appointmentClearBtn();
             alert.successMessage("Successully added!");
+        }
+    }
+
+    public void updatePriceAppointment(String status, double price, String appointment_id) {
+        try {
+            // Establish database connection
+            connect = Database.connectDB();
+
+            if ("insert".equals(status)) {
+                String sql = "UPDATE appointment SET quantity = quantity + 1, total_pay = total_pay + ? WHERE appointment_id = ?";
+                prepare = connect.prepareStatement(sql);
+                prepare.setDouble(1, price);
+                prepare.setString(2, appointment_id);
+
+            } else if ("delete".equals(status)) {
+                String sql = "UPDATE appointment SET quantity = quantity - 1, total_pay = total_pay - ? WHERE appointment_id = ?";
+                prepare = connect.prepareStatement(sql);
+                prepare.setDouble(1, price);
+                prepare.setString(2, appointment_id);
+            } else {
+                System.out.println("Status is not 'insert' or 'delete', no update performed.");
+                return;
+            }
+
+            // Execute the update
+            int rowsUpdated = prepare.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Update successful!");
+            } else {
+                System.out.println("No appointment found with the given id.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -728,8 +790,10 @@ public class DoctorMainFormController implements Initializable {
 
                                     prepare.executeUpdate();
 
+                                    updatePriceAppointment("delete", getServicePrice(aData.getServiceID()), aData.getAppointmentID());
+
                                     alert.successMessage("Deleted Successfully!");
-                                    
+
                                     appointmentGetData();
                                     appointmentShowData();
                                     appointments_tableView.refresh();
@@ -747,12 +811,12 @@ public class DoctorMainFormController implements Initializable {
                     }
                 }
             };
+            appointmentShowData();
             return cell;
         };
 
         appointments_action.setCellFactory(cellFactory);
         appointments_tableView.setItems(appointmentListData);
-
     }
 
     public void profileUpdateBtn() {
@@ -813,7 +877,7 @@ public class DoctorMainFormController implements Initializable {
                     Path transfer = Paths.get(path);
 
                     // LINK YOUR DIRECTORY FOLDER
-                    Path copy = Paths.get("src\\Directory\\"
+                    Path copy = Paths.get("D:\\Aptech\\HK2\\Project\\code\\HospitalManagementSystem\\src\\Directory\\"
                             + Data.doctor_id + ".jpg");
 
                     try {
@@ -992,7 +1056,6 @@ public class DoctorMainFormController implements Initializable {
             appointments_form.setVisible(true);
             profile_form.setVisible(false);
             appointments_addForm.setVisible(false);
-
             appointmentShowData();
             appointmentActionButton();
         } else if (event.getSource() == profile_btn) {
@@ -1064,6 +1127,7 @@ public class DoctorMainFormController implements Initializable {
         displayAdminIDNumberName();
         runTime();
 
+        dashbboardDisplayIP();
         dashbboardDisplayTP();
         dashbboardDisplayAP();
         dashbboardDisplayTA();
