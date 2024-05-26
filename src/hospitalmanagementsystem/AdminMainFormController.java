@@ -32,6 +32,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -1174,11 +1175,9 @@ public class AdminMainFormController implements Initializable {
 
         patients_tableView.setItems(patientListData);
     }
-<<<<<<< Updated upstream
-=======
+    
     @FXML
     private TextField searchPatientByNameField;
->>>>>>> Stashed changes
 
     public void patientActionButton() {
 
@@ -1313,7 +1312,7 @@ public class AdminMainFormController implements Initializable {
 //            Long mobileNumber, String description, String diagnosis, String treatment, String address,
 //            Date date, Date dateModify, Date dateDelete, String status, Date schedule)
                 aData = new AppointmentData(
-                        result.getInt("appointment_id"),
+                        result.getString("appointment_id"),
                         result.getLong("patient_id"),
                         result.getString("name"),
                         result.getString("gender"),
@@ -1325,12 +1324,7 @@ public class AdminMainFormController implements Initializable {
                         result.getDate("date"),
                         result.getDate("date_modify"),
                         result.getDate("date_delete"),
-<<<<<<< Updated upstream
-                        result.getString("status"),
-                        result.getInt("total_pay"),
-=======
                         result.getBigDecimal("total_pay"),
->>>>>>> Stashed changes
                         result.getString("payment_status"),
                         result.getInt("quantity"),
                         result.getDate("schedule"));
@@ -1411,7 +1405,6 @@ public class AdminMainFormController implements Initializable {
                                 Data.temp_appDiagnosis = aData.getDiagnosis();
                                 Data.temp_appTreatment = aData.getTreatment();
                                 Data.temp_appMobileNumber = String.valueOf(aData.getMobileNumber());
-                                Data.temp_appStatus = aData.getStatus();
 
                                 // NOW LETS CREATE FXML FOR EDIT APPOINTMENT FORM
                                 Parent root = FXMLLoader.load(getClass().getResource("EditAppointmentForm.fxml"));
@@ -1449,12 +1442,9 @@ public class AdminMainFormController implements Initializable {
                                     doctorGetData();
                                     alert.successMessage("Deleted Successfully!");
 
-<<<<<<< Updated upstream
-=======
                                     appointmentGetData();
                                     appointmentDisplayData();
                                     appointments_tableView.refresh();
->>>>>>> Stashed changes
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -1469,11 +1459,7 @@ public class AdminMainFormController implements Initializable {
                     }
                 }
             };
-<<<<<<< Updated upstream
-            doctorDisplayData();
-=======
             appointmentDisplayData();
->>>>>>> Stashed changes
             return cell;
         };
 
@@ -1731,22 +1717,12 @@ public class AdminMainFormController implements Initializable {
                     java.sql.Date sqlDate = new java.sql.Date(new Date().getTime());
 
                     prepare.setString(10, "" + sqlDate);
-<<<<<<< Updated upstream
-                    prepare.setString(11, (String) appointment_status.getSelectionModel().getSelectedItem());
-                    prepare.setString(12, "" + appointment_schedule.getValue());
-
-                    prepare.executeUpdate();
-
-//                    appointmentShowData();
-//                    appointmentAppointmentID();
-=======
                     prepare.setString(11, "" + appointment_schedule.getValue());
                     prepare.setString(12, "Pending");
                     prepare.setDouble(13, 0);
                     prepare.setInt(14, 0);
                     prepare.executeUpdate();
 
->>>>>>> Stashed changes
                     appointmentClearBtn();
                     appointments_tableView.refresh();
 
@@ -2346,17 +2322,10 @@ public class AdminMainFormController implements Initializable {
             doctors_addForm.setVisible(false);
             appointments_addForm.setVisible(true);
 
-<<<<<<< Updated upstream
-            profileStatusList();
-            profileDisplayInfo();
-            profileDisplayImages();
-
-=======
             registerAppointmentID();
 //            profileStatusList();
 //            profileDisplayInfo();
 //            profileDisplayImages();
->>>>>>> Stashed changes
             current_form.setText("Add Appointment Form");
         }else if (event.getSource() == services_btn) {
 
@@ -2370,13 +2339,8 @@ public class AdminMainFormController implements Initializable {
             doctors_addForm.setVisible(false);
             servicesPane.setVisible(true);
 
-<<<<<<< Updated upstream
-
-
-=======
             getServiceData();
             servicesTable.refresh();
->>>>>>> Stashed changes
             current_form.setText("Services Form");
         }
 
@@ -2489,40 +2453,6 @@ public class AdminMainFormController implements Initializable {
             }
             appointmentID = "AID-" + tempAppID;
 
-<<<<<<< Updated upstream
-    public void appointmentAppointmentID() {
-        appointmentGetAppointmentID();
-
-        appointment_appointmentID.setText("" + appointmentID);
-        appointment_appointmentID.setDisable(true);
-
-    }
-
-    public void registerAppointmentID() {
-        String appointmentID = "";
-        int tempID = 0;
-        String sql = "SELECT MAX(id) FROM appointment";
-
-        connect = Database.connectDB();
-
-        try {
-
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
-
-            if (result.next()) {
-                tempID = result.getInt(1);
-            }
-
-            if (tempID == 0) {
-                tempID += 1;
-                appointmentID += tempID;
-            } else {
-                appointmentID += (tempID + 1);
-            }
-
-=======
->>>>>>> Stashed changes
             appointment_appointmentID.setText(appointmentID);
             appointment_appointmentID.setDisable(true);
         } catch (Exception e) {
@@ -2623,10 +2553,6 @@ public class AdminMainFormController implements Initializable {
         }
     }
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
     @FXML
     private void editService(Services service) {
         Services selectedService = servicesTable.getSelectionModel().getSelectedItem();
@@ -2828,8 +2754,6 @@ public class AdminMainFormController implements Initializable {
         }
     }
 
-<<<<<<< Updated upstream
-=======
     public void searchDoctorByName(KeyEvent keyEvent) {
         String searchKeyword = ((TextField) keyEvent.getSource()).getText().trim();
         System.out.println(searchKeyword);
@@ -2877,7 +2801,6 @@ public class AdminMainFormController implements Initializable {
 
     }
 
->>>>>>> Stashed changes
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         runTime();
@@ -3109,8 +3032,6 @@ public class AdminMainFormController implements Initializable {
         }
     }
 
-<<<<<<< Updated upstream
-=======
     public void searchPatientByName(KeyEvent keyEvent) {
         String searchKeyword = ((TextField) keyEvent.getSource()).getText().trim();
         System.out.println(searchKeyword);
@@ -3189,7 +3110,6 @@ public class AdminMainFormController implements Initializable {
         }
     }
 
->>>>>>> Stashed changes
 }
 
 // THATS IT FOR THESE VIDEOS, THANKS FOR WATCHING

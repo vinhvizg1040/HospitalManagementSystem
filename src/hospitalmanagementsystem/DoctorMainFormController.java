@@ -614,17 +614,6 @@ public class DoctorMainFormController implements Initializable {
             prepare.setString(5, appointments_service_diagnosis.getText());
             prepare.setString(6, appointments_service_treatment.getText());
             //Default of doctor: 
-<<<<<<< Updated upstream
-            prepare.setString(7, "Pending");
-            prepare.setString(8, "" + appointments_service_redate.getValue());
-            prepare.setString(9, "" + Data.doctor_id);
-
-            prepare.executeUpdate();
-
-//            appointmentShowData();
-//            appointmentAppointmentID();
-//            appointmentClearBtn();
-=======
             prepare.setString(8, "Pending");
 
             LocalDate selectedDate = appointments_service_redate.getValue();
@@ -639,13 +628,10 @@ public class DoctorMainFormController implements Initializable {
 
             appointmentShowData();
             appointmentClearBtn();
->>>>>>> Stashed changes
             alert.successMessage("Successully added!");
         }
     }
 
-<<<<<<< Updated upstream
-=======
     public void updatePriceAppointment(String status, double price, String appointment_id) {
         try {
             // Establish database connection
@@ -833,7 +819,6 @@ public class DoctorMainFormController implements Initializable {
         appointments_tableView.setItems(appointmentListData);
     }
 
->>>>>>> Stashed changes
     public void profileUpdateBtn() {
 
         connect = Database.connectDB();

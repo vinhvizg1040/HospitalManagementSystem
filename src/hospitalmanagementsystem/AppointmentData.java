@@ -5,6 +5,7 @@
  */
 package hospitalmanagementsystem;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
@@ -13,7 +14,7 @@ import java.sql.Date;
  */
 public class AppointmentData {
 
-    private Integer appointmentID;
+    private String appointmentID;
     private Long patientID;
     private String name;
     private String gender;
@@ -25,23 +26,14 @@ public class AppointmentData {
     private Date date;
     private Date dateModify;
     private Date dateDelete;
-<<<<<<< Updated upstream
-    private String status;
-    private Integer totalPay;
-=======
     private BigDecimal totalPay;
->>>>>>> Stashed changes
     private String paymentStatus;
     private Integer quantity;
     private Date schedule;
 
-    public AppointmentData(Integer appointmentID, Long patientID, String name, String gender,
+    public AppointmentData(String appointmentID, Long patientID, String name, String gender,
             Long mobileNumber, String description, String diagnosis, String treatment, String address,
-<<<<<<< Updated upstream
-            Date date, Date dateModify, Date dateDelete, String status, Integer totalPay,
-=======
             Date date, Date dateModify, Date dateDelete, BigDecimal totalPay,
->>>>>>> Stashed changes
             String paymentStatus, Integer quantity, Date schedule) {
         this.appointmentID = appointmentID;
         this.patientID = patientID;
@@ -61,7 +53,7 @@ public class AppointmentData {
         this.quantity = quantity;
     }
 
-    public AppointmentData(Integer appointmentID, String name, String gender,
+    public AppointmentData(String appointmentID, String name, String gender,
             Long mobileNumber, String description, String diagnosis, String treatment, String address,
             Date date, Date dateModify, Date dateDelete, Date schedule) {
         this.appointmentID = appointmentID;
@@ -80,20 +72,15 @@ public class AppointmentData {
 
     }
 
-<<<<<<< Updated upstream
-    public AppointmentData(Integer appointmentID, String name,
-            String description, Date date, String status) {
-=======
     public AppointmentData(String appointmentID, String name,
             String description, Date date) {
->>>>>>> Stashed changes
         this.appointmentID = appointmentID;
         this.name = name;
         this.description = description;
         this.date = date;
     }
 
-    public AppointmentData(Integer appointmentID, String description,
+    public AppointmentData(String appointmentID, String description,
             String diagnosis, String treatment, Date schedule) {
         this.appointmentID = appointmentID;
         this.description = description;
@@ -103,7 +90,7 @@ public class AppointmentData {
     }
 
 
-    public Integer getAppointmentID() {
+    public String getAppointmentID() {
         return appointmentID;
     }
 
@@ -155,7 +142,7 @@ public class AppointmentData {
         return patientID;
     }
 
-    public Integer getTotalPay() {
+    public BigDecimal getTotalPay() {
         return totalPay;
     }
 
