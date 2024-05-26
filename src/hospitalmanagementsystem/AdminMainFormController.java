@@ -364,9 +364,6 @@ public class AdminMainFormController implements Initializable {
     private TextArea appointment_address;
 
     @FXML
-    private ComboBox<String> appointment_status;
-
-    @FXML
     private DatePicker appointment_schedule;
 
     @FXML
@@ -1175,7 +1172,7 @@ public class AdminMainFormController implements Initializable {
 
         patients_tableView.setItems(patientListData);
     }
-    
+
     @FXML
     private TextField searchPatientByNameField;
 
@@ -1398,13 +1395,14 @@ public class AdminMainFormController implements Initializable {
                                 }
 
                                 Data.temp_appID = String.valueOf(aData.getAppointmentID());
+                                Data.temp_patID = aData.getPatientID();
                                 Data.temp_appName = aData.getName();
                                 Data.temp_appGender = aData.getGender();
                                 Data.temp_appAddress = aData.getAddress();
                                 Data.temp_appDescription = aData.getDescription();
                                 Data.temp_appDiagnosis = aData.getDiagnosis();
                                 Data.temp_appTreatment = aData.getTreatment();
-                                Data.temp_appMobileNumber = String.valueOf(aData.getMobileNumber());
+                                Data.temp_appMobileNumber = aData.getMobileNumber();
 
                                 // NOW LETS CREATE FXML FOR EDIT APPOINTMENT FORM
                                 Parent root = FXMLLoader.load(getClass().getResource("EditAppointmentForm.fxml"));
@@ -1634,9 +1632,7 @@ public class AdminMainFormController implements Initializable {
         if (appointment_appointmentID.getText().isEmpty()
                 || appointment_patientID.getText().isEmpty()
                 || appointment_mobileNumber.getText().isEmpty()
-                || appointment_address.getText().isEmpty()
-                //|| appointment_status.getSelectionModel().getSelectedItem() == null
-                || appointment_schedule.getValue() == null) {
+                || appointment_address.getText().isEmpty()) {
             alert.errorMessage("Please fill the blank fields");
         } else {
             Date date = new Date();
@@ -1680,9 +1676,7 @@ public class AdminMainFormController implements Initializable {
                 || appointment_patientID.getText().isEmpty()
                 || appointment_mobileNumber.getText().isEmpty()
                 || appointment_description.getText().isEmpty()
-                || appointment_address.getText().isEmpty()
-                //|| appointment_status.getSelectionModel().getSelectedItem() == null
-                || appointment_schedule.getValue() == null) {
+                || appointment_address.getText().isEmpty()) {
             alert.errorMessage("Please fill the blank fields");
         } else {
             String checkAppointmentID = "SELECT * FROM appointment WHERE appointment_id = '"
@@ -1717,13 +1711,16 @@ public class AdminMainFormController implements Initializable {
                     java.sql.Date sqlDate = new java.sql.Date(new Date().getTime());
 
                     prepare.setString(10, "" + sqlDate);
-                    prepare.setString(11, "" + appointment_schedule.getValue());
+                    
+                    LocalDate selectedDate = appointment_schedule.getValue();
+                    prepare.setString(11, selectedDate != null ? selectedDate.toString() : null);
                     prepare.setString(12, "Pending");
                     prepare.setDouble(13, 0);
                     prepare.setInt(14, 0);
                     prepare.executeUpdate();
 
                     appointmentClearBtn();
+                    registerAppointmentID();
                     appointments_tableView.refresh();
 
                     alert.successMessage("Successully added!");
@@ -2184,7 +2181,6 @@ public class AdminMainFormController implements Initializable {
             appointments_addForm.setVisible(false);
             servicesPane.setVisible(false);
 
-
             dashboardAD();
             dashboardTP();
             dashboardAP();
@@ -2246,7 +2242,8 @@ public class AdminMainFormController implements Initializable {
             doctors_form.setVisible(false);
             patients_form.setVisible(false);
             appointments_form.setVisible(false);
-            appointments_addForm.setVisible(false);            servicesPane.setVisible(false);
+            appointments_addForm.setVisible(false);
+            servicesPane.setVisible(false);
 
             profile_form.setVisible(false);
             patients_addForm.setVisible(false);
@@ -2264,7 +2261,8 @@ public class AdminMainFormController implements Initializable {
             appointments_form.setVisible(false);
             payment_form.setVisible(false);
             patients_addForm.setVisible(false);
-            appointments_addForm.setVisible(false);            servicesPane.setVisible(false);
+            appointments_addForm.setVisible(false);
+            servicesPane.setVisible(false);
 
             profile_form.setVisible(true);
             doctors_addForm.setVisible(false);
@@ -2290,7 +2288,6 @@ public class AdminMainFormController implements Initializable {
 //            profileStatusList();
 //            profileDisplayInfo();
 //            profileDisplayImages();
-
             current_form.setText("Add New Patient Form");
         } else if (event.getSource() == addNewDoctor_btn) {
 
@@ -2308,7 +2305,6 @@ public class AdminMainFormController implements Initializable {
 //            profileStatusList();
 //            profileDisplayInfo();
 //            profileDisplayImages();
-
             current_form.setText("Add Doctor Form");
         } else if (event.getSource() == addNewAppointment_btn) {
 
@@ -2327,7 +2323,7 @@ public class AdminMainFormController implements Initializable {
 //            profileDisplayInfo();
 //            profileDisplayImages();
             current_form.setText("Add Appointment Form");
-        }else if (event.getSource() == services_btn) {
+        } else if (event.getSource() == services_btn) {
 
             dashboard_form.setVisible(false);
             doctors_form.setVisible(false);
@@ -2424,7 +2420,6 @@ public class AdminMainFormController implements Initializable {
         appointment_treatment.clear();
         appointment_diagnosis.clear();
         appointment_address.clear();
-        appointment_status.getSelectionModel().clearSelection();
         appointment_schedule.setValue(null);
 
         appontments_PA_patientID.setText("");
@@ -2490,7 +2485,6 @@ public class AdminMainFormController implements Initializable {
         return listData;
     }
 
-
     public void getServiceData() {
         serviceList = dashboardGetServiceData(); // Lấy dữ liệu từ cơ sở dữ liệu
 
@@ -2502,7 +2496,6 @@ public class AdminMainFormController implements Initializable {
 
         servicesTable.setItems(serviceList);
     }
-
 
     @FXML
     private void addService() {
@@ -2619,7 +2612,6 @@ public class AdminMainFormController implements Initializable {
         }
     }
 
-
     @FXML
     private void deleteService(Services service) {
         Services selectedService = servicesTable.getSelectionModel().getSelectedItem();
@@ -2672,7 +2664,6 @@ public class AdminMainFormController implements Initializable {
             alert.errorMessage("Please select a service to delete.");
         }
     }
-
 
     @FXML
     private void serviceConfirmBtn() {
@@ -2732,6 +2723,7 @@ public class AdminMainFormController implements Initializable {
             }
         }
     }
+
     private void loadSpecializedServices() {
         Connection connection = Database.connectDB();
         ObservableList<String> specializedList = FXCollections.observableArrayList();
@@ -2924,8 +2916,6 @@ public class AdminMainFormController implements Initializable {
         // Hiển thị cửa sổ Alert và chờ đợi người dùng tương tác
         alert.showAndWait();
     }
-
-
 
     // Định nghĩa hàm showPaymentDetail()
     // Định nghĩa hàm showPaymentDetail()

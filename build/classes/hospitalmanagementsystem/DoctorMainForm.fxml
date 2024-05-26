@@ -74,7 +74,7 @@
                                     </font>
                                 </Label>
                                 <Label layoutX="21.0" layoutY="110.0" text="Full Name:" textFill="WHITE" />
-                                <Label fx:id="nav_username" layoutX="83.0" layoutY="109.0" prefHeight="17.0" prefWidth="117.0" text="marcoman" textFill="WHITE">
+                                <Label fx:id="nav_username" layoutX="94.0" layoutY="109.0" prefHeight="19.0" prefWidth="106.0" text="marcoman" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="13.0" />
                                     </font>
@@ -87,13 +87,13 @@
                                         <!--                              <FontAwesomeIconView glyphName="DASHBOARD" size="1.5em" />-->
                                     </graphic>
                                 </Button>
-                                <Button fx:id="appointments_btn" layoutX="7.0" layoutY="292.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Appointments">
+                                <Button fx:id="appointments_btn" layoutX="7.0" layoutY="248.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Appointments">
                                     <graphic>
                                         <!--                              <FontAwesomeIconView glyphName="CLIPBOARD" size="1.5em" />-->
                                     </graphic>
                                 </Button>
-                                <Label layoutX="13.0" layoutY="342.0" text="Profile" textFill="WHITE" />
-                                <Button fx:id="profile_btn" layoutX="7.0" layoutY="367.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Profile Setting">
+                                <Label layoutX="13.0" layoutY="298.0" text="Profile" textFill="WHITE" />
+                                <Button fx:id="profile_btn" layoutX="7.0" layoutY="323.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn-2" stylesheets="@../design/DoctorMainFormDesign.css" text="Profile Setting">
                                     <graphic>
                                         <!--                              <FontAwesomeIconView glyphName="COGS" size="1.5em" />-->
                                     </graphic>
@@ -124,25 +124,6 @@
                                                                     </styleClass>
                                                                     <children>
                                                                         <!--                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />-->
-                                                                        <Label fx:id="dashboard_IP" alignment="CENTER_RIGHT" layoutX="92.0" layoutY="17.0" prefHeight="17.0" prefWidth="134.0" text="0" textFill="WHITE">
-                                                                            <font>
-                                                                                <Font size="14.0" />
-                                                                            </font>
-                                                                        </Label>
-                                                                        <Label alignment="CENTER" layoutX="75.0" layoutY="77.0" prefHeight="17.0" prefWidth="134.0" text="Inactive Patients" textFill="WHITE">
-                                                                            <font>
-                                                                                <Font size="14.0" />
-                                                                            </font>
-                                                                        </Label>
-                                                                    </children>
-                                                                </AnchorPane>
-                                                                <AnchorPane layoutX="307.0" layoutY="20.0" prefHeight="114.0" prefWidth="240.0" stylesheets="@../design/DoctorMainFormDesign.css">
-                                                                    <styleClass>
-                                                                        <String fx:value="bg-color-2" />
-                                                                        <String fx:value="radius" />
-                                                                    </styleClass>
-                                                                    <children>
-                                                                        <!--                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />-->
                                                                         <Label fx:id="dashboard_TP" alignment="CENTER_RIGHT" layoutX="92.0" layoutY="17.0" prefHeight="17.0" prefWidth="134.0" text="0" textFill="WHITE">
                                                                             <font>
                                                                                 <Font size="14.0" />
@@ -155,7 +136,7 @@
                                                                         </Label>
                                                                     </children>
                                                                 </AnchorPane>
-                                                                <AnchorPane layoutX="576.0" layoutY="20.0" prefHeight="114.0" prefWidth="240.0" stylesheets="@../design/DoctorMainFormDesign.css">
+                                                                <AnchorPane layoutX="300.0" layoutY="20.0" prefHeight="114.0" prefWidth="240.0" stylesheets="@../design/DoctorMainFormDesign.css">
                                                                     <styleClass>
                                                                         <String fx:value="bg-color-2" />
                                                                         <String fx:value="radius" />
@@ -174,7 +155,7 @@
                                                                         </Label>
                                                                     </children>
                                                                 </AnchorPane>
-                                                                <AnchorPane layoutX="846.0" layoutY="20.0" prefHeight="114.0" prefWidth="240.0" stylesheets="@../design/DoctorMainFormDesign.css">
+                                                                <AnchorPane layoutX="570.0" layoutY="20.0" prefHeight="114.0" prefWidth="240.0" stylesheets="@../design/DoctorMainFormDesign.css">
                                                                     <styleClass>
                                                                         <String fx:value="bg-color-2" />
                                                                         <String fx:value="radius" />
@@ -249,11 +230,10 @@
                                                     <children>
                                                         <TableView fx:id="dashboad_tableView" layoutX="13.0" layoutY="41.0" prefHeight="273.0" prefWidth="407.0" stylesheets="@../design/DoctorMainFormDesign.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="41.0">
                                                             <columns>
-                                                                <TableColumn fx:id="dashboad_col_appointmentID" prefWidth="101.0" text="Appointment ID" />
-                                                                <TableColumn fx:id="dashboad_col_name" prefWidth="68.0" text="Name" />
-                                                                <TableColumn fx:id="dashboad_col_description" prefWidth="71.0" text="Description" />
-                                                                <TableColumn fx:id="dashboad_col_appointmentDate" prefWidth="83.0" text="App Date" />
-                                                                <TableColumn fx:id="dashboad_col_status" prefWidth="83.0" text="Status" />
+                                                                <TableColumn fx:id="dashboad_col_appointmentID" prefWidth="94.0" text="Appointment ID" />
+                                                                <TableColumn fx:id="dashboad_col_date" prefWidth="88.0" text="Date" />
+                                                                <TableColumn fx:id="dashboad_col_description" prefWidth="114.0" text="Description" />
+                                                                <TableColumn fx:id="dashboad_col_redate" prefWidth="109.0" text="Re Examination" />
                                                             </columns>
                                                             <columnResizePolicy>
                                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -286,15 +266,15 @@
                                                 </Label>
                                                 <TableView fx:id="appointments_tableView" layoutX="13.0" layoutY="56.0" prefHeight="470.0" prefWidth="843.0" stylesheets="@../design/DoctorMainFormDesign.css" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="56.0">
                                                     <columns>
-                                                        <TableColumn fx:id="appointments_col_appointmentID" prefWidth="92.0" text="Appointment ID" />
-                                                        <TableColumn fx:id="appointments_col_name" prefWidth="101.0" text="Name" />
-                                                        <TableColumn fx:id="appointments_col_gender" prefWidth="70.0" text="Gender" />
-                                                        <TableColumn fx:id="appointments_col_contactNumber" prefWidth="85.0" text="Contact" />
-                                                        <TableColumn fx:id="appointments_col_description" prefWidth="109.0" text="Description" />
-                                                        <TableColumn fx:id="appointments_col_date" prefWidth="73.0" text="Date" />
-                                                        <TableColumn fx:id="appointments_col_dateModify" prefWidth="92.0" text="Date Modify" />
-                                                        <TableColumn fx:id="appointments_col_dateDelete" prefWidth="76.0" text="Date Delete" />
-                                                        <TableColumn fx:id="appointments_col_status" prefWidth="81.0" text="Status" />
+                                                        <TableColumn fx:id="appointments_col_appointment_detailID" prefWidth="46.0" text="ID" />
+                                                        <TableColumn fx:id="appointments_col_appointmentID" prefWidth="107.0" text="Appointment ID" />
+                                                        <TableColumn fx:id="appointments_col_description" prefWidth="117.0" text="Description" />
+                                                        <TableColumn fx:id="appointments_col_date" prefWidth="77.0" text="Date" />
+                                                        <TableColumn fx:id="appointments_col_redate" prefWidth="140.0" text="Re-examination Date" />
+                                                        <TableColumn fx:id="appointments_col_diagnosis" prefWidth="97.0" text="Diagnosis" />
+                                                        <TableColumn fx:id="appointments_col_treatment" prefWidth="107.0" text="Treatment" />
+                                          <TableColumn fx:id="appointments_col_service" prefWidth="86.0" text="Service" />
+                                          <TableColumn fx:id="appointments_action" prefWidth="89.0" text="Action" />
                                                     </columns>
                                                     <columnResizePolicy>
                                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

@@ -5,6 +5,8 @@
  */
 package hospitalmanagementsystem;
 
+import java.util.Date;
+
 /**
  *
  * @author WINDOWS 10
@@ -22,7 +24,7 @@ public class Data {
 
     public static String[] gender = {"Male", "Female", "Others"};
 
-    public static String[] status = {"Active", "Inactive", "Confirm","Deleted"};
+    public static String[] status = {"Active", "Inactive", "Confirm", "Deleted"};
 
     public static String[] specialization = {"Allergist", "Dermatologist", "Ophthalmologist", "Gynecologist", "Cardiologist"};
 
@@ -33,10 +35,9 @@ public class Data {
     public static String temp_ccid;
     public static String temp_bloodGroup;
     public static String temp_description;
-    public  static String temp_date_created;
-    public  static String temp_date_modified;
-    public  static String temp_date_deleted;
-
+    public static String temp_date_created;
+    public static String temp_date_modified;
+    public static String temp_date_deleted;
 
     public static String temp_gender;
     public static Long temp_number;
@@ -57,15 +58,17 @@ public class Data {
     public static String temp_doctorStatus;
 
     public static String temp_appID;
+    public static Long temp_patID;
     public static String temp_appName;
     public static String temp_appGender;
-    public static String temp_appMobileNumber;
+    public static Long temp_appMobileNumber;
     public static String temp_appAddress;
     public static String temp_appDescription;
     public static String temp_appDiagnosis;
     public static String temp_appTreatment;
-    public static String temp_appDoctor;
-    public static String temp_appSpecialized;
-    public static String temp_appStatus;
 
+    public static String temp_appDID;
+    public static Integer temp_serviceID;
+    public static Date temp_appDate;
+    public static Date temp_appReDate;
 }

@@ -101,7 +101,9 @@ public class EditAppointmentDetailFormController implements Initializable {
                     prepare.setString(1, editApp_description.getText());
                     prepare.setString(2, editApp_diagnosis.getText());
                     prepare.setString(3, editApp_treatment.getText());
-                    prepare.setString(4, "" + editApp_redate.getValue());
+                    
+                    LocalDate selectedDate = editApp_redate.getValue();
+                    prepare.setString(4, selectedDate != null ? selectedDate.toString() : null);
 
                     int serviceId = serviceMap.get(editApp_service.getSelectionModel().getSelectedItem());
                     double price = getServicePrice(serviceId);
@@ -158,11 +160,17 @@ public class EditAppointmentDetailFormController implements Initializable {
         editApp_treatment.setText(Data.temp_appTreatment);
         editApp_create_date.setText(String.valueOf(Data.temp_appDate));
 
-        // Chuyển đổi Date sang LocalDate
-        LocalDate localDate = Instant.ofEpochMilli(Data.temp_appReDate.getTime())
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        editApp_redate.setValue(localDate);
+        if (Data.temp_appReDate != null) {
+            // Chuyển đổi Date sang LocalDate
+            LocalDate localDate = Instant.ofEpochMilli(Data.temp_appReDate.getTime())
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            editApp_redate.setValue(localDate);
+        } else {
+            // Xử lý khi Data.temp_appReDate là null
+            editApp_redate.setValue(null); // Hoặc một giá trị mặc định khác nếu cần
+        }
+
         setDefaultService(Data.temp_serviceID);
     }
 
