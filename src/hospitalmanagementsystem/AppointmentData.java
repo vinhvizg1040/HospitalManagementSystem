@@ -26,7 +26,6 @@ public class AppointmentData {
     private Date date;
     private Date dateModify;
     private Date dateDelete;
-    private String status;
     private BigDecimal totalPay;
     private String paymentStatus;
     private Integer quantity;
@@ -34,9 +33,8 @@ public class AppointmentData {
 
     public AppointmentData(String appointmentID, Long patientID, String name, String gender,
             Long mobileNumber, String description, String diagnosis, String treatment, String address,
-            Date date, Date dateModify, Date dateDelete, String status, BigDecimal totalPay,
+            Date date, Date dateModify, Date dateDelete, BigDecimal totalPay,
             String paymentStatus, Integer quantity, Date schedule) {
-//        this.id = id;
         this.appointmentID = appointmentID;
         this.patientID = patientID;
         this.name = name;
@@ -49,7 +47,6 @@ public class AppointmentData {
         this.date = date;
         this.dateModify = dateModify;
         this.dateDelete = dateDelete;
-        this.status = status;
         this.schedule = schedule;
         this.totalPay = totalPay;
         this.paymentStatus = paymentStatus;
@@ -58,9 +55,9 @@ public class AppointmentData {
 
     public AppointmentData(String appointmentID, String name, String gender,
             Long mobileNumber, String description, String diagnosis, String treatment, String address,
-            Date date, Date dateModify, Date dateDelete, String status, Date schedule) {
-        this.patientID = patientID;
+            Date date, Date dateModify, Date dateDelete, Date schedule) {
         this.appointmentID = appointmentID;
+        this.patientID = patientID;
         this.name = name;
         this.gender = gender;
         this.mobileNumber = mobileNumber;
@@ -71,18 +68,16 @@ public class AppointmentData {
         this.date = date;
         this.dateModify = dateModify;
         this.dateDelete = dateDelete;
-        this.status = status;
         this.schedule = schedule;
 
     }
 
     public AppointmentData(String appointmentID, String name,
-            String description, Date date, String status) {
+            String description, Date date) {
         this.appointmentID = appointmentID;
         this.name = name;
         this.description = description;
         this.date = date;
-        this.status = status;
     }
 
     public AppointmentData(String appointmentID, String description,
@@ -94,9 +89,6 @@ public class AppointmentData {
         this.schedule = schedule;
     }
 
-//    public Integer getId() {
-//        return id;
-//    }
 
     public String getAppointmentID() {
         return appointmentID;
@@ -140,10 +132,6 @@ public class AppointmentData {
 
     public Date getDateDelete() {
         return dateDelete;
-    }
-
-    public String getStatus() {
-        return status;
     }
 
     public Date getSchedule() {

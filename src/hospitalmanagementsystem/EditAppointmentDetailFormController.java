@@ -101,7 +101,9 @@ public class EditAppointmentDetailFormController implements Initializable {
                     prepare.setString(1, editApp_description.getText());
                     prepare.setString(2, editApp_diagnosis.getText());
                     prepare.setString(3, editApp_treatment.getText());
-                    prepare.setString(4, "" + editApp_redate.getValue());
+
+                    LocalDate selectedDate = editApp_redate.getValue();
+                    prepare.setString(4, selectedDate != null ? selectedDate.toString() : null);
 
                     int serviceId = serviceMap.get(editApp_service.getSelectionModel().getSelectedItem());
                     double price = getServicePrice(serviceId);
@@ -109,6 +111,9 @@ public class EditAppointmentDetailFormController implements Initializable {
                     prepare.setInt(5, serviceId);
                     prepare.setDouble(6, price);
                     prepare.executeUpdate();
+
+                    updatePriceAppointment(Data.temp_serviceID, price, Data.temp_appID);
+
                     alert.successMessage("Updated Successfully!");
                 } else {
                     alert.errorMessage("Cancelled.");
@@ -120,23 +125,83 @@ public class EditAppointmentDetailFormController implements Initializable {
         }
     }
 
+    public void updatePriceAppointment(int service_id, double new_price, String appointment_id) {
+        try {
+            // Establish database connection
+            connect = Database.connectDB();
+
+            String sql = "UPDATE appointment SET total_pay = total_pay - ? + ? WHERE appointment_id = ?";
+            double oldPrice = getServicePrice(service_id);
+            prepare = connect.prepareStatement(sql);
+            prepare.setDouble(1, oldPrice);
+            prepare.setDouble(2, new_price);
+            prepare.setString(3, appointment_id);
+
+            // Execute the update
+            int rowsUpdated = prepare.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Update successful!");
+            } else {
+                System.out.println("No appointment found with the given id.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void displayFields() {
         editApp_appointmentID.setText(Data.temp_appID);
 
-        editApp_fullName.setText(Data.temp_appName);
-        editApp_gender.setText(Data.temp_appGender);
+        setPatientInfo();
 
         editApp_description.setText(Data.temp_appDescription);
         editApp_diagnosis.setText(Data.temp_appDiagnosis);
         editApp_treatment.setText(Data.temp_appTreatment);
         editApp_create_date.setText(String.valueOf(Data.temp_appDate));
 
-        // Chuyển đổi Date sang LocalDate
-        LocalDate localDate = Instant.ofEpochMilli(Data.temp_appReDate.getTime())
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        editApp_redate.setValue(localDate);
+        if (Data.temp_appReDate != null) {
+            // Chuyển đổi Date sang LocalDate
+            LocalDate localDate = Instant.ofEpochMilli(Data.temp_appReDate.getTime())
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            editApp_redate.setValue(localDate);
+        } else {
+            // Xử lý khi Data.temp_appReDate là null
+            editApp_redate.setValue(null); // Hoặc một giá trị mặc định khác nếu cần
+        }
+
         setDefaultService(Data.temp_serviceID);
+    }
+
+    public void setPatientInfo() {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Kết nối đến cơ sở dữ liệu
+            connection = Database.connectDB();
+
+            // Truy vấn SQL để lấy thông tin của bệnh nhân dựa trên patient_id
+            String sql = "SELECT name, gender FROM appointment WHERE appointment_id = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, Data.temp_appID);
+            resultSet = preparedStatement.executeQuery();
+
+            // Nếu có kết quả từ truy vấn
+            if (resultSet.next()) {
+                // Lấy tên và giới tính từ kết quả truy vấn
+                String name = resultSet.getString("name");
+                String gender = resultSet.getString("gender");
+
+                // Tạo đối tượng PatientInfo với thông tin tên và giới tính của bệnh nhân
+
+                editApp_fullName.setText(name);
+                editApp_gender.setText(gender);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setDefaultService(int service_id) {

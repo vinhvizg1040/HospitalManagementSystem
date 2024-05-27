@@ -299,12 +299,6 @@ public class AdminMainFormController implements Initializable {
     private TableColumn<AppointmentData, String> appointments_col_dateDelete;
 
     @FXML
-    private TableColumn<AppointmentData, String> appointments_col_status;
-
-    @FXML
-    private TableColumn<AppointmentData, String> appointments_col_action;
-
-    @FXML
     private TableColumn<AppointmentData, String> appointments_appointmentID;
 
     @FXML
@@ -356,7 +350,7 @@ public class AdminMainFormController implements Initializable {
     private ComboBox<String> appointment_gender;
 
     @FXML
-    private TextField appointment_description;
+    private TextArea appointment_description;
 
     @FXML
     private TextField appointment_diagnosis;
@@ -1199,7 +1193,6 @@ public class AdminMainFormController implements Initializable {
     @FXML
     private TextField searchPatientByNameField;
 
-
     public void patientActionButton() {
 
         connect = Database.connectDB();
@@ -1345,7 +1338,6 @@ public class AdminMainFormController implements Initializable {
                         result.getDate("date"),
                         result.getDate("date_modify"),
                         result.getDate("date_delete"),
-                        result.getString("status"),
                         result.getBigDecimal("total_pay"),
                         result.getString("payment_status"),
                         result.getInt("quantity"),
@@ -1372,7 +1364,6 @@ public class AdminMainFormController implements Initializable {
         appointments_date.setCellValueFactory(new PropertyValueFactory<>("date"));
         appointments_dateModify.setCellValueFactory(new PropertyValueFactory<>("dateModify"));
         appointments_dateDelete.setCellValueFactory(new PropertyValueFactory<>("dateDelete"));
-        appointments_status.setCellValueFactory(new PropertyValueFactory<>("status"));
         appointments_total_pay.setCellValueFactory(new PropertyValueFactory<>("totalPay"));
         appointments_payment_status.setCellValueFactory(new PropertyValueFactory<>("paymentStatus"));
         appointments_services_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
@@ -1466,7 +1457,7 @@ public class AdminMainFormController implements Initializable {
                                     alert.successMessage("Deleted Successfully!");
 
                                     appointmentGetData();
-                                    appointmentShowData();
+                                    appointmentDisplayData();
                                     appointments_tableView.refresh();
                                 }
                             } catch (Exception e) {
@@ -1482,6 +1473,7 @@ public class AdminMainFormController implements Initializable {
                     }
                 }
             };
+            appointmentDisplayData();
             return cell;
         };
 
@@ -1660,9 +1652,7 @@ public class AdminMainFormController implements Initializable {
         if (appointment_appointmentID.getText().isEmpty()
                 || appointment_patientID.getText().isEmpty()
                 || appointment_mobileNumber.getText().isEmpty()
-                || appointment_description.getText().isEmpty()
-                || appointment_address.getText().isEmpty()
-                || appointment_schedule.getValue() == null) {
+                || appointment_address.getText().isEmpty()) {
             alert.errorMessage("Please fill the blank fields");
         } else {
             Date date = new Date();
@@ -1706,12 +1696,11 @@ public class AdminMainFormController implements Initializable {
                 || appointment_patientID.getText().isEmpty()
                 || appointment_mobileNumber.getText().isEmpty()
                 || appointment_description.getText().isEmpty()
-                || appointment_address.getText().isEmpty()
-                || appointment_schedule.getValue() == null) {
+                || appointment_address.getText().isEmpty()) {
             alert.errorMessage("Please fill the blank fields");
         } else {
-            String checkAppointmentID = "SELECT * FROM appointment WHERE appointment_id = "
-                    + appointment_appointmentID.getText();
+            String checkAppointmentID = "SELECT * FROM appointment WHERE appointment_id = '"
+                    + appointment_appointmentID.getText() + "'";
             connect = Database.connectDB();
             try {
                 statement = connect.createStatement();
@@ -1723,8 +1712,8 @@ public class AdminMainFormController implements Initializable {
 
                     String insertData = "INSERT INTO appointment (appointment_id, patient_id, name, gender"
                             + ", description, diagnosis, treatment, mobile_number"
-                            + ", address, date, status, schedule) "
-                            + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+                            + ", address, date, schedule, payment_status, total_pay, quantity) "
+                            + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     prepare = connect.prepareStatement(insertData);
                     long patientID = Long.parseLong(appointment_patientID.getText());
                     long mobileNumber = Long.parseLong(appointment_mobileNumber.getText());
@@ -1742,13 +1731,18 @@ public class AdminMainFormController implements Initializable {
                     java.sql.Date sqlDate = new java.sql.Date(new Date().getTime());
 
                     prepare.setString(10, "" + sqlDate);
-                    prepare.setString(12, "" + appointment_schedule.getValue());
-
+                    
+                    LocalDate selectedDate = appointment_schedule.getValue();
+                    prepare.setString(11, selectedDate != null ? selectedDate.toString() : null);
+                    prepare.setString(12, "Pending");
+                    prepare.setDouble(13, 0);
+                    prepare.setInt(14, 0);
                     prepare.executeUpdate();
 
-                    appointmentShowData();
-//                    appointmentAppointmentID();
                     appointmentClearBtn();
+                    registerAppointmentID();
+                    appointments_tableView.refresh();
+
                     alert.successMessage("Successully added!");
 
                 }
@@ -1762,23 +1756,21 @@ public class AdminMainFormController implements Initializable {
 
     public ObservableList<AppointmentData> appoinmentListData;
 
-    public void appointmentShowData() {
-        appoinmentListData = appointmentGetData();
-
-        appointments_col_appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
-        appointments_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        appointments_col_gender.setCellValueFactory(new PropertyValueFactory<>("gender"));
-        appointments_col_contactNumber.setCellValueFactory(new PropertyValueFactory<>("mobileNumber"));
-        appointments_col_description.setCellValueFactory(new PropertyValueFactory<>("description"));
-        appointments_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
-        appointments_col_dateModify.setCellValueFactory(new PropertyValueFactory<>("dateModify"));
-        appointments_col_dateDelete.setCellValueFactory(new PropertyValueFactory<>("dateDelete"));
-        appointments_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-        appointments_tableView.setItems(appoinmentListData);
-    }
+//    public void appointmentShowData() {
+//        appoinmentListData = appointmentGetData();
+//
+//        appointments_col_appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+//        appointments_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+//        appointments_col_gender.setCellValueFactory(new PropertyValueFactory<>("gender"));
+//        appointments_col_contactNumber.setCellValueFactory(new PropertyValueFactory<>("mobileNumber"));
+//        appointments_col_description.setCellValueFactory(new PropertyValueFactory<>("description"));
+//        appointments_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+//        appointments_col_dateModify.setCellValueFactory(new PropertyValueFactory<>("dateModify"));
+//        appointments_col_dateDelete.setCellValueFactory(new PropertyValueFactory<>("dateDelete"));
+//
+//        appointments_tableView.setItems(appoinmentListData);
+//    }
 // TO SELECT THE DATA PER ROW IN THE TABLE
-
     public void patientClearFields() {
 
         patients_patientName.clear();
@@ -2346,11 +2338,11 @@ public class AdminMainFormController implements Initializable {
             patients_addForm.setVisible(false);
             doctors_addForm.setVisible(false);
             appointments_addForm.setVisible(true);
-            
+
+            registerAppointmentID();
 //            profileStatusList();
 //            profileDisplayInfo();
 //            profileDisplayImages();
-
             current_form.setText("Add Appointment Form");
         } else if (event.getSource() == services_btn) {
 
@@ -2363,7 +2355,6 @@ public class AdminMainFormController implements Initializable {
             patients_addForm.setVisible(false);
             doctors_addForm.setVisible(false);
             servicesPane.setVisible(true);
-
 
             getServiceData();
             servicesTable.refresh();
@@ -2451,12 +2442,21 @@ public class AdminMainFormController implements Initializable {
         appointment_diagnosis.clear();
         appointment_address.clear();
         appointment_schedule.setValue(null);
+
+        appontments_PA_patientID.setText("");
+        appointments_patients_PA_name.setText("");
+        appointments_PI_mobileNumber.setText("");
+        appointments_PI_diagnosis.setText("");
+        appointments_PI_treatment.setText("");
+        appointments_PI_address.setText("");
+        appointments_patients_PI_gender.setText("");
+
     }
 
-    private Integer appointmentID;
+    private String appointmentID;
 
-    public void appointmentGetAppointmentID() {
-        String sql = "SELECT MAX(appointment_id) FROM appointment";
+    public void registerAppointmentID() {
+        String sql = "SELECT MAX(CAST(SUBSTRING(appointment_id, 5, LEN(appointment_id) - 4) AS INT)) AS max_id FROM appointment";
         connect = Database.connectDB();
 
         int tempAppID = 0;
@@ -2464,49 +2464,16 @@ public class AdminMainFormController implements Initializable {
             prepare = connect.prepareStatement(sql);
             result = prepare.executeQuery();
             if (result.next()) {
-                tempAppID = result.getInt("MAX(appointment_id)");
+                int maxId = result.getInt("max_id");
+                tempAppID = maxId + 1;
             }
-            if (tempAppID == 0) {
-                tempAppID += 1;
-            } else {
-                tempAppID += 1;
-            }
-            appointmentID = tempAppID;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+            appointmentID = "AID-" + tempAppID;
 
-    public void appointmentAppointmentID() {
-        appointmentGetAppointmentID();
-
-        appointment_appointmentID.setText("" + appointmentID);
-        appointment_appointmentID.setDisable(true);
-
-    }
-
-    public void registerAppointmentID() {
-        int appointmentCount = 0;
-        String sql = "SELECT COUNT(*) AS total_count FROM appointment";
-
-        connect = Database.connectDB();
-
-        try {
-
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
-
-            if (result.next()) {
-                appointmentCount = result.getInt("total_count");
-            }
-
-            appointment_appointmentID.setText("" + appointmentCount);
+            appointment_appointmentID.setText(appointmentID);
             appointment_appointmentID.setDisable(true);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     //Services section
@@ -2623,9 +2590,6 @@ public class AdminMainFormController implements Initializable {
             }
         }
     }
-
-
-
 
     @FXML
     private void editService(Services service) {
@@ -2841,13 +2805,11 @@ public class AdminMainFormController implements Initializable {
         String sql = "SELECT * FROM doctor WHERE full_name LIKE ?";
 
 //        connect = Database.connectDB();
-
         try {
             prepare = connect.prepareStatement(sql);
             prepare.setString(1, "%" + name + "%");
             result = prepare.executeQuery();
             while (result.next()) {
-
 
                 while (result.next()) {
                     DoctorData dData = new DoctorData(result.getInt("id"), result.getString("doctor_id"),
@@ -3290,23 +3252,27 @@ public class AdminMainFormController implements Initializable {
         return searchResult;
     }
 
-
     private void updatePatientTableView(ObservableList<PatientsData> list) {
         patients_tableView.setItems(list);
 
     }
+
     // Đóng kết nối
     private void closeConnection() {
         try {
-            if (result != null) result.close();
-            if (prepare != null) prepare.close();
-            if (connect != null) connect.close();
+            if (result != null) {
+                result.close();
+            }
+            if (prepare != null) {
+                prepare.close();
+            }
+            if (connect != null) {
+                connect.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-
 
 }
 
