@@ -820,8 +820,8 @@
                                          <!--                                         <Label fx:id="patients_PA_password" layoutX="102.0" layoutY="102.0" prefHeight="17.0" prefWidth="98.0" />-->
                                          <Label layoutX="21.0" layoutY="78.0" text="Date Created:" />
                                          <Label fx:id="doctor_PA_dateCreated" layoutX="102.0" layoutY="78.0" prefHeight="17.0" prefWidth="98.0" />
-                                    <Label layoutX="34.0" layoutY="61.0" text="Password:" />
-                                    <Label fx:id="doctor_PA_password" layoutX="111.0" layoutY="61.0" prefHeight="17.0" prefWidth="98.0" />
+                                    <Label layoutX="34.0" layoutY="61.0" visible="false" text="Password:" />
+                                    <Label fx:id="doctor_PA_password" visible="false" layoutX="111.0" layoutY="61.0" prefHeight="17.0" prefWidth="98.0" />
                                          <!--                                    <FontAwesomeIconView fill="#d738c7" glyphName="USER" layoutX="224.0" layoutY="144.0" opacity="0.31" size="10em" />-->
                                      </children>
                                  </AnchorPane>

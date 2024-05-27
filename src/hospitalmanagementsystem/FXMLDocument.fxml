@@ -48,7 +48,7 @@
                      </styleClass>
                   </Button>
 <!--                  <FontAwesomeIconView fill="#188ba7" glyphName="HOSPITAL_ALT" layoutX="136.0" layoutY="435.0" size="6em" />-->
-                  <ComboBox fx:id="login_user" layoutX="90.0" layoutY="465.0" onAction="#switchPage" prefHeight="30.0" prefWidth="150.0" promptText="Select User" stylesheets="@../design/PageDesign.css">
+                  <ComboBox fx:id="login_user" layoutX="90.0" layoutY="465.0" onAction="#switchPage" prefHeight="30.0" prefWidth="150.0" promptText="Staff Portal" stylesheets="@../design/PageDesign.css">
                      <styleClass>
                         <String fx:value="textfield-1" />
                         <String fx:value="white-bg" />
