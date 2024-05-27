@@ -101,7 +101,7 @@ public class EditAppointmentDetailFormController implements Initializable {
                     prepare.setString(1, editApp_description.getText());
                     prepare.setString(2, editApp_diagnosis.getText());
                     prepare.setString(3, editApp_treatment.getText());
-                    
+
                     LocalDate selectedDate = editApp_redate.getValue();
                     prepare.setString(4, selectedDate != null ? selectedDate.toString() : null);
 
@@ -152,8 +152,7 @@ public class EditAppointmentDetailFormController implements Initializable {
     public void displayFields() {
         editApp_appointmentID.setText(Data.temp_appID);
 
-        editApp_fullName.setText(Data.temp_appName);
-        editApp_gender.setText(Data.temp_appGender);
+        setPatientInfo();
 
         editApp_description.setText(Data.temp_appDescription);
         editApp_diagnosis.setText(Data.temp_appDiagnosis);
@@ -172,6 +171,37 @@ public class EditAppointmentDetailFormController implements Initializable {
         }
 
         setDefaultService(Data.temp_serviceID);
+    }
+
+    public void setPatientInfo() {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Kết nối đến cơ sở dữ liệu
+            connection = Database.connectDB();
+
+            // Truy vấn SQL để lấy thông tin của bệnh nhân dựa trên patient_id
+            String sql = "SELECT name, gender FROM appointment WHERE appointment_id = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, Data.temp_appID);
+            resultSet = preparedStatement.executeQuery();
+
+            // Nếu có kết quả từ truy vấn
+            if (resultSet.next()) {
+                // Lấy tên và giới tính từ kết quả truy vấn
+                String name = resultSet.getString("name");
+                String gender = resultSet.getString("gender");
+
+                // Tạo đối tượng PatientInfo với thông tin tên và giới tính của bệnh nhân
+
+                editApp_fullName.setText(name);
+                editApp_gender.setText(gender);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setDefaultService(int service_id) {

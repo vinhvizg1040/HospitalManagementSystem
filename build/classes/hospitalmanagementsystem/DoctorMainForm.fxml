@@ -113,71 +113,56 @@
                                                 <String fx:value="shadow" />
                                             </styleClass>
                                             <children>
-                                                <ScrollPane layoutX="23.0" prefHeight="200.0" prefWidth="860.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                    <content>
-                                                        <AnchorPane prefHeight="153.0" prefWidth="1050.0">
-                                                            <children>
-                                                                <AnchorPane layoutX="31.0" layoutY="20.0" prefHeight="114.0" prefWidth="240.0" stylesheets="@../design/DoctorMainFormDesign.css">
-                                                                    <styleClass>
-                                                                        <String fx:value="bg-color-2" />
-                                                                        <String fx:value="radius" />
-                                                                    </styleClass>
-                                                                    <children>
-                                                                        <!--                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />-->
-                                                                        <Label fx:id="dashboard_TP" alignment="CENTER_RIGHT" layoutX="92.0" layoutY="17.0" prefHeight="17.0" prefWidth="134.0" text="0" textFill="WHITE">
-                                                                            <font>
-                                                                                <Font size="14.0" />
-                                                                            </font>
-                                                                        </Label>
-                                                                        <Label alignment="CENTER" layoutX="75.0" layoutY="77.0" prefHeight="17.0" prefWidth="134.0" text="Total Patients" textFill="WHITE">
-                                                                            <font>
-                                                                                <Font size="14.0" />
-                                                                            </font>
-                                                                        </Label>
-                                                                    </children>
-                                                                </AnchorPane>
-                                                                <AnchorPane layoutX="300.0" layoutY="20.0" prefHeight="114.0" prefWidth="240.0" stylesheets="@../design/DoctorMainFormDesign.css">
-                                                                    <styleClass>
-                                                                        <String fx:value="bg-color-2" />
-                                                                        <String fx:value="radius" />
-                                                                    </styleClass>
-                                                                    <children>
-                                                                        <!--                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />-->
-                                                                        <Label fx:id="dashboard_AP" alignment="CENTER_RIGHT" layoutX="92.0" layoutY="17.0" prefHeight="17.0" prefWidth="134.0" text="0" textFill="WHITE">
-                                                                            <font>
-                                                                                <Font size="14.0" />
-                                                                            </font>
-                                                                        </Label>
-                                                                        <Label alignment="CENTER" layoutX="75.0" layoutY="77.0" prefHeight="17.0" prefWidth="134.0" text="Active Patients" textFill="WHITE">
-                                                                            <font>
-                                                                                <Font size="14.0" />
-                                                                            </font>
-                                                                        </Label>
-                                                                    </children>
-                                                                </AnchorPane>
-                                                                <AnchorPane layoutX="570.0" layoutY="20.0" prefHeight="114.0" prefWidth="240.0" stylesheets="@../design/DoctorMainFormDesign.css">
-                                                                    <styleClass>
-                                                                        <String fx:value="bg-color-2" />
-                                                                        <String fx:value="radius" />
-                                                                    </styleClass>
-                                                                    <children>
-                                                                        <!--                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />-->
-                                                                        <Label fx:id="dashboard_tA" alignment="CENTER_RIGHT" layoutX="92.0" layoutY="17.0" prefHeight="17.0" prefWidth="134.0" text="0" textFill="WHITE">
-                                                                            <font>
-                                                                                <Font size="14.0" />
-                                                                            </font>
-                                                                        </Label>
-                                                                        <Label alignment="CENTER" layoutX="75.0" layoutY="77.0" prefHeight="17.0" prefWidth="134.0" text="Total Appointments" textFill="WHITE">
-                                                                            <font>
-                                                                                <Font size="14.0" />
-                                                                            </font>
-                                                                        </Label>
-                                                                    </children>
-                                                                </AnchorPane>
-                                                            </children>
-                                                        </AnchorPane>
-                                                    </content>
-                                                </ScrollPane>
+                                    <AnchorPane prefHeight="200.0" prefWidth="860.0" AnchorPane.bottomAnchor="-24.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                                      <ScrollPane prefHeight="181.0" prefWidth="860.0">
+                                                          <content>
+                                                              <AnchorPane prefHeight="153.0" prefWidth="1050.0">
+                                                                  <children>
+                                                                      <AnchorPane layoutX="97.0" layoutY="20.0" prefHeight="114.0" prefWidth="240.0" stylesheets="@../design/DoctorMainFormDesign.css">
+                                                                          <styleClass>
+                                                                              <String fx:value="bg-color-2" />
+                                                                              <String fx:value="radius" />
+                                                                          </styleClass>
+                                                                          <children>
+                                                                              <!--                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />-->
+                                                                              <Label fx:id="dashboard_TP" alignment="CENTER_RIGHT" layoutX="92.0" layoutY="17.0" prefHeight="17.0" prefWidth="134.0" text="0" textFill="WHITE">
+                                                                                  <font>
+                                                                                      <Font size="14.0" />
+                                                                                  </font>
+                                                                              </Label>
+                                                                              <Label alignment="CENTER" layoutX="75.0" layoutY="77.0" prefHeight="17.0" prefWidth="134.0" text="Total Patients" textFill="WHITE">
+                                                                                  <font>
+                                                                                      <Font size="14.0" />
+                                                                                  </font>
+                                                                              </Label>
+                                                                          </children>
+                                                                      </AnchorPane>
+                                                                      <AnchorPane layoutX="496.0" layoutY="20.0" prefHeight="114.0" prefWidth="240.0" stylesheets="@../design/DoctorMainFormDesign.css">
+                                                                          <styleClass>
+                                                                              <String fx:value="bg-color-2" />
+                                                                              <String fx:value="radius" />
+                                                                          </styleClass>
+                                                                          <children>
+                                                                              <!--                                                      <FontAwesomeIconView fill="WHITE" glyphName="USERS" layoutX="14.0" layoutY="78.0" size="5em" />-->
+                                                                              <Label fx:id="dashboard_tA" alignment="CENTER_RIGHT" layoutX="92.0" layoutY="17.0" prefHeight="17.0" prefWidth="134.0" text="0" textFill="WHITE">
+                                                                                  <font>
+                                                                                      <Font size="14.0" />
+                                                                                  </font>
+                                                                              </Label>
+                                                                              <Label alignment="CENTER" layoutX="75.0" layoutY="77.0" prefHeight="17.0" prefWidth="134.0" text="Total Appointments" textFill="WHITE">
+                                                                                  <font>
+                                                                                      <Font size="14.0" />
+                                                                                  </font>
+                                                                              </Label>
+                                                                          </children>
+                                                                      </AnchorPane>
+                                                                  </children>
+                                                              </AnchorPane>
+                                                          </content>
+                                                      </ScrollPane>
+                                       </children>
+                                    </AnchorPane>
                                             </children>
                                         </AnchorPane>
                                         <AnchorPane layoutX="13.0" layoutY="192.0" prefHeight="354.0" prefWidth="860.0" stylesheets="@../design/MainFormDesign.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="192.0">

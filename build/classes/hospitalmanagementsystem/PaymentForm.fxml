@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="hospitalmanagementsystem.PaymentFormController">
+   <children>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <AnchorPane layoutX="1.0" layoutY="2.0" prefHeight="600.0" prefWidth="800.0" stylesheets="@../design/MainFormDesign.css">
+               <styleClass>
+                  <String fx:value="white-bg" />
+                  <String fx:value="radius" />
+                  <String fx:value="shadow" />
+               </styleClass>
+               <children>
+                  <Button fx:id="editApp_updateBtn" layoutX="438.0" layoutY="526.0" mnemonicParsing="false" onAction="#updateBtn" prefHeight="50.0" prefWidth="160.0" styleClass="btn-1" stylesheets="@../design/PageDesign.css" text="Pay">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <AnchorPane layoutX="425.0" layoutY="15.0" prefHeight="355.0" prefWidth="400.0" />
+                  <TableView layoutX="14.0" layoutY="15.0" prefHeight="355.0" prefWidth="400.0">
+                     <columns>
+                        <TableColumn minWidth="20.0" prefWidth="150.0" text="Service Name" />
+                        <TableColumn minWidth="20.0" prefWidth="150.0" text="Date" />
+                        <TableColumn minWidth="20.0" prefWidth="100.0" text="Price" />
+                     </columns>
+                  </TableView>
+                  <Button fx:id="editApp_updateBtn1" layoutX="633.0" layoutY="525.0" mnemonicParsing="false" onAction="#updateBtn" prefHeight="50.0" prefWidth="160.0" styleClass="btn-1" stylesheets="@../design/PageDesign.css" text="Print">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Text layoutX="69.0" layoutY="486.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total:">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="155.0" layoutY="485.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="70.0" layoutY="541.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cash:">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="261.0" layoutY="485.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bal:">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="328.0" layoutY="484.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <TextField layoutX="145.0" layoutY="517.0" prefHeight="35.0" prefWidth="120.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

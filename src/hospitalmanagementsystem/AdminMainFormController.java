@@ -1175,10 +1175,6 @@ public class AdminMainFormController implements Initializable {
     @FXML
     private TextField searchPatientByNameField;
 
-
-    @FXML
-    private TextField searchPatientByNameField;
-
     public void patientActionButton() {
 
         connect = Database.connectDB();

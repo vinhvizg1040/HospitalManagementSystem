@@ -282,27 +282,8 @@ public class DoctorMainFormController implements Initializable {
 
     private final AlertMessage alert = new AlertMessage();
 
-    public void dashbboardDisplayIP() {
-        String sql = "SELECT COUNT(id) FROM patient WHERE status = 'Inactive' AND doctor = '"
-                + Data.doctor_id + "'";
-        connect = Database.connectDB();
-        int getIP = 0;
-        try {
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
-
-            if (result.next()) {
-                getIP = result.getInt("COUNT(id)");
-            }
-            dashboard_IP.setText(String.valueOf(getIP));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void dashbboardDisplayTP() {
-        String sql = "SELECT COUNT(id) FROM patient WHERE doctor = '"
-                + Data.doctor_id + "'";
+        String sql = "SELECT COUNT(*) AS TotalPatients FROM patient";
         connect = Database.connectDB();
         int getTP = 0;
         try {
@@ -310,7 +291,7 @@ public class DoctorMainFormController implements Initializable {
             result = prepare.executeQuery();
 
             if (result.next()) {
-                getTP = result.getInt("COUNT(id)");
+                getTP = result.getInt("TotalPatients");
             }
             dashboard_TP.setText(String.valueOf(getTP));
         } catch (Exception e) {
@@ -318,26 +299,8 @@ public class DoctorMainFormController implements Initializable {
         }
     }
 
-    public void dashbboardDisplayAP() {
-        String sql = "SELECT COUNT(id) FROM patient WHERE status = 'Active' AND doctor = '"
-                + Data.doctor_id + "'";
-        connect = Database.connectDB();
-        int getAP = 0;
-        try {
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
-
-            if (result.next()) {
-                getAP = result.getInt("COUNT(id)");
-            }
-            dashboard_TP.setText(String.valueOf(getAP));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void dashbboardDisplayTA() {
-        String sql = "SELECT COUNT(id) FROM appointment WHERE status = 'Active' AND doctor = '"
+        String sql = "SELECT COUNT(*) as TotalAppointments FROM appointment_detail WHERE doctor = '"
                 + Data.doctor_id + "'";
         connect = Database.connectDB();
         int getTA = 0;
@@ -346,7 +309,7 @@ public class DoctorMainFormController implements Initializable {
             result = prepare.executeQuery();
 
             if (result.next()) {
-                getTA = result.getInt("COUNT(id)");
+                getTA = result.getInt("TotalAppointments");
             }
             dashboard_tA.setText(String.valueOf(getTA));
         } catch (Exception e) {
@@ -396,11 +359,9 @@ public class DoctorMainFormController implements Initializable {
     }
 
     public void dashboardNOP() {
-
         dashboad_chart_PD.getData().clear();
 
-        String sql = "SELECT date, COUNT(id) FROM patient WHERE doctor = '"
-                + Data.doctor_id + "' GROUP BY TIMESTAMP(date) ASC LIMIT 8";
+        String sql = "SELECT CONVERT(date, date), COUNT(id) FROM patient GROUP BY CONVERT(date, date) ORDER BY CONVERT(date, date) ASC OFFSET 0 ROWS FETCH NEXT 8 ROWS ONLY";
         connect = Database.connectDB();
 
         try {
@@ -417,15 +378,12 @@ public class DoctorMainFormController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void dashboardNOA() {
-
         dashboad_chart_DD.getData().clear();
 
-        String sql = "SELECT date, COUNT(id) FROM appointment WHERE doctor = '"
-                + Data.doctor_id + "' GROUP BY TIMESTAMP(date) ASC LIMIT 7";
+        String sql = "SELECT CONVERT(date, date), COUNT(appointment_detail_id) FROM appointment_detail WHERE doctor = '" + Data.doctor_id + "' GROUP BY CONVERT(date, date) ORDER BY CONVERT(date, date) ASC OFFSET 0 ROWS FETCH NEXT 7 ROWS ONLY";
         connect = Database.connectDB();
 
         try {
@@ -442,7 +400,6 @@ public class DoctorMainFormController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     // TO CLEAR ALL FIELDS
@@ -794,7 +751,7 @@ public class DoctorMainFormController implements Initializable {
 
                                     alert.successMessage("Deleted Successfully!");
 
-                                    appointmentGetData();
+//                                    appointmentGetData();
                                     appointmentShowData();
                                     appointments_tableView.refresh();
                                 }
@@ -1127,9 +1084,7 @@ public class DoctorMainFormController implements Initializable {
         displayAdminIDNumberName();
         runTime();
 
-        dashbboardDisplayIP();
         dashbboardDisplayTP();
-        dashbboardDisplayAP();
         dashbboardDisplayTA();
         dashboardDisplayData();
         dashboardNOP();
