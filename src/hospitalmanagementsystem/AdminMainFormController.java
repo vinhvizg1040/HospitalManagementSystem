@@ -13,6 +13,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -760,6 +761,16 @@ public class AdminMainFormController implements Initializable {
                         System.out.println(passwordcf);
                         alert.errorMessage("Confirm Password is not correct");
                     } else {
+                        // Listener cho trường "Email"
+
+                            String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
+                                    "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+                            Pattern pattern = Pattern.compile(emailRegex);
+                            pattern.matcher(doctor_email.getText()).matches();
+                            if (pattern.matcher(doctor_email.getText()).matches()){
+
+
+
                         Database.connectDB();
                         try {
 
@@ -806,10 +817,17 @@ public class AdminMainFormController implements Initializable {
                                 patients_PI_CCID.setText(patients_ccid.getText());
                                 patients_PI_insuranceNumber.setText(patients_insurance.getText());
                                 patients_PI_description.setText(patients_description.getText());
+                                alert.successMessage("Please check information ON THE RIGHT SIDE");
+                                doctor_PI_addBtn.setVisible(true);
+
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                            }else {
+                                alert.errorMessage("Email input error, please enter a valid email address.");
+                            }
+
                     }
 
                 }
@@ -1610,6 +1628,10 @@ public class AdminMainFormController implements Initializable {
                                 patients_PI_CCID.setText(patients_ccid.getText());
                                 patients_PI_insuranceNumber.setText(patients_insurance.getText());
                                 patients_PI_description.setText(patients_description.getText());
+                                alert.successMessage("Please check information ON THE RIGHT SIDE");
+
+                                patients_PI_addBtn.setVisible(true);
+
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -2282,6 +2304,7 @@ public class AdminMainFormController implements Initializable {
             patients_addForm.setVisible(true);
             doctors_addForm.setVisible(false);
             servicesPane.setVisible(false);
+            patients_PI_addBtn.setVisible(false);
 
 //            profileStatusList();
 //            profileDisplayInfo();
@@ -2299,7 +2322,7 @@ public class AdminMainFormController implements Initializable {
             appointments_addForm.setVisible(false);
             doctors_addForm.setVisible(true);
             servicesPane.setVisible(false);
-
+            doctor_PI_addBtn.setVisible(false);
 //            profileStatusList();
 //            profileDisplayInfo();
 //            profileDisplayImages();
@@ -2540,6 +2563,11 @@ public class AdminMainFormController implements Initializable {
                         getServiceData();
                         servicesTable.refresh();
                         alert.successMessage("Service created successfully!");
+
+                        // Xóa dữ liệu trong các ô nhập
+                        service_name.setText("");
+                        service_description.setText("");
+                        service_price.setText("");
                     } else {
                         // Nếu không thành công, hiển thị thông báo lỗi
                         alert.errorMessage("Failed to add service to database.");
@@ -2885,6 +2913,137 @@ public class AdminMainFormController implements Initializable {
                 }
             }
         });
+        // Listener for patient name
+        patients_patientName.textProperty().addListener((observable, oldValue, newValue) -> {
+            patients_PI_patientName.setText(newValue);
+        });
+
+        // Listener for gender selection
+        patients_gender.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            patients_PI_gender.setText(newValue);
+        });
+
+        // Listener for mobile number
+        patients_mobileNumber.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("-?([0-9][0-9]*)?") || newValue.length() > 10) {
+                // Show an error message or handle invalid input
+                alert.errorMessage("Phone Number input error, only numbers allowed and less than 10 characters.");
+            } else if (newValue.startsWith("000")) {
+                // Check if the phone number starts with three consecutive zeros
+                alert.errorMessage("Phone Number input error, phone number cannot start with three consecutive zeros.");
+            } else {
+                patients_PI_mobileNumber.setText(newValue);
+            }
+        });
+
+
+        // Listener for DOB
+        patients_DOB.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                LocalDate currentDate = LocalDate.now();
+                if (newValue.isAfter(currentDate)) {
+                    alert.errorMessage("DOB cannot be after the current date");
+                } else {
+                    patients_PI_DOB.setText(newValue.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                }
+            }
+        });
+
+        // Listener for emergency number
+        patients_EmercencyNumber.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("-?([0-9][0-9]*)?") || newValue.length() > 10) {
+                // Show an error message or handle invalid input
+                alert.errorMessage("Emergency Number input error, only numbers allowed and less than 10 characters.");
+            } else if (newValue.startsWith("000")) {
+                // Check if the emergency number starts with three consecutive zeros
+                alert.errorMessage("Emergency Number input error, emergency number cannot start with three consecutive zeros.");
+            } else {
+                patients_PI_emergencyNumber.setText(newValue);
+            }
+        });
+
+        // Listener for address
+        patients_address.textProperty().addListener((observable, oldValue, newValue) -> {
+            patients_PI_address.setText(newValue);
+        });
+
+        // Listener for blood group
+        patients_bloodGroup.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.matches(".*\\d.*")) { // Check if the new value contains any digits
+                // Show an error message or handle invalid input
+                alert.errorMessage("Blood Group input error, numbers are not allowed.");
+            } else {
+                patients_PI_bloodGroup.setText(newValue);
+            }
+        });
+
+
+        // Listener for CCID
+        patients_ccid.textProperty().addListener((observable, oldValue, newValue) -> {
+            patients_PI_CCID.setText(newValue);
+        });
+
+        // Listener for insurance number
+        patients_insurance.textProperty().addListener((observable, oldValue, newValue) -> {
+            patients_PI_insuranceNumber.setText(newValue);
+        });
+
+        // Listener for description
+        patients_description.textProperty().addListener((observable, oldValue, newValue) -> {
+            patients_PI_description.setText(newValue);
+        });
+
+        //Listener for Doctor
+        // Listener cho trường "Doctor's Name"
+        doctor_name.textProperty().addListener((observable, oldValue, newValue) -> {
+            doctor_PI_doctorName.setText(newValue);
+        });
+
+        // Listener cho trường "Gender"
+
+        doctor_gender.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            doctor_PI_gender.setText((String) newValue);
+        });
+
+        // Listener for mobile number
+        doctor_mobileNumber.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("-?([0-9][0-9]*)?") || newValue.length() > 10) {
+                // Show an error message or handle invalid input
+                alert.errorMessage("Phone Number input error, only numbers allowed and less than 10 characters.");
+            } else if (newValue.startsWith("000")) {
+                // Check if the phone number starts with three consecutive zeros
+                alert.errorMessage("Phone Number input error, phone number cannot start with three consecutive zeros.");
+            } else {
+                doctor_PI_mobileNumber.setText(newValue);
+            }
+        });
+
+        // Listener cho trường "Address"
+        doctor_address.textProperty().addListener((observable, oldValue, newValue) -> {
+            doctor_PI_address.setText(newValue);
+        });
+
+        // Listener cho trường "Email"
+        doctor_email.textProperty().addListener((observable, oldValue, newValue) -> {
+            doctor_PI_email.setText(newValue);
+        });
+
+        // Listener cho trường "Specialized"
+               doctor_specialized.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            doctor_PI_specialized.setText((String) newValue);
+        });
+        // Listener for DOB
+        doctor_DOB.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                LocalDate dob = doctor_DOB.getValue();
+                LocalDate currentDate = LocalDate.now();
+                if (Period.between(dob, currentDate).getYears() < 24) {
+                    alert.errorMessage("Age of doctor cannot < 24");
+                } else {
+                    doctor_PI_DOB.setText(newValue.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                }
+            }
+        });
     }
 
     // Method to show alert for Edit action
@@ -3087,7 +3246,7 @@ public class AdminMainFormController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeConnection();
+//            closeConnection();
         }
 
         return searchResult;

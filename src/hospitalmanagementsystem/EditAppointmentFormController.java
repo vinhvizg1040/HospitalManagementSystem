@@ -6,10 +6,7 @@
 package hospitalmanagementsystem;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -83,11 +80,9 @@ public class EditAppointmentFormController implements Initializable {
                 || editApp_treatment.getText().isEmpty()) {
             alert.errorMessage("Please fill all blank fields");
         } else {
-            String updateData = "UPDATE appointment SET mobile_number = ?"
-                    + ", address = ?, date_modify = ?, description = ? "
-                    +", diagnosis = ?, treatment = ?"
-                    + "WHERE appointment_id = '"
-                    + editApp_appointmentID.getText() + "'";
+            String updateData = "UPDATE appointment SET mobile_number = ?, address = ?, date_modify = ?, description = ?, "
+                    + "diagnosis = ?, treatment = ? WHERE appointment_id = ?";
+
             connect = Database.connectDB();
             try {
                 if (alert.confirmationMessage("Are you sure you want to UPDATE Appointment ID: " + editApp_appointmentID.getText()
@@ -95,12 +90,14 @@ public class EditAppointmentFormController implements Initializable {
                     prepare = connect.prepareStatement(updateData);
                     Date date = new Date();
                     java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
                     prepare.setString(1, editApp_mobileNumber.getText());
                     prepare.setString(2, editApp_address.getText());
-                    prepare.setString(3, String.valueOf(sqlDate));
+                    prepare.setDate(3, sqlDate); // Set date_modify correctly
                     prepare.setString(4, editApp_description.getText());
                     prepare.setString(5, editApp_diagnosis.getText());
                     prepare.setString(6, editApp_treatment.getText());
+                    prepare.setString(7, editApp_appointmentID.getText()); // Use PreparedStatement for appointment_id
 
                     prepare.executeUpdate();
                     alert.successMessage("Updated Successfully!");
@@ -109,11 +106,17 @@ public class EditAppointmentFormController implements Initializable {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    if (prepare != null) prepare.close();
+                    if (connect != null) connect.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-
         }
-
     }
+
 
     public void displayFields() {
         editApp_appointmentID.setText(Data.temp_appID);
