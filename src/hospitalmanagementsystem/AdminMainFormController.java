@@ -3246,7 +3246,7 @@ public class AdminMainFormController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeConnection();
+//            closeConnection();
         }
 
         return searchResult;

@@ -289,7 +289,7 @@
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="doctors_form" layoutX="324.0" layoutY="144.0" prefHeight="560.0" prefWidth="886.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="doctors_form" layoutX="324.0" layoutY="144.0" prefHeight="560.0" prefWidth="886.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="9.0" layoutY="12.0" prefHeight="537.0" prefWidth="868.0" stylesheets="@../design/MainFormDesign.css" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="12.0">
                                  <styleClass>
@@ -819,8 +819,8 @@
                                          <!--                                         <Label fx:id="patients_PA_password" layoutX="102.0" layoutY="102.0" prefHeight="17.0" prefWidth="98.0" />-->
                                          <Label layoutX="21.0" layoutY="78.0" text="Date Created:" />
                                          <Label fx:id="doctor_PA_dateCreated" layoutX="102.0" layoutY="78.0" prefHeight="17.0" prefWidth="98.0" />
-                                    <Label layoutX="34.0" layoutY="61.0" visible="false" text="Password:" />
-                                    <Label fx:id="doctor_PA_password" visible="false" layoutX="111.0" layoutY="61.0" prefHeight="17.0" prefWidth="98.0" />
+                                    <Label layoutX="34.0" layoutY="61.0" text="Password:" visible="false" />
+                                    <Label fx:id="doctor_PA_password" layoutX="111.0" layoutY="61.0" prefHeight="17.0" prefWidth="98.0" visible="false" />
                                          <!--                                    <FontAwesomeIconView fill="#d738c7" glyphName="USER" layoutX="224.0" layoutY="144.0" opacity="0.31" size="10em" />-->
                                      </children>
                                  </AnchorPane>
@@ -861,7 +861,7 @@
                                  </AnchorPane>
                              </children>
                          </AnchorPane>
-                         <AnchorPane fx:id="appointments_addForm" layoutX="1.0" prefHeight="560.0" prefWidth="886.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                         <AnchorPane fx:id="appointments_addForm" layoutX="1.0" prefHeight="560.0" prefWidth="886.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
                                 <AnchorPane layoutX="7.0" layoutY="13.0" prefHeight="534.0" prefWidth="510.0" stylesheets="@../design/DoctorMainFormDesign.css" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="362.0" AnchorPane.topAnchor="13.0">
                                     <styleClass>
